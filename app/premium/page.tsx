@@ -202,7 +202,7 @@ export default function PremiumStorePage() {
             </div>
           </div>
 
-          <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col justify-between">
+          <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col justify-between">
             <div className="flex items-center gap-2 mb-2">
               <span className="p-1.5 bg-yellow-100 dark:bg-yellow-950/40 text-yellow-500 rounded-lg">
                 <Award size={16} fill="currentColor" />
@@ -237,7 +237,7 @@ export default function PremiumStorePage() {
               onClick={() => setFilterCategory(cat)}
               className={`px-4 py-1.5 rounded-full border-2 text-xs font-black transition-all cursor-pointer ${
                 filterCategory === cat
-                  ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                  ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
                   : "bg-card-bg text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
               }`}
             >

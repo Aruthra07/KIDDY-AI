@@ -65,7 +65,7 @@ export default function PortfolioPage({ params }: { params: any }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Main User Card (Col Span 4) */}
-          <div className="lg:col-span-4 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col items-center justify-between text-center gap-4">
+          <div className="lg:col-span-4 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col items-center justify-between text-center gap-4">
             
             <div className="relative w-28 h-28 bg-brand-cream border-2 border-brand-dark rounded-full flex items-center justify-center shadow-inner text-brand-blue">
               <EmojiOrSvg emoji={student.avatar} className="w-16 h-16" />
@@ -104,14 +104,14 @@ export default function PortfolioPage({ params }: { params: any }) {
           <div className="lg:col-span-8 flex flex-col gap-6">
             
             {/* Bento Block: Badge Case */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <Trophy size={14} className="text-yellow-500 fill-yellow-500 stroke-brand-dark" /> Unlocked STEM Achievements
               </h3>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {student.badges.map((badge: string, idx: number) => (
-                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-2.5 bg-brand-cream flex flex-col items-center gap-2 text-center shadow-[1.5px_1.5px_0px_#1F2937]">
+                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-2.5 bg-brand-cream flex flex-col items-center gap-2 text-center shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]">
                     <EmojiOrSvg emoji="award" className="w-6 h-6 text-brand-blue" />
                     <span className="text-[9px] font-black text-brand-dark line-clamp-1 w-full">{badge}</span>
                   </div>
@@ -120,14 +120,14 @@ export default function PortfolioPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block: Completed Projects */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <BookOpen size={14} className="text-brand-blue" /> Showcase Projects Portfolio
               </h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {student.projects.map((proj: any, idx: number) => (
-                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-4 bg-brand-cream flex flex-col justify-between h-32 shadow-[2px_2px_0px_#1F2937]">
+                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-4 bg-brand-cream flex flex-col justify-between h-32 shadow-[2px_2px_0px_var(--card-shadow-color)]">
                     <div>
                       <span className="bg-brand-sky text-brand-blue text-[9px] font-black uppercase px-2 py-0.5 rounded border border-brand-dark self-start inline-block">
                         {proj.category}
@@ -141,7 +141,7 @@ export default function PortfolioPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block: Verified Certificates */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <ShieldCheck size={14} className="text-brand-green" /> Verified Course Certificates
               </h3>
@@ -153,7 +153,7 @@ export default function PortfolioPage({ params }: { params: any }) {
                   </div>
                 ) : (
                   certificates.map(cert => (
-                    <div key={cert.id} className="border-2 border-brand-dark rounded-xl p-3 bg-brand-green/10 flex items-center justify-between text-xs font-bold shadow-[2px_2px_0px_#1F2937]">
+                    <div key={cert.id} className="border-2 border-brand-dark rounded-xl p-3 bg-brand-green/10 flex items-center justify-between text-xs font-bold shadow-[2px_2px_0px_var(--card-shadow-color)]">
                       <div className="min-w-0">
                         <p className="text-brand-dark truncate">{cert.courseTitle}</p>
                         <p className="text-[9px] text-text-muted font-bold">Certificate Verification: {cert.certificateNumber}</p>

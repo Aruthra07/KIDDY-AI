@@ -320,7 +320,7 @@ export default function CommunityPage() {
         
         {/* Banner Title */}
         <div className="text-center max-w-xl mx-auto mb-8">
-          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] animate-pulse">
+          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] animate-pulse">
             Explorer Space Community
           </span>
           <h1 className="font-display text-4xl sm:text-5xl font-black text-brand-dark mt-4">
@@ -393,7 +393,7 @@ export default function CommunityPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 font-display">
               {/* Filter boards sidebar */}
               <div className="lg:col-span-3 flex flex-col gap-4">
-                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_#1F2937]">
+                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_var(--card-shadow-color)]">
                   <h3 className="text-xs font-black text-brand-dark uppercase mb-3 border-b border-brand-dark/10 pb-2 tracking-wider flex items-center gap-1">
                     <Filter size={12} /> Filter Boards
                   </h3>
@@ -405,7 +405,7 @@ export default function CommunityPage() {
                         onClick={() => setSelectedCategory(cat)}
                         className={`text-left px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
                           selectedCategory === cat
-                            ? "bg-brand-blue text-white border-2 border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                            ? "bg-brand-blue text-white border-2 border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
                             : "text-brand-dark hover:bg-brand-sky border-2 border-transparent"
                         }`}
                       >
@@ -415,7 +415,7 @@ export default function CommunityPage() {
                   </div>
                 </div>
 
-                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_#1F2937] space-y-2.5">
+                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_var(--card-shadow-color)] space-y-2.5">
                   <h3 className="text-xs font-black text-brand-dark uppercase tracking-wider flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
                     <AlertCircle size={14} /> Club Code
                   </h3>
@@ -436,7 +436,7 @@ export default function CommunityPage() {
                   threads.map(thread => (
                     <div
                       key={thread.id}
-                      className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] hover:border-accent/40 transition-colors flex flex-col gap-4"
+                      className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] hover:border-accent/40 transition-colors flex flex-col gap-4"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-center gap-2.5">
@@ -561,7 +561,7 @@ export default function CommunityPage() {
         {activeTab === "leaderboard" && (
           <div className="space-y-6 animate-fade-in">
             {/* Filter Toolbar Bento */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col sm:flex-row items-center justify-between gap-4 font-display">
+            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col sm:flex-row items-center justify-between gap-4 font-display">
               
               {/* Timeframe Toggles */}
               <div className="flex items-center gap-1 bg-brand-cream p-1 border-2 border-brand-dark rounded-xl text-xs font-bold w-full sm:w-auto">
@@ -602,7 +602,7 @@ export default function CommunityPage() {
             </section>
 
             {/* Leaderboard Chart Grid */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-3 font-display">
+            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col gap-3 font-display">
               {rankings.length === 0 ? (
                 <p className="text-xs text-center text-brand-dark/60 py-8">No matching records found in this sector coordinate.</p>
               ) : (
@@ -618,7 +618,7 @@ export default function CommunityPage() {
                       key={player.name}
                       className={`flex items-center justify-between p-3.5 rounded-2xl border-2 transition-all ${
                         player.isUser
-                          ? "bg-brand-yellow/30 border-brand-dark font-black text-brand-dark shadow-[2px_2px_0px_#1F2937]"
+                          ? "bg-brand-yellow/30 border-brand-dark font-black text-brand-dark shadow-[2px_2px_0px_var(--card-shadow-color)]"
                           : "border-transparent bg-brand-cream text-brand-dark hover:bg-white"
                       }`}
                     >
@@ -658,9 +658,9 @@ export default function CommunityPage() {
         {activeTab === "bootcamps" && (
           <div className="space-y-8 animate-fade-in">
             {/* Countdown & Register Block */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_var(--card-shadow-color)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 flex flex-col gap-4 text-left">
-                <span className="bg-brand-blue text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] w-fit">
+                <span className="bg-brand-blue text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] w-fit">
                   Upcoming Bootcamp Event
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-brand-dark leading-tight">
@@ -677,7 +677,7 @@ export default function CommunityPage() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-center items-center">
+              <div className="lg:col-span-5 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 text-center items-center">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-black uppercase text-brand-dark/50">Hackathon Countdown</span>
                   <span className="text-2xl font-black tracking-widest text-brand-dark">{bootcampCountdownText}</span>
@@ -709,7 +709,7 @@ export default function CommunityPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {pastWinners.map((winner, idx) => (
                   <div key={idx} className="card-bubble p-5 flex flex-col items-center text-center gap-4">
-                    <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_#1F2937] text-white ${winner.color}`}>
+                    <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_var(--card-shadow-color)] text-white ${winner.color}`}>
                       <EmojiOrSvg emoji={winner.avatar} className="w-7 h-7" />
                     </div>
                     <div>
@@ -728,7 +728,7 @@ export default function CommunityPage() {
             {/* Bootcamp registration modal */}
             {bootcampRegisterOpen && (
               <div className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_#1F2937] relative text-brand-dark">
+                <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_var(--card-shadow-color)] relative text-brand-dark">
                   <div className="flex items-center justify-between mb-4 border-b-3 border-brand-dark pb-3">
                     <h3 className="font-display text-xl font-bold flex items-center gap-2 text-brand-pink text-left">
                       <Trophy size={20} className="text-brand-yellow fill-brand-yellow stroke-brand-dark animate-pulse animate-duration-1000" />
@@ -794,7 +794,7 @@ export default function CommunityPage() {
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                        className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] active:translate-y-[1px]"
                       >
                         Submit Register Form
                       </button>
@@ -871,7 +871,7 @@ export default function CommunityPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                  className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] active:translate-y-[1px]"
                 >
                   Publish Post
                 </button>

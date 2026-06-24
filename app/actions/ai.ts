@@ -13,9 +13,67 @@ export async function askKiddyMentor(
   grade: string,
   enrolledCourses: string[],
   message: string,
-  history: Array<{ role: 'user' | 'assistant'; content: string }> = []
+  history: Array<{ role: 'user' | 'assistant'; content: string }> = [],
+  customApiKey?: string
 ) {
-  if (!hasApiKey()) {
+  const apiKey = customApiKey || process.env.OPENAI_API_KEY;
+  const isKeyConfigured = !!apiKey && apiKey.trim() !== '';
+
+  if (!isKeyConfigured) {
+    // Generate beautiful mock responses for each workspace action if no API key is provided
+    if (message.startsWith("[Generate Notes]")) {
+      const topic = message.replace("[Generate Notes]", "").trim();
+      return `### 📝 Space Notes: ${topic || 'Computational Thinking'}
+- **Decomposition:** Breaking down a complex problem into smaller, manageable steps.
+- **Pattern Recognition:** Spotting trends or similarities in problems to find common solutions.
+- **Abstraction:** Filtering out unnecessary details to focus solely on what matters.
+- **Algorithm Design:** Designing a step-by-step set of instructions to solve the task!
+*Mock notes generated! Configure your OpenAI API key in the settings modal (gear icon in navbar) to unlock live AI notes.*`;
+    }
+    if (message.startsWith("[Summarize Lesson]")) {
+      const lesson = message.replace("[Summarize Lesson]", "").trim();
+      return `### ⚡ Lesson Summary: ${lesson || 'Logic Gate Pathways'}
+* **Concept:** Logic gates are electronic valves that take inputs (0 or 1) and output a result based on logic rules.
+* **AND Gate:** Outputs 1 ONLY if BOTH inputs are 1. Think of it as a double-security lock!
+* **OR Gate:** Outputs 1 if AT LEAST ONE input is 1. Light turns on if switch A OR switch B is pressed!
+* **NOT Gate:** Inverts the input. 1 becomes 0, and 0 becomes 1!
+*Mock summary generated! Configure an API key in the settings modal to unlock live AI summaries.*`;
+    }
+    if (message.startsWith("[Generate Quiz]")) {
+      const topic = message.replace("[Generate Quiz]", "").trim();
+      return `### 🧠 Cosmic Riddle Quiz: ${topic || 'Logic Gates'}
+**Question 1:** Which logic gate acts as an inverter, flipping a 1 into a 0?
+- A) AND Gate
+- B) OR Gate
+- C) NOT Gate
+- D) NAND Gate
+*Hint: Think of a switch that does the exact opposite!*
+
+**Question 2:** If you have an AND gate, and input A is 1, and input B is 0, what is the output?
+- A) 1
+- B) 0
+- C) 2
+- D) Error
+*Hint: AND requires BOTH switches to be active!*
+*Mock quiz generated! Configure your API key to generate custom quizzes.*`;
+    }
+    if (message.startsWith("[Homework Help]")) {
+      const hw = message.replace("[Homework Help]", "").trim();
+      return `### 🛰️ Homework Guide: ${hw || 'Coordinates Logic'}
+1. **Understand the coordinates grid:** Remember that the horizontal axis is X, and the vertical axis is Y.
+2. **Read the checkpoints:** If your rover needs to reach point (3, 5), it must move 3 units right and 5 units up.
+3. **Write out the movements step-by-step:** \`walk_right(3)\`, then \`walk_up(5)\`. 
+*Mock step-by-step guidance provided! Enter your OpenAI API key in the settings to solve your custom homework questions.*`;
+    }
+    if (message.startsWith("[Course Search]")) {
+      const query = message.replace("[Course Search]", "").trim();
+      return `### 🔍 Space Catalog Search for "${query || 'Python'}"
+We found 2 matching cosmic quests in our archives:
+1. **Python Command Spells** (Coding Island, Rookie) - Learn variables, loops, and coordinates functions!
+2. **Introduction to Robotics** (Curiosity Island, Rookie) - Program virtual sensors and logic gates!
+*Mock search results. Add an API key in the settings modal to search our entire interactive library!*`;
+    }
+
     return `[Mock AI Mentor] Hey ${studentName}! I noticed you're in Grade ${grade} and learning ${enrolledCourses.join(", ") || 'new topics'}. Let's keep up the streak! Today's practice is coordinates. Ready? (API key not configured)`;
   }
 
@@ -23,7 +81,8 @@ export async function askKiddyMentor(
     const systemPrompt = `You are Kiddy AI Mentor, a helpful, encouraging companion for a school student named "${studentName}".
 The student is in Grade "${grade || '8'}" and enrolled in courses: "${enrolledCourses.join(", ") || 'AI and Coding Basics'}".
 You follow the student everywhere, know their weak areas (like coordinates or loops), and remind them of their journey.
-Help them learn naturally, suggest micro-challenges, and speak in a friendly, interactive kid-friendly tone. Keep responses relatively concise.`;
+Help them learn naturally, suggest micro-challenges, and speak in a friendly, interactive kid-friendly tone. Keep responses relatively concise.
+Use clear, beautiful Markdown for formatting (bullet points, bold text, headings).`;
 
     const messages = [
       { role: "system", content: systemPrompt },
@@ -35,7 +94,7 @@ Help them learn naturally, suggest micro-challenges, and speak in a friendly, in
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",

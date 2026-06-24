@@ -67,7 +67,7 @@ export default function BootcampHubPage() {
         
         {/* Banner Title */}
         <div className="text-center max-w-xl mx-auto mb-4">
-          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] animate-pulse">
+          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] animate-pulse">
             Hackathon Hub
           </span>
           <h1 className="text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -79,10 +79,10 @@ export default function BootcampHubPage() {
         </div>
 
         {/* SECTION 1: COUNTDOWN & REGISTER */}
-        <section className="bg-white border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <section className="bg-white border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_var(--card-shadow-color)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div className="lg:col-span-7 flex flex-col gap-4 text-left">
-            <span className="bg-brand-blue text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] w-fit">
+            <span className="bg-brand-blue text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] w-fit">
               Upcoming Event
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-brand-dark leading-tight">
@@ -99,7 +99,7 @@ export default function BootcampHubPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-center items-center">
+          <div className="lg:col-span-5 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 text-center items-center">
             
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-black uppercase text-gray-500">Hackathon Countdown</span>
@@ -134,7 +134,7 @@ export default function BootcampHubPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pastWinners.map((winner, idx) => (
               <div key={idx} className="card-bubble p-5 flex flex-col items-center text-center gap-4">
-                <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_#1F2937] text-white ${winner.color}`}>
+                <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_var(--card-shadow-color)] text-white ${winner.color}`}>
                   <EmojiOrSvg emoji={winner.avatar} className="w-7 h-7" />
                 </div>
                 <div>
@@ -153,7 +153,7 @@ export default function BootcampHubPage() {
         {/* GOOGLE FORM SIMULATED REGISTRATION MODAL */}
         {registerOpen && (
           <div className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_#1F2937] relative">
+            <div className="bg-white border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_var(--card-shadow-color)] relative">
               
               <div className="flex items-center justify-between mb-4 border-b-3 border-brand-dark pb-3">
                 <h3 className="font-display text-xl font-bold flex items-center gap-2 text-brand-pink">
@@ -222,7 +222,7 @@ export default function BootcampHubPage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                    className="flex-1 py-2.5 bg-brand-pink text-white border-2 border-brand-dark rounded-xl font-bold shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] active:translate-y-[1px]"
                   >
                     Submit Register Form
                   </button>

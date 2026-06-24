@@ -7,14 +7,13 @@ import { useApp } from "@/context/AppContext";
 import { updateUserTheme } from "@/app/actions/theme";
 import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
 import { 
-  Home, Compass, BookOpen, Layers, Play, FolderClosed, 
-  Users, Award, Sun, Moon, Flame, Coins, ShieldAlert,
-  User, Shield, ChevronDown, Sparkles, Trophy, Rss, Video
+  Home, Compass, BookOpen, Play, Users, Award, 
+  Sun, Moon, Flame, Coins, Shield, ChevronDown, Sparkles
 } from "lucide-react";
 
 export default function SideNav() {
   const pathname = usePathname();
-  const { user, setUser, earnXP } = useApp();
+  const { user, setUser } = useApp();
   
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
@@ -36,7 +35,6 @@ export default function SideNav() {
     }
     setIsDarkMode(!isDarkMode);
 
-    // Save to DB if user session exists
     if (user.id) {
       try {
         await updateUserTheme(user.id, nextTheme);
@@ -72,44 +70,44 @@ export default function SideNav() {
     setRoleDropdownOpen(false);
   };
 
-  const levelProgress = user.xp || 0; // 0 to 100
+  const levelProgress = user.xp || 0;
 
   return (
-    <aside className="w-64 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 h-screen sticky top-0 flex flex-col p-4 justify-between select-none">
+    <aside className="w-64 border-r-4 border-brand-dark dark:border-[#4A3F35] bg-card-bg h-screen sticky top-0 flex flex-col p-4 justify-between select-none font-display transition-colors duration-200">
       
       <div className="flex flex-col gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 px-2">
-          <div className="w-9 h-9 bg-[#0EA5E9] rounded-xl flex items-center justify-center text-white font-black text-lg">
+        <Link href="/" className="flex items-center gap-2.5 px-2 group">
+          <div className="w-9 h-9 bg-brand-yellow border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl flex items-center justify-center text-brand-dark font-black text-lg shadow-[1.5px_1.5px_0px_var(--card-shadow-color)] group-hover:scale-105 transition-transform duration-200">
             K
           </div>
-          <span className="font-sans text-lg font-bold text-gray-900 dark:text-white">
-            Kiddy <span className="text-[#0EA5E9]">AI</span>
+          <span className="font-display text-lg font-black text-gray-900 dark:text-[#FFF7ED]">
+            Kiddy <span className="text-brand-blue">AI</span>
           </span>
         </Link>
 
         {/* Profile Card Summary */}
-        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-100 dark:border-gray-800/80">
+        <div className="bg-brand-cream dark:bg-[#25201D] rounded-2xl p-4 border-2 border-brand-dark dark:border-[#4A3F35] shadow-[2px_2px_0px_var(--card-shadow-color)]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-accent/10 dark:bg-[#38BDF8]/10 text-accent dark:text-[#38BDF8] border border-accent/20 dark:border-[#38BDF8]/20 rounded-xl flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 bg-brand-sky border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl flex items-center justify-center shrink-0 shadow-[1px_1px_0px_var(--card-shadow-color)]">
               <EmojiOrSvg emoji={user.avatar} className="w-6 h-6" />
             </div>
             <div className="overflow-hidden">
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name}</h4>
-              <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+              <h4 className="text-sm font-black text-gray-900 dark:text-[#FFF7ED] truncate">{user.name}</h4>
+              <p className="text-[10px] font-bold text-gray-500 dark:text-[#D6D3D1] uppercase tracking-wider">{user.role}</p>
             </div>
           </div>
 
           {/* Level Progress */}
           {user.role === "student" && (
             <div className="mt-4">
-              <div className="flex justify-between items-center text-[10px] font-bold text-gray-600 dark:text-gray-400 mb-1">
+              <div className="flex justify-between items-center text-[9px] font-black text-gray-600 dark:text-[#D6D3D1] mb-1 uppercase tracking-wider">
                 <span>LEVEL {user.level}</span>
                 <span>{levelProgress}%</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-white dark:bg-[#302923] h-3 border-2 border-brand-dark dark:border-[#4A3F35] rounded-full overflow-hidden shadow-inner">
                 <div 
-                  className="bg-[#0EA5E9] h-full transition-all duration-300"
+                  className="bg-brand-blue h-full rounded-full transition-all duration-300"
                   style={{ width: `${levelProgress}%` }}
                 />
               </div>
@@ -118,7 +116,7 @@ export default function SideNav() {
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col gap-1.5">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -126,10 +124,10 @@ export default function SideNav() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold transition ${
+                className={`flex items-center gap-3 px-3 py-2 border-2 rounded-xl text-xs font-bold transition-all duration-100 ${
                   isActive 
-                    ? "bg-[#0EA5E9]/10 text-[#0EA5E9]" 
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-850"
+                    ? "bg-brand-blue text-white border-brand-dark dark:border-[#4A3F35] shadow-[2px_2px_0px_var(--card-shadow-color)]" 
+                    : "text-gray-700 dark:text-[#D6D3D1] border-transparent hover:bg-brand-sky dark:hover:bg-slate-800 hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)] hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 <Icon size={16} />
@@ -144,12 +142,12 @@ export default function SideNav() {
         {/* Coins and Streak Widgets */}
         {user.role === "student" && (
           <div className="flex gap-2">
-            <div className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-orange-50 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-950/50 rounded-xl text-orange-600 font-bold text-xs">
-              <Flame size={14} fill="currentColor" />
+            <div className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-orange-50 dark:bg-orange-950/10 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl text-orange-600 dark:text-orange-400 font-black text-[10px] uppercase tracking-wider shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]">
+              <Flame size={12} fill="currentColor" />
               <span>{user.streak} Days</span>
             </div>
-            <div className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-100 dark:border-yellow-950/50 rounded-xl text-yellow-600 font-bold text-xs">
-              <Coins size={14} fill="currentColor" />
+            <div className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-yellow-50 dark:bg-yellow-950/10 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl text-yellow-600 dark:text-yellow-400 font-black text-[10px] uppercase tracking-wider shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]">
+              <Coins size={12} fill="currentColor" />
               <span>{user.coins} Coins</span>
             </div>
           </div>
@@ -159,23 +157,23 @@ export default function SideNav() {
         <div className="relative">
           <button 
             onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-            className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-bold text-gray-700 dark:text-gray-300 cursor-pointer"
+            className="w-full flex items-center justify-between px-3 py-2 bg-brand-cream dark:bg-[#25201D] rounded-xl border-2 border-brand-dark dark:border-[#4A3F35] text-xs font-bold text-gray-700 dark:text-[#D6D3D1] shadow-[1.5px_1.5px_0px_var(--card-shadow-color)] cursor-pointer"
           >
             <span className="flex items-center gap-1.5">
-              <Shield size={14} className="text-[#0EA5E9]" />
+              <Shield size={14} className="text-brand-blue" />
               Role: {user.role.toUpperCase()}
             </span>
             <ChevronDown size={14} />
           </button>
           
           {roleDropdownOpen && (
-            <div className="absolute bottom-full left-0 right-0 mb-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50 overflow-hidden">
-              <div className="p-1.5 flex flex-col gap-1">
+            <div className="absolute bottom-full left-0 right-0 mb-1.5 bg-card-bg border-3 border-brand-dark dark:border-[#4A3F35] rounded-xl shadow-[3px_3px_0px_var(--card-shadow-color)] z-50 overflow-hidden animate-fade-in">
+              <div className="p-1 flex flex-col gap-1">
                 {roles.map(r => (
                   <button
                     key={r.id}
                     onClick={() => handleRoleChange(r.id)}
-                    className="w-full text-left px-3 py-1.5 rounded-lg text-[10px] font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-850 cursor-pointer"
+                    className="w-full text-left px-3 py-1.5 rounded-lg text-[10px] font-bold text-gray-700 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-800 cursor-pointer"
                   >
                     {r.name}
                   </button>
@@ -186,10 +184,10 @@ export default function SideNav() {
         </div>
 
         {/* Theme and Logout toggles */}
-        <div className="flex gap-2 border-t border-gray-100 dark:border-gray-800 pt-3">
+        <div className="flex gap-2 border-t-2 border-brand-dark/10 dark:border-white/10 pt-3">
           <button
             onClick={toggleTheme}
-            className="flex-1 flex items-center justify-center gap-2 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl text-xs font-bold text-gray-600 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-850 cursor-pointer"
           >
             {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
             <span>{isDarkMode ? "Light" : "Dark"}</span>
@@ -197,7 +195,7 @@ export default function SideNav() {
           
           <Link
             href="/login"
-            className="flex-1 flex items-center justify-center gap-2 py-2 bg-red-50 dark:bg-red-950/20 text-red-600 border border-red-100 dark:border-red-950/50 rounded-xl text-xs font-bold cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 dark:bg-red-950/10 text-red-600 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl text-xs font-bold cursor-pointer"
           >
             <span>Exit Portal</span>
           </Link>

@@ -24,10 +24,10 @@ export default function KnowledgeMap({
       <div className="relative w-full h-44 mt-3">
         {/* SVG connection rays */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          <line x1="60" y1="50" x2="140" y2="60" stroke={nodes[1].active ? "#38BDF8" : "#1F2937"} strokeWidth="1.5" />
-          <line x1="60" y1="50" x2="80" y2="140" stroke={nodes[2].active ? "#38BDF8" : "#1F2937"} strokeWidth="1.5" />
-          <line x1="140" y1="60" x2="160" y2="150" stroke={nodes[3].active ? "#38BDF8" : "#1F2937"} strokeWidth="1.5" />
-          <line x1="80" y1="140" x2="160" y2="150" stroke={nodes[3].active ? "#38BDF8" : "#1F2937"} strokeWidth="1.5" />
+          <line x1="60" y1="50" x2="140" y2="60" stroke={nodes[1].active ? "#38BDF8" : "var(--card-shadow-color)"} strokeWidth="1.5" />
+          <line x1="60" y1="50" x2="80" y2="140" stroke={nodes[2].active ? "#38BDF8" : "var(--card-shadow-color)"} strokeWidth="1.5" />
+          <line x1="140" y1="60" x2="160" y2="150" stroke={nodes[3].active ? "#38BDF8" : "var(--card-shadow-color)"} strokeWidth="1.5" />
+          <line x1="80" y1="140" x2="160" y2="150" stroke={nodes[3].active ? "#38BDF8" : "var(--card-shadow-color)"} strokeWidth="1.5" />
         </svg>
 
         {/* Nodes */}

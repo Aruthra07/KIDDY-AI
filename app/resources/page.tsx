@@ -94,7 +94,7 @@ export default function ResourceLibraryPage() {
         
         {/* Banner Title */}
         <div className="text-center max-w-xl mx-auto mb-4">
-          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937]">
+          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)]">
             Worksheets Depot
           </span>
           <h1 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -106,7 +106,7 @@ export default function ResourceLibraryPage() {
         </div>
 
         {/* SEARCH & FILTER CONTROLLER */}
-        <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6 font-display">
+        <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col gap-6 font-display">
           
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search Input */}
@@ -124,7 +124,7 @@ export default function ResourceLibraryPage() {
             {/* Bookmarks Toggle button */}
             <button
               onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
-              className={`px-4 py-2 border-2 border-brand-dark rounded-full text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_#1F2937] active:translate-y-[1px] active:shadow-none ${
+              className={`px-4 py-2 border-2 border-brand-dark rounded-full text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_var(--card-shadow-color)] active:translate-y-[1px] active:shadow-none ${
                 showBookmarksOnly ? "bg-brand-yellow" : "bg-card-bg hover:bg-brand-sky"
               }`}
             >
@@ -143,7 +143,7 @@ export default function ResourceLibraryPage() {
                 onClick={() => setSelectedType(type)}
                 className={`px-4 py-1.5 rounded-full border-2 text-xs font-black transition-all cursor-pointer ${
                   selectedType === type
-                    ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                    ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
                     : "bg-brand-cream text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
                 }`}
               >
@@ -157,7 +157,7 @@ export default function ResourceLibraryPage() {
         {/* GRID DISPLAY OF FILES */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredResources.length === 0 ? (
-            <div className="col-span-full bg-card-bg border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_#1F2937] flex flex-col items-center gap-3 font-display">
+            <div className="col-span-full bg-card-bg border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col items-center gap-3 font-display">
               <div className="p-3 bg-brand-yellow/15 border-3 border-brand-dark rounded-2xl text-brand-dark shadow-inner animate-bounce-slow mb-1">
                 <Folder size={40} />
               </div>

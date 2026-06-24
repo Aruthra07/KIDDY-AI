@@ -16,11 +16,19 @@ import {
   Mail, Rocket, Trophy, Send, HelpCircle, ChevronDown
 } from "lucide-react";
 import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
+import { getGlobalStats } from "@/app/actions/courses";
 
 export default function HomePage() {
-  const { user, courses, enrolledCourseIds, enrollInCourse, liveClasses } = useApp();
+  const { user, courses, enrolledCourseIds, liveClasses } = useApp();
   const [loading, setLoading] = useState(true);
   const [activeWorld, setActiveWorld] = useState<string>("Curiosity Island");
+  const [globalStats, setGlobalStats] = useState({ totalUsers: 0, totalEnrollments: 0, totalCertificates: 0 });
+  
+  useEffect(() => {
+    getGlobalStats().then(res => {
+      setGlobalStats(res);
+    });
+  }, []);
   
   // Combined About & Contact States
   const [aboutName, setAboutName] = useState("");
@@ -50,7 +58,6 @@ export default function HomePage() {
   const [countdownText, setCountdownText] = useState("02d 04h 15m 30s");
 
   useEffect(() => {
-    // Generate simple countdown ticker
     const timer = setInterval(() => {
       const hours = Math.floor(Math.random() * 24);
       const minutes = Math.floor(Math.random() * 60);
@@ -78,164 +85,165 @@ export default function HomePage() {
         <div className="min-h-screen bg-brand-cream flex flex-col font-sans">
           <Navbar />
 
-          {/* SECTION 1: HERO */}
-          <header className="relative bg-brand-sky border-b-6 border-brand-dark py-16 px-6 overflow-hidden">
+          {/* SECTION 1: HERO & SANDBOX CORE */}
+          <section className="flex flex-col w-full border-b-6 border-brand-dark bg-brand-cream">
             
-            {/* Background elements */}
-            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="absolute -top-12 -left-12 opacity-10 text-brand-dark"><Star size={240} fill="currentColor" /></motion.div>
-            <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} className="absolute top-20 right-[10%] text-brand-pink opacity-25 hidden md:block"><Sparkles size={120} fill="currentColor" /></motion.div>
-            
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Part A: Hero Landing */}
+            <header className="relative bg-brand-sky py-16 px-6 overflow-hidden">
+              {/* Background elements */}
+              <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="absolute -top-12 -left-12 opacity-10 text-brand-dark"><Star size={240} fill="currentColor" /></motion.div>
+              <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} className="absolute top-20 right-[10%] text-brand-pink opacity-25 hidden md:block"><Sparkles size={120} fill="currentColor" /></motion.div>
               
-              {/* Left Column: Mascot & Info */}
-              <div className="lg:col-span-7 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start relative z-10">
+              <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
-                {/* Waving Mascot speech bubble */}
-                <div className="relative bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_#1F2937] flex items-center gap-3 speech-bubble-inner speech-bubble-border max-w-sm">
-                  <div className="text-brand-blue shrink-0">
-                    <EmojiOrSvg emoji="robot" className="w-10 h-10" />
+                {/* Left Column: Mascot & Info */}
+                <div className="lg:col-span-7 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start relative z-10">
+                  
+                  {/* Waving Mascot speech bubble */}
+                  <div className="relative bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_var(--card-shadow-color)] flex items-center gap-3 speech-bubble-inner speech-bubble-border max-w-sm">
+                    <div className="text-brand-blue shrink-0">
+                      <EmojiOrSvg emoji="robot" className="w-10 h-10" />
+                    </div>
+                    <p className="font-display text-sm font-bold text-brand-dark text-left">
+                      "Hey Explorer {user.name}! Ready for today's space learning adventure?"
+                    </p>
                   </div>
-                  <p className="font-display text-sm font-bold text-brand-dark text-left">
-                    "Hey Explorer {user.name}! Ready for today's space learning adventure?"
+
+                  <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black leading-tight text-brand-dark">
+                    Where Learning Becomes <span className="text-brand-blue underline decoration-brand-yellow decoration-8">Adventure!</span>
+                  </h1>
+                  
+                  <p className="font-display text-base sm:text-lg font-bold text-gray-800 dark:text-gray-100 max-w-xl">
+                    Interactive coding quests, space robotics kits, live events and AI-powered classrooms built specifically for students aged 6–16.
                   </p>
+
+                  <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-2 w-full sm:w-auto font-bold">
+                    <Link href="/dashboard" className="btn-3d btn-3d-blue px-8 py-3 text-base flex items-center gap-2">
+                      <Rocket size={18} /> Start Questing
+                    </Link>
+                    <Link href="/courses" className="btn-3d btn-3d-yellow px-8 py-3 text-base flex items-center gap-2">
+                      <Gamepad2 size={18} /> Play Challenges
+                    </Link>
+                    <Link href="/courses?tab=resources" className="btn-3d btn-3d-pink px-8 py-3 text-base flex items-center gap-2">
+                      <Trophy size={18} /> Join Bootcamp
+                    </Link>
+                  </div>
                 </div>
 
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black leading-tight text-brand-dark">
-                  Where Learning Becomes <span className="text-brand-blue underline decoration-brand-yellow decoration-8">Adventure!</span>
-                </h1>
-                
-                <p className="font-display text-base sm:text-lg font-bold text-gray-800 dark:text-gray-100 max-w-xl">
-                  Interactive coding quests, space robotics kits, live events and AI-powered classrooms built specifically for students aged 6–16.
+                {/* Right Column: Hero Mascot Graphics */}
+                <div className="lg:col-span-5 flex justify-center relative">
+                  
+                  {/* Float wrapper */}
+                  <motion.div
+                    animate={{
+                      y: [0, -18, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 5,
+                      ease: "easeInOut"
+                    }}
+                    className="relative w-52 h-52 sm:w-64 sm:h-64 max-h-[25vh] max-w-[25vh]"
+                  >
+                    {/* Outer Orbit Ring */}
+                    <div className="absolute inset-0 border-4 border-dashed border-brand-dark/20 rounded-full animate-spin-slow animate-duration-[15s]" />
+                    
+                    <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }} className="absolute top-[5%] left-[-5%] bg-brand-yellow text-brand-dark p-2 border-2 border-brand-dark rounded-xl shadow-[2px_2px_0px_var(--card-shadow-color)] dark:shadow-[2px_2px_0px_#4A3F35] font-display font-extrabold text-[10px] sm:text-xs flex items-center gap-1 z-20">
+                      <Star size={12} fill="currentColor" /> +50 XP
+                    </motion.div>
+                    
+                    <motion.div animate={{ rotate: [0, -15, 15, 0] }} transition={{ repeat: Infinity, duration: 5 }} className="absolute bottom-[15%] right-[-10%] bg-brand-pink text-white p-2 border-2 border-brand-dark rounded-xl shadow-[2px_2px_0px_var(--card-shadow-color)] dark:shadow-[2px_2px_0px_#4A3F35] font-display font-extrabold text-[10px] sm:text-xs flex items-center gap-1 z-20">
+                      <EmojiOrSvg emoji="trophy" className="w-3.5 h-3.5 text-white" /> Certificate
+                    </motion.div>
+   
+                    <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="absolute top-[40%] right-[-12%] bg-brand-green text-brand-dark p-2 border-2 border-brand-dark rounded-xl shadow-[2px_2px_0px_var(--card-shadow-color)] dark:shadow-[2px_2px_0px_#4A3F35] font-display font-bold text-[9px] sm:text-[10px] flex items-center gap-1 z-20">
+                      <EmojiOrSvg emoji="python" className="w-3.5 h-3.5" /> python.py
+                    </motion.div>
+
+                    {/* Main Mascot Box - Kiddy Bot circle with official logo */}
+                    <div className="w-full h-full bg-[#2D2A22] border-4 border-white rounded-full shadow-[6px_6px_0px_var(--card-shadow-color)] dark:shadow-[6px_6px_0px_#4A3F35] flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-[#F59E0B]/10 pointer-events-none" />
+                      
+                      <div className="relative w-32 h-32 sm:w-40 sm:h-40 border-4 border-white rounded-3xl overflow-hidden shadow-[3px_3px_0px_var(--card-shadow-color)] dark:shadow-[3px_3px_0px_#4A3F35] bg-white z-10 animate-bounce-slow mb-2.5">
+                        <Image 
+                          src="/logo.jpg" 
+                          alt="Kiddy AI Logo" 
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      
+                      <div className="font-display text-[10px] sm:text-xs font-black text-white tracking-widest bg-[#0C4A6E] px-4 py-1 rounded-full border-2 border-white shadow-[2px_2px_0px_var(--card-shadow-color)] dark:shadow-[2px_2px_0px_#4A3F35] relative z-10 uppercase">
+                        KIDDY BOT
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+              </div>
+
+              {/* Cloud Waves SVG footer border */}
+              <div className="absolute bottom-0 left-0 right-0 h-4 bg-brand-cream border-t-4 border-brand-dark" />
+            </header>
+
+            {/* Part B: Why Kiddy Sandbox (Value Cards & Impact Stats) */}
+            <div className="py-20 px-6 max-w-7xl mx-auto w-full">
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)]">
+                  Curiosity Engine & Impact
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark mt-4">
+                  Redefining How School Kids Learn
+                </h2>
+                <p className="font-display text-sm font-bold text-gray-600 dark:text-gray-300 mt-2">
+                  We replaced standard videos with an immersive sandbox and progress systems designed for high engagement.
                 </p>
-
-                <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-2 w-full sm:w-auto font-bold">
-                  <Link href="/dashboard" className="btn-3d btn-3d-blue px-8 py-3 text-base flex items-center gap-2">
-                    <Rocket size={18} /> Start Questing
-                  </Link>
-                  <Link href="/courses" className="btn-3d btn-3d-yellow px-8 py-3 text-base flex items-center gap-2">
-                    <Gamepad2 size={18} /> Play Challenges
-                  </Link>
-                  <Link href="/courses?tab=resources" className="btn-3d btn-3d-pink px-8 py-3 text-base flex items-center gap-2">
-                    <Trophy size={18} /> Join Bootcamp
-                  </Link>
-                </div>
               </div>
 
-              {/* Right Column: Hero Mascot Graphics */}
-              <div className="lg:col-span-5 flex justify-center relative">
-                
-                {/* Float wrapper */}
-                <motion.div
-                  animate={{
-                    y: [0, -18, 0]
-                  }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 5,
-                    ease: "easeInOut"
-                  }}
-                  className="relative w-80 h-80 sm:w-96 sm:h-96"
-                >
-                  {/* Outer Orbit Ring */}
-                  <div className="absolute inset-0 border-4 border-dashed border-brand-dark/20 rounded-full animate-spin-slow" />
-                  
-                  <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }} className="absolute top-[10%] left-[5%] bg-brand-yellow text-brand-dark p-3 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-extrabold text-sm flex items-center gap-1.5">
-                    <Star size={14} fill="currentColor" /> +50 XP
-                  </motion.div>
-                  
-                  <motion.div animate={{ rotate: [0, -15, 15, 0] }} transition={{ repeat: Infinity, duration: 5 }} className="absolute bottom-[20%] right-[-5%] bg-brand-pink text-white p-3 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-extrabold text-sm flex items-center gap-1.5">
-                    <EmojiOrSvg emoji="trophy" className="w-4 h-4 text-white" /> Certificate
-                  </motion.div>
- 
-                  <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="absolute top-[45%] right-[-10%] bg-brand-green text-brand-dark p-2.5 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-bold text-xs flex items-center gap-1.5">
-                    <EmojiOrSvg emoji="python" className="w-4 h-4" /> python.py
-                  </motion.div>
-
-                  {/* Main Mascot Box - Kiddy Bot circle with official logo */}
-                  <div className="w-full h-full bg-[#2D2A22] border-6 border-white rounded-full shadow-[8px_8px_0px_#1F2937] flex flex-col items-center justify-center p-8 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[#F59E0B]/10 pointer-events-none" />
-                    
-                    <div className="relative w-28 h-28 border-4 border-white rounded-3xl overflow-hidden shadow-[3px_3px_0px_#1F2937] bg-white z-10 animate-bounce-slow mb-3.5">
-                      <Image 
-                        src="/logo.jpg" 
-                        alt="Kiddy AI Logo" 
-                        fill
-                        className="object-cover"
-                      />
+              {/* Core Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                {[
+                  { title: "Learn by Doing", desc: "No long lectures. Complete interactive code checkpoints and get live visual results.", color: "bg-brand-blue", icon: "books" },
+                  { title: "Play Challenges", desc: "Level up by playing mathematical coordinates puzzles, logic traps, and AI mystery escape mazes.", color: "bg-brand-yellow", icon: "game" },
+                  { title: "Create Sandbox", desc: "Build robotics code dashboards, prompt custom storytelling AI books, and publish games.", color: "bg-brand-pink", icon: "palette" },
+                  { title: "Explore Worlds", desc: "Walk along the map milestone tracks to claim XP, badges, Kiddy Coins, and avatar assets.", color: "bg-brand-green", icon: "rocket" }
+                ].map((card, idx) => (
+                  <div key={idx} className="card-bubble p-6 flex flex-col gap-4 text-center items-center">
+                    <div className={`w-16 h-16 rounded-2xl border-3 border-brand-dark flex items-center justify-center shadow-[3px_3px_0px_var(--card-shadow-color)] ${card.color} text-brand-dark`}>
+                      <EmojiOrSvg emoji={card.icon} className="w-8 h-8" />
                     </div>
-                    
-                    <div className="font-display text-sm font-black text-white tracking-widest bg-[#0C4A6E] px-6 py-1.5 rounded-full border-3 border-white shadow-[2px_2px_0px_#1F2937] relative z-10 uppercase">
-                      KIDDY BOT
-                    </div>
+                    <h3 className="font-display text-xl font-extrabold text-brand-dark">{card.title}</h3>
+                    <p className="font-display text-xs text-gray-600 dark:text-gray-300 font-bold leading-relaxed">{card.desc}</p>
                   </div>
-                </motion.div>
+                ))}
+              </div>              {/* Impact Stats Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t-4 border-brand-dark/10 pt-16">
+                {[
+                  { count: `${globalStats.totalUsers} Active`, text: "Registered Explorers", icon: <Users size={28} />, color: "bg-brand-blue" },
+                  { count: `${globalStats.totalEnrollments} Active`, text: "Quests Enrolled", icon: <BookOpen size={28} />, color: "bg-brand-yellow" },
+                  { count: `${globalStats.totalCertificates} Earned`, text: "Certificates Awarded", icon: <GraduationCap size={28} />, color: "bg-brand-pink" }
+                ].map((item, idx) => (
+                  <div key={idx} className="card-bubble p-6 flex flex-col items-center gap-4">
+                    <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_var(--card-shadow-color)] ${item.color}`}>
+                      {item.icon}
+                    </div>
+                    <h3 className="font-display text-3xl sm:text-4xl font-black text-brand-dark">{item.count}</h3>
+                    <p className="font-display text-sm font-bold text-gray-550 dark:text-gray-405 uppercase">{item.text}</p>
+                  </div>
+                ))}
               </div>
-
-            </div>
-
-            {/* Cloud Waves SVG footer border */}
-            <div className="absolute bottom-0 left-0 right-0 h-4 bg-brand-cream border-t-4 border-brand-dark" />
-          </header>
-
-          {/* SECTION 2: WHY KIDDY SANDBOX (WHY CHOOSE US & STATS COMBINED) */}
-          <section className="py-20 px-6 max-w-7xl mx-auto w-full">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
-                Curiosity Engine & Impact
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark mt-4">
-                Redefining How School Kids Learn
-              </h2>
-              <p className="font-display text-sm font-bold text-gray-600 dark:text-gray-300 mt-2">
-                We replaced standard videos with an immersive sandbox and progress systems designed for high engagement.
-              </p>
-            </div>
-
-            {/* Core Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-              {[
-                { title: "Learn by Doing", desc: "No long lectures. Complete interactive code checkpoints and get live visual results.", color: "bg-brand-blue", icon: "books" },
-                { title: "Play Challenges", desc: "Level up by playing mathematical coordinates puzzles, logic traps, and AI mystery escape mazes.", color: "bg-brand-yellow", icon: "game" },
-                { title: "Create Sandbox", desc: "Build robotics code dashboards, prompt custom storytelling AI books, and publish games.", color: "bg-brand-pink", icon: "palette" },
-                { title: "Explore Worlds", desc: "Walk along the map milestone tracks to claim XP, badges, Kiddy Coins, and avatar assets.", color: "bg-brand-green", icon: "rocket" }
-              ].map((card, idx) => (
-                <div key={idx} className="card-bubble p-6 flex flex-col gap-4 text-center items-center">
-                  <div className={`w-16 h-16 rounded-2xl border-3 border-brand-dark flex items-center justify-center shadow-[3px_3px_0px_#1F2937] ${card.color} text-brand-dark`}>
-                    <EmojiOrSvg emoji={card.icon} className="w-8 h-8" />
-                  </div>
-                  <h3 className="font-display text-xl font-extrabold text-brand-dark">{card.title}</h3>
-                  <p className="font-display text-xs text-gray-600 dark:text-gray-300 font-bold leading-relaxed">{card.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Impact Stats Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t-4 border-brand-dark/10 pt-16">
-              {[
-                { count: "12,450+", text: "Active Explorers", icon: <Users size={28} />, color: "bg-brand-blue" },
-                { count: "48,900+", text: "Quizzes Completed", icon: <BookOpen size={28} />, color: "bg-brand-yellow" },
-                { count: "9,800+", text: "Certificates Awarded", icon: <GraduationCap size={28} />, color: "bg-brand-pink" }
-              ].map((item, idx) => (
-                <div key={idx} className="card-bubble p-6 flex flex-col items-center gap-4">
-                  <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_#1F2937] ${item.color}`}>
-                    {item.icon}
-                  </div>
-                  <h3 className="font-display text-3xl sm:text-4xl font-black text-brand-dark">{item.count}</h3>
-                  <p className="font-display text-sm font-bold text-gray-500 dark:text-gray-450 uppercase">{item.text}</p>
-                </div>
-              ))}
             </div>
           </section>
 
-          {/* SECTION 3: THE LEARNING PATH & FEATURED QUESTS */}
-          <section className="py-20 px-6 bg-brand-sky border-y-6 border-brand-dark relative">
+          {/* SECTION 2: THE ADVENTURE UNIVERSE & LIVE CLASSROOMS */}
+          <section className="py-16 px-6 bg-brand-sky border-y-6 border-brand-dark relative overflow-hidden my-[120px]">
             <div className="max-w-7xl mx-auto flex flex-col gap-20">
               
               {/* Part A: The Adventure Map */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 {/* Map Intro details */}
                 <div className="lg:col-span-5 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
-                  <span className="bg-brand-blue text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+                  <span className="bg-brand-blue text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)]">
                     Adventure Track
                   </span>
                   <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
@@ -245,7 +253,7 @@ export default function HomePage() {
                     Gain XP to level up and unlock new islands on the adventure path. Each island holds thematic courses, logic puzzles, and certificates!
                   </p>
 
-                  <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_#1F2937] w-full max-w-sm">
+                  <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_var(--card-shadow-color)] w-full max-w-sm">
                     <p className="font-display text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Current Quest Location</p>
                     <p className="font-display text-lg font-black text-brand-dark flex items-center gap-2 mt-1.5">
                       <EmojiOrSvg emoji="island" className="w-5 h-5 text-brand-blue" /> Curiosity Island
@@ -261,17 +269,17 @@ export default function HomePage() {
 
                 {/* The Map Interactive Board */}
                 <div className="lg:col-span-7 flex flex-col items-center">
-                  <div className="w-full max-w-xl bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_#1F2937] relative overflow-hidden">
+                  <div className="w-full max-w-xl bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_var(--card-shadow-color)] relative overflow-hidden">
                     <div className="absolute inset-0 bg-brand-sky/20 pointer-events-none" />
                     
-                    <h3 className="font-display text-lg font-black text-brand-dark border-b-2 border-brand-dark pb-2 mb-6 flex justify-between items-center">
+                    <h3 className="font-display text-lg font-black text-brand-dark border-b-2 border-brand-dark/10 pb-2 mb-6 flex justify-between items-center">
                       <span>Select learning World:</span>
                       <span className="text-xs text-brand-pink uppercase tracking-wide">Click to inspect</span>
                     </h3>
 
                     {/* Path board list */}
                     <div className="flex flex-col gap-4 relative z-10 font-display">
-                      {worlds.map((w, idx) => {
+                      {worlds.map((w) => {
                         const isUnlocked = user.level >= w.level;
                         const isSelected = activeWorld === w.name;
                         return (
@@ -280,7 +288,7 @@ export default function HomePage() {
                             onClick={() => isUnlocked && setActiveWorld(w.name)}
                             className={`flex items-center justify-between p-3.5 border-3 border-brand-dark rounded-2xl transition-all cursor-pointer ${
                               isSelected 
-                                ? "bg-brand-yellow shadow-[3px_3px_0px_#1F2937] translate-y-[-2px]" 
+                                ? "bg-brand-yellow shadow-[3px_3px_0px_var(--card-shadow-color)] translate-y-[-2px]" 
                                 : isUnlocked 
                                   ? "bg-brand-cream hover:bg-white hover:translate-y-[-1px]" 
                                   : "bg-gray-100 opacity-60 cursor-not-allowed"
@@ -316,7 +324,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Inspected World Info Panel */}
-                    <div className="mt-6 border-t-3 border-brand-dark pt-4 flex flex-col gap-3">
+                    <div className="mt-6 border-t-3 border-brand-dark/10 pt-4 flex flex-col gap-3">
                       {worlds.map(w => {
                         if (w.name !== activeWorld) return null;
                         return (
@@ -344,12 +352,75 @@ export default function HomePage() {
                 </div>
               </div>
 
+              {/* Part B: Featured Space Quests */}
+              <div className="border-t-4 border-brand-dark/10 pt-16">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-12 text-center md:text-left gap-4">
+                  <div>
+                    <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)]">
+                      Skill Catalog
+                    </span>
+                    <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-3">
+                      Featured Space Quests
+                    </h2>
+                  </div>
+                  <Link href="/courses" className="btn-3d btn-3d-white px-6 py-2 text-sm flex items-center gap-1">
+                    All Courses <ArrowRight size={16} />
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {courses.slice(0, 4).map((course) => {
+                    const isEnrolled = enrolledCourseIds.includes(course.id);
+                    return (
+                      <div key={course.id} className="card-bubble flex flex-col justify-between overflow-hidden relative">
+                        <div className="absolute top-3 right-3 bg-card-bg border-2 border-brand-dark px-2 py-0.5 rounded-full text-[10px] font-bold">
+                          {course.category}
+                        </div>
+
+                        <div className="p-5 flex flex-col gap-3">
+                          <div className="h-28 w-full bg-brand-sky border-3 border-brand-dark rounded-2xl flex items-center justify-center shadow-inner relative overflow-hidden mb-2 text-[#0284C7] dark:text-[#38BDF8]">
+                            <div className="absolute inset-0 bg-brand-yellow/10" />
+                            <div className="relative z-10 animate-bounce-slow">
+                              <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-12 h-12" />
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase text-gray-500 dark:text-gray-400">
+                            <span>{course.duration}</span>
+                            <span>•</span>
+                            <span className="text-brand-blue">{course.level}</span>
+                          </div>
+
+                          <h3 className="font-display text-base font-extrabold text-brand-dark line-clamp-1">
+                            {course.title}
+                          </h3>
+                          
+                          <p className="font-display text-xs text-gray-600 dark:text-gray-300 font-bold line-clamp-2 leading-relaxed">
+                            {course.description}
+                          </p>
+                        </div>
+
+                        <div className="p-5 pt-0 border-t-2 border-brand-dark/10 flex gap-2">
+                          <Link 
+                            href={`/courses/${course.id}`}
+                            className="flex-1 btn-3d btn-3d-blue py-2 text-xs text-center flex items-center justify-center gap-1.5"
+                          >
+                            {isEnrolled ? <Play size={12} fill="currentColor" /> : <BookOpen size={12} />}
+                            <span>{isEnrolled ? "Open Quest" : "Details"}</span>
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Part C: Broadcast Room (Live Classes) integrated */}
-              <div className="border-t-4 border-brand-dark/10 pt-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mt-20">
+              <div className="border-t-4 border-brand-dark/10 pt-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mt-8">
                 
                 {/* Left Column: Live event timer info */}
                 <div className="lg:col-span-5 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
-                  <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937] animate-pulse">
+                  <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)] animate-pulse">
                     Broadcast Room
                   </span>
                   <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
@@ -360,7 +431,7 @@ export default function HomePage() {
                   </p>
 
                   {/* Countdown display */}
-                  <div className="bg-brand-dark text-white rounded-3xl p-5 border-4 border-brand-dark shadow-[4px_4px_0px_#1F2937] w-full max-w-sm flex flex-col items-center gap-1.5">
+                  <div className="bg-brand-dark text-white rounded-3xl p-5 border-4 border-brand-dark shadow-[4px_4px_0px_var(--card-shadow-color)] w-full max-w-sm flex flex-col items-center gap-1.5">
                     <span className="font-display text-[10px] font-black uppercase tracking-wider text-brand-yellow dark:text-yellow-400">Next Broadcast Starts In</span>
                     <span className="font-display text-2xl sm:text-3xl font-black tracking-widest">{countdownText}</span>
                   </div>
@@ -369,9 +440,9 @@ export default function HomePage() {
                 {/* Right Column: Live Session Card */}
                 <div className="lg:col-span-7 flex justify-center">
                   {liveClasses.slice(0, 1).map((session) => (
-                    <div key={session.id} className="w-full max-w-lg bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_#1F2937] flex flex-col gap-6">
+                    <div key={session.id} className="w-full max-w-lg bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_var(--card-shadow-color)] flex flex-col gap-6">
                       <div className="flex justify-between items-start gap-4">
-                        <span className="bg-red-500 text-white border-2 border-brand-dark font-display font-black text-xs px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] animate-pulse">
+                        <span className="bg-red-500 text-white border-2 border-brand-dark font-display font-black text-xs px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] animate-pulse">
                           Next Broadcast
                         </span>
                         <div className="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-350">
@@ -407,80 +478,18 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
-              </div>
-          </section>
 
-          {/* SECTION 3: FEATURED SPACE QUESTS */}
-          <section className="py-20 px-6 bg-brand-sky border-y-6 border-brand-dark relative">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col md:flex-row justify-between items-center mb-12 text-center md:text-left gap-4">
-                <div>
-                  <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
-                    Skill Catalog
-                  </span>
-                  <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-3">
-                    Featured Space Quests
-                  </h2>
-                </div>
-                <Link href="/courses" className="btn-3d btn-3d-white px-6 py-2 text-sm flex items-center gap-1">
-                  All Courses <ArrowRight size={16} />
-                </Link>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {courses.slice(0, 4).map((course) => {
-                  const isEnrolled = enrolledCourseIds.includes(course.id);
-                  return (
-                    <div key={course.id} className="card-bubble flex flex-col justify-between overflow-hidden relative">
-                      <div className="absolute top-3 right-3 bg-card-bg border-2 border-brand-dark px-2 py-0.5 rounded-full text-[10px] font-bold">
-                        {course.category}
-                      </div>
-
-                      <div className="p-5 flex flex-col gap-3">
-                        <div className="h-28 w-full bg-brand-sky border-3 border-brand-dark rounded-2xl flex items-center justify-center shadow-inner relative overflow-hidden mb-2 text-[#0284C7] dark:text-[#38BDF8]">
-                          <div className="absolute inset-0 bg-brand-yellow/10" />
-                          <div className="relative z-10 animate-bounce-slow">
-                            <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-12 h-12" />
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase text-gray-500 dark:text-gray-400">
-                          <span>{course.duration}</span>
-                          <span>•</span>
-                          <span className="text-brand-blue">{course.level}</span>
-                        </div>
-
-                        <h3 className="font-display text-base font-extrabold text-brand-dark line-clamp-1">
-                          {course.title}
-                        </h3>
-                        
-                        <p className="font-display text-xs text-gray-600 dark:text-gray-300 font-bold line-clamp-2 leading-relaxed">
-                          {course.description}
-                        </p>
-                      </div>
-
-                      <div className="p-5 pt-0 border-t-2 border-brand-dark/10 flex gap-2">
-                        <Link 
-                          href={`/courses/${course.id}`}
-                          className="flex-1 btn-3d btn-3d-blue py-2 text-xs text-center flex items-center justify-center gap-1.5"
-                        >
-                          {isEnrolled ? <Play size={12} fill="currentColor" /> : <BookOpen size={12} />}
-                          <span>{isEnrolled ? "Open Quest" : "Details"}</span>
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
           </section>
 
-          {/* SECTION 5: ABOUT, CONTACT & FEEDBACK (TESTIMONIALS INTEGRATED) */}
-          <section id="about-contact" className="py-20 px-6 max-w-7xl mx-auto w-full font-display">
+          {/* SECTION 3: THE PARENTAL LOUNGE & MISSION COMMAND */}
+          <section id="about-contact" className="py-16 px-6 max-w-7xl mx-auto w-full font-display bg-brand-cream my-[120px]">
             
             {/* Part A: Approved by Parents, Loved by Kids */}
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+              <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)]">
                 Parent Logs & Feedback
               </span>
               <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -515,7 +524,7 @@ export default function HomePage() {
             {/* Part B: About Mission & Contact Bento Grid */}
             <div className="border-t-4 border-brand-dark/10 pt-16">
               <div className="text-center max-w-xl mx-auto mb-16">
-                <span className="bg-brand-blue text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937]">
+                <span className="bg-brand-blue text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)]">
                   Kiddy Headquarters
                 </span>
                 <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -530,7 +539,7 @@ export default function HomePage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
                 
                 {/* Left Panel: About Us (Col Span 5) */}
-                <div className="lg:col-span-5 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6">
+                <div className="lg:col-span-5 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col gap-6">
                   <div>
                     <span className="bg-brand-pink text-white border-2 border-brand-dark text-[9px] font-black uppercase px-2 py-0.5 rounded-full w-fit">
                       Our Philosophy
@@ -577,7 +586,7 @@ export default function HomePage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                     
                     {/* Contact Form */}
-                    <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4">
+                    <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4">
                       <h3 className="text-sm font-black text-brand-dark border-b-2 border-brand-dark/10 pb-1.5 flex items-center gap-1">
                         <Send size={14} className="text-brand-blue" /> Send Rocket Mail
                       </h3>
@@ -636,7 +645,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Accordion FAQs */}
-                    <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4">
+                    <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4">
                       <h3 className="text-sm font-black text-brand-dark border-b-2 border-brand-dark/10 pb-1.5 flex items-center gap-1 text-left">
                         <HelpCircle size={14} className="text-brand-pink" /> Common Questions
                       </h3>
@@ -664,7 +673,7 @@ export default function HomePage() {
                           );
                         })}
                       </div>
-                    </div>        </div>
+                    </div>
 
                   </div>
                 </div>

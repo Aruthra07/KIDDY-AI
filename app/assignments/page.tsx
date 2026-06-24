@@ -47,7 +47,7 @@ export default function AssignmentModulePage() {
         
         {/* Header banner */}
         <div className="text-center max-w-xl mx-auto mb-4">
-          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937]">
+          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)]">
             Space Homework
           </span>
           <h1 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -64,7 +64,7 @@ export default function AssignmentModulePage() {
           {/* LEFT: Assignments list */}
           <div className="lg:col-span-8 flex flex-col gap-6">
             
-            <div className="bg-white border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-white border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <h3 className="text-base font-black text-brand-dark border-b-2 border-brand-dark pb-2 mb-6 flex items-center gap-1.5">
                 <ClipboardList size={18} className="text-brand-blue" />
                 Active Homework List
@@ -196,7 +196,7 @@ export default function AssignmentModulePage() {
           <div className="lg:col-span-4 flex flex-col gap-6">
             
             {/* METRICS STATS */}
-            <div className="bg-white border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
+            <div className="bg-white border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4 font-display">
               <h3 className="text-base font-black text-brand-dark border-b-2 border-brand-dark pb-2 flex items-center gap-1.5">
                 <BookOpen size={16} /> Progress Logs
               </h3>

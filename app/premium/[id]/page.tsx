@@ -175,7 +175,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
   if (!module) {
     return (
       <div className="flex min-h-screen bg-brand-cream text-brand-dark items-center justify-center p-6">
-        <div className="text-center max-w-sm font-sans bg-card-bg border-4 border-brand-dark rounded-3xl p-8 shadow-[4px_4px_0px_#1F2937]">
+        <div className="text-center max-w-sm font-sans bg-card-bg border-4 border-brand-dark rounded-3xl p-8 shadow-[4px_4px_0px_var(--card-shadow-color)]">
           <div className="flex justify-center text-brand-blue mb-2">
             <EmojiOrSvg emoji="satellite" className="w-12 h-12" />
           </div>
@@ -209,7 +209,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
           <div className="lg:col-span-8 flex flex-col gap-6">
             
             {/* Bento Block 1: Intro Deck */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-8 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-8 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="bg-brand-yellow/20 text-brand-dark text-[10px] font-black px-2.5 py-0.5 rounded-full border border-brand-dark uppercase">
                   {module.category} Module
@@ -264,7 +264,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 2: Learning Outcomes */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)]">
               <h2 className="text-sm font-extrabold text-brand-dark uppercase tracking-wider mb-4 border-b-2 border-brand-dark/10 pb-2">
                 What You'll Learn
               </h2>
@@ -285,7 +285,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
           <div className="lg:col-span-4 flex flex-col gap-6">
             
             {/* Bento Block 3: Video Preview */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)]">
               <div 
                 className="h-44 bg-slate-900 border-2 border-brand-dark rounded-2xl flex items-center justify-center text-white relative overflow-hidden group cursor-pointer"
                 onClick={() => setIsPlayingVideo(true)}
@@ -302,7 +302,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 4: Enroll Purchase Card */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4 font-display">
               <div className="flex justify-between items-center">
                 <span className="text-xs text-text-muted">Module Price</span>
                 <span className="text-2xl font-black text-brand-dark">
@@ -335,7 +335,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 5: Teacher Profile */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-3">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-3">
               <p className="text-[10px] font-bold text-text-muted uppercase">Your STEM Instructor</p>
               <div className="flex items-center gap-3">
                 <span className="bg-brand-cream border-2 border-brand-dark w-11 h-11 rounded-xl flex items-center justify-center shadow-inner text-brand-blue">

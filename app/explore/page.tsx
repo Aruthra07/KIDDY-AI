@@ -3,9 +3,12 @@
 import React, { useState, useEffect } from "react";
 import SideNav from "@/components/SideNav";
 import { useApp } from "@/context/AppContext";
-import { getPremiumModules, enrollInCourse } from "@/app/actions/courses";
-import { addToWishlist, removeFromWishlist, recordRecentlyViewed } from "@/app/actions/wishlist";
-import { Search, Heart, Star, Flame, Award, BookOpen, Layers, Sparkles, Filter, CheckCircle } from "lucide-react";
+import { getPremiumModules } from "@/app/actions/courses";
+import { 
+  Search, Heart, Star, Flame, Award, BookOpen, Layers, 
+  Sparkles, Filter, CheckCircle, ArrowRight, Gamepad2, 
+  Download, Calendar, Trophy, Bot, MessageSquare, ShieldAlert
+} from "lucide-react";
 import Link from "next/link";
 import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
 
@@ -30,13 +33,7 @@ export default function ExplorePage() {
   // State lists
   const [premiumModules, setPremiumModules] = useState<PremiumModule[]>([]);
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
-  const [recentlyViewed, setRecentlyViewed] = useState<any[]>([]);
-
-  // Search & Filter State
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedType, setSelectedType] = useState("All"); // All, Course, Module
-  const [selectedLevel, setSelectedLevel] = useState("All"); // All, Beginner/Rookie, Intermediate/Explorer, Advanced/Champion
 
   useEffect(() => {
     // 1. Fetch Premium Modules
@@ -45,174 +42,125 @@ export default function ExplorePage() {
         if (mods && mods.length > 0) {
           setPremiumModules(mods);
         } else {
-          // Fallback static modules
+          // Fallback static premium modules if db empty
           setPremiumModules([
             {
               id: "pm-1",
               title: "AI Basics for Students",
-              description: "An interactive introduction to neural networks, chatbots, and generative models built specifically for young minds.",
+              description: "An interactive introduction to neural networks, chatbots, and generative models.",
               thumbnail: "sparkles",
               category: "AI",
               difficulty: "Beginner",
               duration: "2 hours",
               teacherName: "Dr. Elena Vance",
-              price: 29.99,
+              price: 0, // Free
               enrolledCount: 420,
               certificateAvailable: true,
-              outcomes: ["Understand how machine learning works", "Learn to write effective prompts", "Identify AI systems in everyday devices"]
+              outcomes: ["Understand machine learning", "Write prompt scripts"]
             },
             {
               id: "pm-2",
               title: "Introduction to Robotics",
-              description: "Build logic gates, simulate microcontrollers, and program virtual robots to navigate obstacle grids.",
+              description: "Build logic gates, simulate microcontrollers, and program virtual rovers.",
               thumbnail: "robot",
               category: "Robotics",
               difficulty: "Beginner",
               duration: "3 hours",
-              teacherName: "Professor Stark",
+              teacherName: "Prof. Stark",
               price: 39.99,
               enrolledCount: 310,
               certificateAvailable: true,
-              outcomes: ["Understand circuits and logic flow", "Program simple microcontroller actions", "Utilize distance sensors for navigation"]
-            },
-            {
-              id: "pm-3",
-              title: "Mathematics Tricks: Mental Calculation Master",
-              description: "Speed up arithmetic calculations using Vedic math methods and pattern recognition algorithms.",
-              thumbnail: "number",
-              category: "Mathematics",
-              difficulty: "Advanced",
-              duration: "1.5 hours",
-              teacherName: "Coach Dan",
-              price: 19.99,
-              enrolledCount: 150,
-              certificateAvailable: false,
-              outcomes: ["Multiply 3-digit numbers mentally", "Estimate square roots quickly", "Solve speed coordinates calculations"]
+              outcomes: ["Understand circuits", "Utilize distance sensors"]
             }
           ]);
         }
       })
       .catch(() => {
-        // Fallback on error
         setPremiumModules([
           {
             id: "pm-1",
             title: "AI Basics for Students",
-            description: "An interactive introduction to neural networks, chatbots, and generative models built specifically for young minds.",
+            description: "An interactive introduction to neural networks, chatbots, and generative models.",
             thumbnail: "sparkles",
             category: "AI",
             difficulty: "Beginner",
             duration: "2 hours",
             teacherName: "Dr. Elena Vance",
-            price: 29.99,
+            price: 0,
             enrolledCount: 420,
             certificateAvailable: true,
-            outcomes: ["Understand how machine learning works", "Learn to write effective prompts"]
+            outcomes: ["Understand machine learning"]
           }
         ]);
       });
 
-    // 2. Hydrate wishlist from local state initially
+    // Hydrate wishlist
     if (typeof window !== "undefined") {
       const savedWishlist = localStorage.getItem("kiddy_wishlist");
       if (savedWishlist) {
         setWishlistIds(JSON.parse(savedWishlist));
       }
-
-      const savedRecent = localStorage.getItem("kiddy_recent_views");
-      if (savedRecent) {
-        setRecentlyViewed(JSON.parse(savedRecent));
-      }
     }
   }, []);
 
-  const handleToggleWishlist = async (itemId: string, isModule: boolean) => {
-    let updated;
+  const handleToggleWishlist = (itemId: string) => {
     const isSaved = wishlistIds.includes(itemId);
+    let updated;
     if (isSaved) {
       updated = wishlistIds.filter(id => id !== itemId);
-      addNotification("Removed from your saved wishlist.");
-      if (user.id) {
-        try {
-          await removeFromWishlist(user.id, isModule ? undefined : itemId, isModule ? itemId : undefined);
-        } catch (e) {
-          console.error(e);
-        }
-      }
+      addNotification("Removed from your bookmarks.");
     } else {
       updated = [...wishlistIds, itemId];
-      addNotification("Added to your saved wishlist!");
-      if (user.id) {
-        try {
-          await addToWishlist(user.id, isModule ? undefined : itemId, isModule ? itemId : undefined);
-        } catch (e) {
-          console.error(e);
-        }
-      }
+      addNotification("Added to your bookmarks!");
     }
     setWishlistIds(updated);
     localStorage.setItem("kiddy_wishlist", JSON.stringify(updated));
   };
 
-  const handleViewDetails = (item: any, isModule: boolean) => {
-    // Record view
-    const newRecent = [
-      { id: item.id, title: item.title, thumbnail: item.thumbnail, isModule, viewedAt: new Date().toISOString() },
-      ...recentlyViewed.filter(x => x.id !== item.id)
-    ].slice(0, 5);
-    setRecentlyViewed(newRecent);
-    localStorage.setItem("kiddy_recent_views", JSON.stringify(newRecent));
+  // Predefined resources / worksheets
+  const worksheets = [
+    { title: "AI Prompting Cheat Sheet", type: "PDF Guide", size: "1.2 MB", downloads: 840, icon: "sparkles" },
+    { title: "Logic Gates Coordinate Riddle", type: "Worksheet", size: "2.4 MB", downloads: 520, icon: "robot" },
+  ];
 
-    if (user.id) {
-      recordRecentlyViewed(user.id, isModule ? undefined : item.id, isModule ? item.id : undefined).catch(console.error);
-    }
-  };
+  // Predefined challenges
+  const activeChallenges = [
+    { title: "Coordinate Traps Escape", xp: "+150 XP", difficulty: "Rookie", type: "Logic Maze" },
+    { title: "Binary Spellcasting Quiz", xp: "+200 XP", difficulty: "Explorer", type: "Coding Battle" }
+  ];
 
-  // Filters calculation
-  const categories = ["All", "AI", "Coding", "Robotics", "Mathematics", "Science", "Creativity"];
+  // Predefined bootcamps
+  const activeBootcamps = [
+    { title: "Space Rover Coding Jam", date: "July 12", time: "2:00 PM EST", status: "Open Registration" }
+  ];
 
-  const filteredCourses = courses.filter(c => {
-    const matchesSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase()) || c.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || c.category === selectedCategory;
-    const matchesLevel = selectedLevel === "All" || 
-      (selectedLevel === "Beginner" && c.level === "Rookie") ||
-      (selectedLevel === "Intermediate" && c.level === "Explorer") ||
-      (selectedLevel === "Advanced" && c.level === "Champion");
-    return matchesSearch && matchesCategory && matchesLevel;
-  });
+  // AI Playgrounds list
+  const aiTools = [
+    { name: "Kiddy Bot Playground", desc: "Interactive conversational chat tutor.", status: "Online" },
+    { name: "Prompting Storybook", desc: "Co-write space adventures with AI.", status: "Online" }
+  ];
 
-  const filteredModules = premiumModules.filter(m => {
-    const matchesSearch = m.title.toLowerCase().includes(searchTerm.toLowerCase()) || m.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || m.category === selectedCategory;
-    const matchesLevel = selectedLevel === "All" || m.difficulty === selectedLevel;
-    return matchesSearch && matchesCategory && matchesLevel;
-  });
-
-  // Featured Instructor Mock
-  const featuredInstructor = {
-    name: "Dr. Elena Vance",
-    role: "AI Scientist & STEM Mentor",
-    avatar: "science",
-    bio: "Ex-Robotics Engineer at NASA JPL. Loves teaching children logic loops and convolutional network architectures using storytelling frameworks.",
-    courseCount: 4,
-    rating: "4.9/5"
-  };
+  // Community Highlight Posts
+  const communityHighlight = [
+    { author: "Alex (Student)", project: "My Mars Landing Game in Python", likes: 24, comments: 8 },
+    { author: "Emma (Explorer)", project: "Scratch logic circuit simulator v2", likes: 19, comments: 4 }
+  ];
 
   return (
-    <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-brand-cream dark:bg-background text-gray-900 dark:text-foreground transition-colors duration-200">
       <SideNav />
       
       <main className="flex-1 flex flex-col min-w-0 font-sans p-6 overflow-y-auto max-h-screen custom-scrollbar">
         
-        {/* Sticky Header with Search */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-card-border dark:border-gray-800">
+        {/* Header Section */}
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b-3 border-brand-dark dark:border-gray-700">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
-              <Sparkles className="text-accent animate-pulse" size={24} />
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center gap-2 font-display">
+              <Sparkles className="text-brand-blue animate-pulse" size={24} />
               Explore Learning Universe
             </h1>
-            <p className="text-xs text-text-muted dark:text-gray-400 mt-1">
-              Search courses, premium micro-modules, PDF worksheets, and upcoming bootcamps
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              Bento dashboard linking courses, micro-modules, PDF resources, events, challenges, and AI playgrounds
             </p>
           </div>
           
@@ -220,323 +168,280 @@ export default function ExplorePage() {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <input
               type="text"
-              placeholder="Search everything... (Ctrl + K)"
+              placeholder="Search cosmic activities..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-xl py-2 pl-10 pr-4 text-xs focus:outline-none focus:border-accent shadow-sm"
+              className="w-full bg-white dark:bg-[#25201D] border-2 border-brand-dark dark:border-gray-700 rounded-xl py-2 pl-10 pr-4 text-xs focus:outline-none focus:border-brand-blue text-gray-900 dark:text-white shadow-sm"
             />
           </div>
         </header>
 
-        {/* Bento grid personalization sections */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-6">
+        {/* SECTION 1: MASTER BENTO GRID (12 columns) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 my-8 font-display">
           
-          {/* Bento Box 1: Recommended for you */}
-          <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          {/* BENTO CARD 1: COURSES (Column Span 8, Row Span 2) */}
+          <div className="md:col-span-8 md:row-span-2 card-bubble p-6 border-brand-blue dark:border-[#38BDF8] flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-full blur-2xl pointer-events-none" />
+            
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="p-1.5 bg-yellow-100 dark:bg-yellow-950/40 text-yellow-600 rounded-lg">
-                  <Star size={16} fill="currentColor" />
-                </span>
-                <h3 className="text-sm font-extrabold text-gray-900 dark:text-white">AI Recommendations</h3>
-              </div>
-              <p className="text-xs text-text-muted dark:text-gray-400 leading-relaxed mb-4">
-                Based on your grade and interests, we recommend tackling:
-              </p>
-              
-              <div className="border border-card-border dark:border-gray-800 rounded-xl p-3 bg-bg-light dark:bg-[#0B1120]/40 flex items-center gap-3">
-                <span className="text-accent shrink-0">
-                  <EmojiOrSvg emoji="sparkles" className="w-8 h-8" />
-                </span>
-                <div>
-                  <h4 className="text-xs font-bold text-gray-900 dark:text-white">AI Basics for Students</h4>
-                  <p className="text-[10px] text-text-muted dark:text-gray-400 mt-0.5">2 Hours • Dr. Elena Vance</p>
+              <div className="flex items-center justify-between gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 bg-brand-blue/10 text-brand-blue rounded-xl border border-brand-blue/20">
+                    <BookOpen size={18} />
+                  </span>
+                  <h3 className="text-base font-black text-gray-900 dark:text-white">Structured Space Quests</h3>
                 </div>
+                <Link href="/courses" className="text-xs text-brand-blue hover:underline font-extrabold flex items-center gap-0.5">
+                  View Catalog <ArrowRight size={12} />
+                </Link>
+              </div>
+
+              <p className="text-xs text-gray-650 dark:text-gray-300 font-semibold mb-4 leading-relaxed font-sans">
+                Full milestone quest tracks. Solve coding checkpoints, claim coordinates level rewards, and earn accredited cosmic completion certificates.
+              </p>
+
+              {/* Real Course List display */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {courses.slice(0, 2).map((c) => {
+                  const isEnrolled = enrolledCourseIds.includes(c.id);
+                  return (
+                    <div key={c.id} className="border-2 border-brand-dark dark:border-gray-700 rounded-2xl p-4 bg-brand-cream dark:bg-[#25201D] flex flex-col justify-between gap-3 relative shadow-sm">
+                      <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[9px] bg-brand-blue/10 text-brand-blue dark:text-[#38BDF8] px-2 py-0.5 rounded-full border border-brand-blue/20 font-black">
+                            {c.category}
+                          </span>
+                          <span className="text-[9px] text-gray-400 dark:text-gray-500 font-bold">{c.duration}</span>
+                        </div>
+                        <h4 className="text-xs font-black text-gray-900 dark:text-white mt-2 line-clamp-1">{c.title}</h4>
+                        <p className="text-[10px] text-gray-650 dark:text-gray-400 font-bold mt-1 line-clamp-2 leading-relaxed font-sans">{c.description}</p>
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-brand-dark/10 dark:border-gray-700/50 pt-2 text-[10px]">
+                        <span className="font-bold text-brand-blue dark:text-[#38BDF8]">Level: {c.level}</span>
+                        <Link href={`/courses/${c.id}`} className="font-black text-gray-900 dark:text-white hover:underline flex items-center gap-0.5">
+                          {isEnrolled ? "Continue" : "Start"} <ArrowRight size={10} />
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            
-            <Link
-              href="/premium"
-              className="btn-modern btn-modern-primary py-2 text-xs w-full mt-4 flex items-center justify-center gap-1"
-            >
-              Get Recommendation <Sparkles size={12} />
+
+            <div className="mt-6 pt-4 border-t-2 border-brand-dark/10 dark:border-gray-700/50 flex items-center justify-between text-[10px] font-bold text-gray-500">
+              <span>🚀 Active milestones are database driven</span>
+              <span>Total: {courses.length} courses loaded</span>
+            </div>
+          </div>
+
+          {/* BENTO CARD 2: PREMIUM MODULES (Column Span 4) */}
+          <div className="md:col-span-4 card-bubble p-6 border-brand-pink dark:border-[#F472B6] flex flex-col justify-between relative">
+            <div>
+              <div className="flex items-center justify-between gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 bg-brand-pink/10 text-brand-pink rounded-xl border border-brand-pink/20">
+                    <Layers size={18} />
+                  </span>
+                  <h3 className="text-sm font-black text-gray-900 dark:text-white">Micro-Modules</h3>
+                </div>
+                <span className="text-[9px] font-black text-brand-pink uppercase bg-brand-pink/10 px-2 py-0.5 rounded border border-brand-pink/20">Premium</span>
+              </div>
+
+              <p className="text-xs text-gray-650 dark:text-gray-300 font-semibold mb-3 leading-relaxed font-sans">
+                Focused micro-lessons teaching advanced AI, block coding spells, and virtual rover sensors.
+              </p>
+
+              {/* Small Module List */}
+              <div className="space-y-2.5">
+                {premiumModules.slice(0, 1).map((m) => (
+                  <div key={m.id} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-2.5 bg-white dark:bg-[#25201D] flex items-start gap-2">
+                    <span className="text-brand-pink mt-0.5">⭐</span>
+                    <div className="min-w-0">
+                      <h4 className="text-[11px] font-black text-gray-900 dark:text-white truncate">{m.title}</h4>
+                      <p className="text-[9px] text-gray-500 dark:text-gray-400 font-bold truncate mt-0.5">{m.teacherName} • {m.duration}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Link href="/courses" className="btn-3d btn-3d-pink w-full py-2 text-[10px] mt-4 flex items-center justify-center gap-1">
+              Unlock Micro-Lessons <ArrowRight size={10} />
             </Link>
           </div>
 
-          {/* Bento Box 2: Recently Viewed */}
-          <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          {/* BENTO CARD 3: RESOURCES & WORKSHEETS (Column Span 4) */}
+          <div className="md:col-span-4 card-bubble p-6 border-brand-green dark:border-[#34D399] flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="p-1.5 bg-sky-100 dark:bg-sky-950/40 text-accent rounded-lg">
-                  <Flame size={16} />
+              <div className="flex items-center gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <span className="p-1.5 bg-brand-green/10 text-brand-green rounded-xl border border-brand-green/20">
+                  <Download size={18} />
                 </span>
-                <h3 className="text-sm font-extrabold text-gray-900 dark:text-white">Recently Viewed</h3>
+                <h3 className="text-sm font-black text-gray-900 dark:text-white">PDF Resources</h3>
               </div>
-              
-              {recentlyViewed.length === 0 ? (
-                <p className="text-xs text-text-muted dark:text-gray-400 text-center py-6">
-                  No recently viewed items yet. Start exploring!
-                </p>
-              ) : (
-                <div className="flex flex-col gap-2.5 max-h-32 overflow-y-auto no-scrollbar">
-                  {recentlyViewed.map(item => (
-                    <div key={item.id} className="flex items-center gap-2.5 text-xs">
-                      <span className="w-6 shrink-0 text-accent">
-                        <EmojiOrSvg emoji={item.thumbnail} className="w-5 h-5" />
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-800 dark:text-gray-200 truncate">{item.title}</p>
-                        <p className="text-[10px] text-text-muted dark:text-gray-400 uppercase font-black">{item.isModule ? "Module" : "Course"}</p>
-                      </div>
+
+              <p className="text-xs text-gray-650 dark:text-gray-300 font-semibold mb-3 leading-relaxed font-sans">
+                Downloadable cheat sheets, programming sandboxes printouts, and math coordinates templates.
+              </p>
+
+              <div className="space-y-2">
+                {worksheets.map((w, idx) => (
+                  <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-2 bg-white dark:bg-[#25201D] flex items-center justify-between text-[10px] font-bold shadow-sm">
+                    <span className="text-gray-800 dark:text-gray-200 truncate pr-2">{w.title}</span>
+                    <span className="text-brand-green shrink-0 bg-brand-green/10 px-1.5 py-0.5 rounded text-[8px] uppercase font-black">{w.type}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Link href="/courses?tab=resources" className="btn-3d btn-3d-green w-full py-2 text-[10px] mt-4 flex items-center justify-center gap-1.5">
+              <Download size={11} /> Get All Worksheets
+            </Link>
+          </div>
+
+          {/* BENTO CARD 4: BOOTCAMPS & EVENTS (Column Span 4) */}
+          <div className="md:col-span-4 card-bubble p-6 border-brand-yellow dark:border-[#FBBF24] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <span className="p-1.5 bg-brand-yellow/10 text-brand-yellow dark:text-yellow-450 rounded-xl border border-brand-yellow/20">
+                  <Trophy size={18} />
+                </span>
+                <h3 className="text-sm font-black text-gray-900 dark:text-white">Seasonal Bootcamps</h3>
+              </div>
+
+              <p className="text-xs text-gray-650 dark:text-gray-300 font-semibold mb-3 leading-relaxed font-sans">
+                Join cohorts of student astronauts to build larger collaborative hackathon projects and claim grand prizes.
+              </p>
+
+              {activeBootcamps.map((b, idx) => (
+                <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-3 bg-white dark:bg-[#25201D] flex flex-col gap-1 shadow-sm">
+                  <h4 className="text-[11px] font-black text-gray-900 dark:text-white leading-tight">{b.title}</h4>
+                  <div className="flex justify-between items-center text-[9px] text-gray-500 dark:text-gray-405 font-bold mt-1">
+                    <span>{b.date} • {b.time}</span>
+                    <span className="text-orange-500 uppercase">{b.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Link href="/courses?tab=resources" className="btn-3d btn-3d-yellow w-full py-2 text-[10px] mt-4 flex items-center justify-center gap-1">
+              Join Bootcamp Cohort <ArrowRight size={10} />
+            </Link>
+          </div>
+
+          {/* BENTO CARD 5: CHALLENGES & RIDDLES (Column Span 4) */}
+          <div className="md:col-span-4 card-bubble p-6 border-brand-blue dark:border-[#38BDF8] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <span className="p-1.5 bg-brand-blue/10 text-brand-blue rounded-xl border border-brand-blue/20">
+                  <Gamepad2 size={18} />
+                </span>
+                <h3 className="text-sm font-black text-gray-900 dark:text-white">Active Challenges</h3>
+              </div>
+
+              <p className="text-xs text-gray-650 dark:text-gray-300 font-semibold mb-3 leading-relaxed font-sans">
+                Weekly coordinates speed traps and binary escape games that boost logical thinking.
+              </p>
+
+              <div className="space-y-2">
+                {activeChallenges.map((c, idx) => (
+                  <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-2.5 bg-white dark:bg-[#25201D] flex items-center justify-between text-[10px] font-bold shadow-sm">
+                    <div>
+                      <h4 className="text-gray-900 dark:text-white leading-tight">{c.title}</h4>
+                      <p className="text-[8px] text-gray-400 dark:text-gray-500 font-bold mt-0.5">{c.type} • {c.difficulty}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-            <p className="text-[10px] text-text-muted dark:text-gray-500 text-center mt-2">
-              Resumes automatically upon clicking
-            </p>
-          </div>
-
-          {/* Bento Box 3: Featured Instructor */}
-          <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
-            <div className="flex items-start gap-3">
-              <span className="bg-brand-cream border border-card-border dark:border-gray-800 rounded-xl p-2 w-14 h-14 flex items-center justify-center shadow-inner text-accent">
-                <EmojiOrSvg emoji={featuredInstructor.avatar} className="w-8 h-8" />
-              </span>
-              <div>
-                <span className="bg-[#0EA5E9]/10 text-accent text-[9px] font-black uppercase px-2 py-0.5 rounded-full border border-[#0EA5E9]/20">
-                  Featured Instructor
-                </span>
-                <h3 className="text-sm font-extrabold text-gray-900 dark:text-white mt-1">{featuredInstructor.name}</h3>
-                <p className="text-[10px] text-text-muted dark:text-gray-400">{featuredInstructor.role}</p>
-              </div>
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed my-3 line-clamp-2">
-              "{featuredInstructor.bio}"
-            </p>
-            <div className="flex items-center justify-between border-t border-card-border dark:border-gray-800 pt-2 text-[10px] font-bold">
-              <span>{featuredInstructor.courseCount} Courses</span>
-              <span className="flex items-center gap-0.5 text-yellow-500"><Star size={11} className="fill-current" /> {featuredInstructor.rating}</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Filters control bar */}
-        <section className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-4 mb-6 shadow-sm flex flex-wrap items-center justify-between gap-4 font-display">
-          <div className="flex flex-wrap items-center gap-3">
-            
-            {/* Subject Filters */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-extrabold text-gray-700 dark:text-gray-300 flex items-center gap-1"><Filter size={12} /> Subject:</span>
-              <div className="flex flex-wrap gap-1">
-                {categories.map(c => (
-                  <button
-                    key={c}
-                    onClick={() => setSelectedCategory(c)}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] font-black transition cursor-pointer ${
-                      selectedCategory === c 
-                        ? "bg-accent text-white" 
-                        : "bg-bg-light dark:bg-[#0B1120] text-gray-600 dark:text-gray-400 border border-card-border dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Level Filters */}
-            <div className="h-6 w-[1px] bg-card-border dark:bg-gray-850 hidden sm:block" />
-
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-extrabold text-gray-700 dark:text-gray-300">Level:</span>
-              <select
-                value={selectedLevel}
-                onChange={(e) => setSelectedLevel(e.target.value)}
-                className="bg-bg-light dark:bg-[#0B1120] border border-card-border dark:border-gray-800 rounded-lg text-[10px] py-1 px-2 font-bold focus:outline-none focus:border-accent text-gray-700 dark:text-gray-300"
-              >
-                <option value="All">All Levels</option>
-                <option value="Beginner">Beginner (Rookie)</option>
-                <option value="Intermediate">Intermediate (Explorer)</option>
-                <option value="Advanced">Advanced (Champion)</option>
-              </select>
-            </div>
-
-            {/* Type Filters */}
-            <div className="h-6 w-[1px] bg-card-border dark:bg-gray-850 hidden sm:block" />
-
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-extrabold text-gray-700 dark:text-gray-300">Type:</span>
-              <div className="flex border border-card-border dark:border-gray-800 rounded-lg overflow-hidden text-[10px] font-bold">
-                {["All", "Course", "Module"].map(type => (
-                  <button
-                    key={type}
-                    onClick={() => setSelectedType(type)}
-                    className={`px-3 py-1 cursor-pointer transition ${
-                      selectedType === type
-                        ? "bg-accent text-white"
-                        : "bg-bg-light dark:bg-[#0b1120] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }`}
-                  >
-                    {type}s
-                  </button>
+                    <span className="text-orange-500 font-black shrink-0 text-[9px]">{c.xp}</span>
+                  </div>
                 ))}
               </div>
             </div>
 
+            <Link href="/courses" className="btn-3d btn-3d-blue w-full py-2 text-[10px] mt-4 flex items-center justify-center gap-1">
+              Play Puzzles <ArrowRight size={10} />
+            </Link>
           </div>
-        </section>
 
-        {/* Catalog list section */}
-        <section className="flex flex-col gap-6">
-          
-          {/* Category: Structured Learning Courses */}
-          {(selectedType === "All" || selectedType === "Course") && (
+          {/* BENTO CARD 6: AI TOOLS & PLAYGROUNDS (Column Span 6) */}
+          <div className="md:col-span-6 card-bubble p-6 border-brand-pink dark:border-[#F472B6] flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-brand-pink/5 rounded-full blur-xl pointer-events-none" />
+            
             <div>
-              <div className="flex items-center justify-between border-b border-card-border dark:border-gray-800 pb-2 mb-4">
-                <h2 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <BookOpen size={16} className="text-accent" />
-                  Structured Space Courses ({filteredCourses.length})
-                </h2>
-                {filteredCourses.length > 0 && (
-                  <span className="text-[10px] font-bold text-text-muted">Full guided paths</span>
-                )}
+              <div className="flex items-center gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <span className="p-1.5 bg-brand-pink/10 text-brand-pink rounded-xl border border-brand-pink/20">
+                  <Bot size={18} />
+                </span>
+                <h3 className="text-sm font-black text-gray-900 dark:text-white">AI Playgrounds</h3>
               </div>
 
-              {filteredCourses.length === 0 ? (
-                <p className="text-xs text-text-muted dark:text-gray-400 py-4 italic">No courses match the active filters.</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredCourses.map(course => {
-                    const isEnrolled = enrolledCourseIds.includes(course.id);
-                    const isStarred = wishlistIds.includes(course.id);
-                    return (
-                      <div
-                        key={course.id}
-                        className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:border-accent transition-all flex flex-col justify-between relative group"
-                      >
-                        <button
-                          onClick={() => handleToggleWishlist(course.id, false)}
-                          className={`absolute top-4 right-4 p-1.5 rounded-full border border-card-border dark:border-gray-800 bg-white dark:bg-[#111827] shadow transition cursor-pointer hover:scale-105 active:scale-95 ${
-                            isStarred ? "text-red-500 fill-red-500 border-red-200" : "text-gray-400"
-                          }`}
-                        >
-                          <Heart size={14} />
-                        </button>
+              <p className="text-xs text-gray-650 dark:text-gray-350 font-bold leading-relaxed mb-4 font-sans">
+                Write storybooks with interactive LLM prompts, setup conditional bots, or seek homework help in the space control center.
+              </p>
 
-                        <div>
-                          <span className="bg-bg-light dark:bg-[#0B1120] border border-card-border dark:border-gray-800 w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-accent">
-                            <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-6 h-6" />
-                          </span>
-                          <span className="bg-[#0EA5E9]/10 text-accent text-[9px] font-black px-2 py-0.5 rounded-full border border-[#0EA5E9]/20 uppercase inline-block mt-3.5">
-                            {course.category}
-                          </span>
-                          <h3 className="text-sm font-extrabold text-gray-900 dark:text-white mt-2 line-clamp-1">
-                            {course.title}
-                          </h3>
-                          <p className="text-xs text-text-muted dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">
-                            {course.description}
-                          </p>
-                        </div>
-
-                        <div className="mt-5 pt-3 border-t border-card-border dark:border-gray-800 flex items-center justify-between gap-3">
-                          <span className="text-[10px] font-bold text-text-muted">
-                            Level: <span className="text-accent">{course.level}</span>
-                          </span>
-                          <Link
-                            href={`/courses/${course.id}`}
-                            onClick={() => handleViewDetails(course, false)}
-                            className={`btn-modern py-1.5 px-4 text-xs ${
-                              isEnrolled ? "btn-modern-outline" : "btn-modern-primary"
-                            }`}
-                          >
-                            {isEnrolled ? "Open Quest" : "Details"}
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {aiTools.map((t, idx) => (
+                  <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-3 bg-white dark:bg-[#25201D] flex flex-col gap-1 shadow-sm">
+                    <h4 className="text-[11px] font-black text-gray-900 dark:text-white leading-tight">{t.name}</h4>
+                    <p className="text-[9px] text-gray-550 dark:text-gray-400 font-semibold font-sans leading-relaxed mt-0.5">{t.desc}</p>
+                    <span className="text-[8px] text-brand-green font-black uppercase mt-1.5 flex items-center gap-0.5">
+                      <span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse" /> {t.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
 
-          {/* Category: Premium Learning Modules */}
-          {(selectedType === "All" || selectedType === "Module") && (
-            <div className="mt-4">
-              <div className="flex items-center justify-between border-b border-card-border dark:border-gray-800 pb-2 mb-4">
-                <h2 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                  <Layers size={16} className="text-yellow-500" />
-                  Premium Micro-Modules ({filteredModules.length})
-                </h2>
-                {filteredModules.length > 0 && (
-                  <span className="text-[10px] font-bold text-yellow-600 bg-yellow-100 dark:bg-yellow-950/20 px-2 py-0.5 rounded border border-yellow-200 dark:border-yellow-950/50">Marketplace Products</span>
-                )}
+            <div className="mt-5 pt-3 border-t border-brand-dark/10 dark:border-gray-700/50 flex justify-between items-center text-[10px]">
+              <span className="font-semibold text-gray-400 dark:text-gray-500">Powered by OpenAI & Gemini</span>
+              <span className="text-brand-pink hover:underline cursor-pointer font-black">Open AI Panel</span>
+            </div>
+          </div>
+
+          {/* BENTO CARD 7: COMMUNITY POSTS & FEED (Column Span 6) */}
+          <div className="md:col-span-6 card-bubble p-6 border-brand-green dark:border-[#34D399] flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-brand-green/5 rounded-full blur-xl pointer-events-none" />
+            
+            <div>
+              <div className="flex items-center justify-between gap-2 border-b-2 border-brand-dark/10 dark:border-gray-700/50 pb-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 bg-brand-green/10 text-brand-green rounded-xl border border-brand-green/20">
+                    <MessageSquare size={18} />
+                  </span>
+                  <h3 className="text-sm font-black text-gray-900 dark:text-white">Student Space Feed</h3>
+                </div>
+                <Link href="/community" className="text-[10px] text-brand-green hover:underline font-extrabold flex items-center gap-0.5">
+                  Enter Feed <ArrowRight size={10} />
+                </Link>
               </div>
 
-              {filteredModules.length === 0 ? (
-                <p className="text-xs text-text-muted dark:text-gray-400 py-4 italic">No premium modules match the active filters.</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredModules.map(mod => {
-                    const isStarred = wishlistIds.includes(mod.id);
-                    return (
-                      <div
-                        key={mod.id}
-                        className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:border-yellow-500 transition-all flex flex-col justify-between relative group"
-                      >
-                        <button
-                          onClick={() => handleToggleWishlist(mod.id, true)}
-                          className={`absolute top-4 right-4 p-1.5 rounded-full border border-card-border dark:border-gray-800 bg-white dark:bg-[#111827] shadow transition cursor-pointer hover:scale-105 active:scale-95 ${
-                            isStarred ? "text-red-500 fill-red-500 border-red-200" : "text-gray-400"
-                          }`}
-                        >
-                          <Heart size={14} />
-                        </button>
+              <p className="text-xs text-gray-650 dark:text-gray-350 font-bold leading-relaxed mb-4 font-sans">
+                Browse recent project logs shared by fellow kid astronauts. Highlighting community creativity!
+              </p>
 
-                        <div>
-                          <span className="bg-bg-light dark:bg-[#0B1120] border border-card-border dark:border-gray-800 w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-accent">
-                            <EmojiOrSvg emoji={mod.thumbnail || "sparkles"} className="w-6 h-6" />
-                          </span>
-                          <div className="flex gap-1.5 mt-3.5">
-                            <span className="bg-yellow-100 dark:bg-yellow-950/20 text-yellow-600 dark:text-yellow-400 text-[9px] font-black px-2 py-0.5 rounded-full border border-yellow-200 dark:border-yellow-950/50 uppercase">
-                              {mod.category}
-                            </span>
-                            <span className="bg-green-100 dark:bg-green-950/20 text-green-600 dark:text-green-400 text-[9px] font-black px-2 py-0.5 rounded-full border border-green-200 dark:border-green-950/50 uppercase">
-                              {mod.difficulty}
-                            </span>
-                          </div>
-                          <h3 className="text-sm font-extrabold text-gray-900 dark:text-white mt-2 line-clamp-1">
-                            {mod.title}
-                          </h3>
-                          <p className="text-xs text-text-muted dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">
-                            {mod.description}
-                          </p>
-                        </div>
-
-                        <div className="mt-5 pt-3 border-t border-card-border dark:border-gray-800 flex items-center justify-between gap-3">
-                          <span className="text-sm font-extrabold text-gray-900 dark:text-white">
-                            {mod.price > 0 ? `$${mod.price.toFixed(2)}` : "Free / Coins"}
-                          </span>
-                          <Link
-                            href={`/premium/${mod.id}`}
-                            onClick={() => handleViewDetails(mod, true)}
-                            className="btn-modern btn-modern-accent py-1.5 px-4 text-xs"
-                          >
-                            Buy Module
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+              <div className="space-y-2.5">
+                {communityHighlight.map((p, idx) => (
+                  <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-3 bg-white dark:bg-[#25201D] flex items-center justify-between shadow-sm">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black text-gray-900 dark:text-white leading-tight truncate">{p.project}</p>
+                      <p className="text-[8px] text-gray-400 dark:text-gray-500 font-bold mt-0.5">By {p.author}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0 text-[8px] font-extrabold text-gray-500 dark:text-gray-405">
+                      <span className="flex items-center gap-0.5 text-brand-pink">❤️ {p.likes}</span>
+                      <span className="flex items-center gap-0.5 text-brand-blue">💬 {p.comments}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
 
-        </section>
+            <div className="mt-5 pt-3 border-t border-brand-dark/10 dark:border-gray-700/50 flex justify-between items-center text-[10px]">
+              <span className="font-semibold text-gray-400 dark:text-gray-500">Supabase DB synced</span>
+              <span className="text-brand-green font-bold">Share Achievements</span>
+            </div>
+          </div>
+
+        </div>
+
       </main>
     </div>
   );

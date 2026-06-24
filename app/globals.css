@@ -28,39 +28,43 @@
 }
 
 :root {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
+  --background: #FDF8F2;
+  --foreground: #1E293B;
   --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --accent: #0284C7;
+  --card-border: var(--card-shadow-color);
+  --accent: #1D7CCB;
   --text-muted: #475569;
 
-  /* Brand Colors - Light Mode */
-  --brand-cream: #FFFDF9;
-  --brand-dark: #1E293B;
-  --brand-blue: #0284C7;
+  /* Brand Colors - Light Mode (Playful Professional) */
+  --brand-cream: #FDF8F2;
+  --brand-dark: var(--card-shadow-color);
+  --brand-blue: #1D7CCB;
   --brand-sky: #E0F2FE;
-  --brand-pink: #EC4899;
-  --brand-yellow: #F59E0B;
-  --brand-green: #10B981;
+  --brand-pink: #F04D9B;
+  --brand-yellow: #FFB21A;
+  --brand-green: #1BCF8A;
+
+  --card-shadow-color: var(--card-shadow-color);
 }
 
 .dark {
-  --background: #0B1120;
-  --foreground: #F3F4F6;
-  --card-bg: #111827;
-  --card-border: #1F2937;
+  --background: #1A1714;
+  --foreground: #FFF7ED;
+  --card-bg: #302923;
+  --card-border: #4A3F35;
   --accent: #38BDF8;
-  --text-muted: #9CA3AF;
+  --text-muted: #D6D3D1;
 
-  /* Brand Colors - Dark Mode */
-  --brand-cream: #0B1120;
-  --brand-dark: #F3F4F6;
+  /* Brand Colors - Dark Mode (Warm, Friendly, Creative) */
+  --brand-cream: #1A1714;
+  --brand-dark: #FFF7ED;
   --brand-blue: #38BDF8;
-  --brand-sky: #0C4A6E;
+  --brand-sky: #25201D; /* Surface layer for headers/sub-sections */
   --brand-pink: #F472B6;
   --brand-yellow: #FBBF24;
   --brand-green: #34D399;
+
+  --card-shadow-color: #4A3F35;
 }
 
 body {
@@ -74,18 +78,33 @@ body {
   transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Global Card System (Hero Design Language) - OUTLINED & RESPONSIVE */
+.card-bubble {
+  background-color: var(--card-bg);
+  border: 4px solid var(--card-border);
+  border-radius: 24px; /* rounded-3xl */
+  box-shadow: 4px 4px 0px var(--card-shadow-color);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-bubble:hover {
+  transform: translate(-2px, -2px) scale(1.02);
+  box-shadow: 8px 8px 0px var(--card-shadow-color);
+}
+
 /* Premium clean card component styling */
 .card-premium {
   background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  border: 4px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: 4px 4px 0px var(--card-shadow-color);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-premium:hover {
+  transform: translate(-1px, -1px) scale(1.015);
   border-color: var(--accent);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 6px 6px 0px var(--card-shadow-color);
 }
 
 /* Clean UI buttons */
@@ -186,20 +205,20 @@ body {
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 900;
-  border: 2px solid var(--brand-dark);
+  border: 2.5px solid var(--brand-dark);
   border-radius: 12px; /* rounded-xl */
-  box-shadow: 2px 2px 0px #1f2937;
+  box-shadow: 2px 2px 0px var(--brand-dark);
   transition: all 0.1s ease;
   cursor: pointer;
   user-select: none;
 }
 .btn-3d:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #1f2937;
+  box-shadow: 3.5px 3.5px 0px var(--brand-dark);
 }
 .btn-3d:active {
   transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px #1f2937;
+  box-shadow: 0px 0px 0px var(--brand-dark);
 }
 
 /* Button Colors */
@@ -222,17 +241,4 @@ body {
 .btn-3d-white {
   background-color: var(--card-bg);
   color: var(--foreground);
-}
-
-/* Premium Neo-brutalist Card */
-.card-bubble {
-  background-color: var(--card-bg);
-  border: 4px solid var(--brand-dark);
-  border-radius: 24px; /* rounded-3xl */
-  box-shadow: 4px 4px 0px #1f2937;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-bubble:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #1f2937;
 }

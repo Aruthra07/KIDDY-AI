@@ -205,9 +205,9 @@ export default function CourseDetailsPage() {
 
         {/* NOT ENROLLED VIEW */}
         {!isEnrolled ? (
-          <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center font-display">
+          <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_var(--card-shadow-color)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center font-display">
             <div className="lg:col-span-8 flex flex-col gap-4">
-              <span className="bg-brand-pink text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937] w-fit">
+              <span className="bg-brand-pink text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_var(--card-shadow-color)] w-fit">
                 New Adventure Detected
               </span>
               <h1 className="text-3xl sm:text-4xl font-black text-brand-dark leading-tight">{course.title}</h1>
@@ -233,7 +233,7 @@ export default function CourseDetailsPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-4 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-center items-center text-accent">
+            <div className="lg:col-span-4 bg-brand-sky border-3 border-brand-dark rounded-3xl p-6 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 text-center items-center text-accent">
               <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-16 h-16" />
               <div>
                 <p className="text-[10px] font-bold text-gray-500 uppercase">QUEST REWARD</p>
@@ -255,7 +255,7 @@ export default function CourseDetailsPage() {
             <div className="lg:col-span-8 flex flex-col gap-6">
               
               {/* Workspace Header */}
-              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[3px_3px_0px_#1F2937]">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[3px_3px_0px_var(--card-shadow-color)]">
                 <div>
                   <span className="text-[10px] bg-brand-green/30 border border-brand-dark/20 text-brand-dark px-2.5 py-0.5 rounded-full font-black uppercase">Active Mission</span>
                   <h2 className="text-base sm:text-lg font-black text-brand-dark mt-1 leading-snug">{course.title}</h2>
@@ -271,7 +271,7 @@ export default function CourseDetailsPage() {
               </div>
 
               {/* VIDEO FRAME & TABS CONTAINER */}
-              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] overflow-hidden">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_var(--card-shadow-color)] overflow-hidden">
                 
                 {/* Tab selectors */}
                 <div className="flex border-b-4 border-brand-dark text-xs font-black">
@@ -318,7 +318,7 @@ export default function CourseDetailsPage() {
 
                       {/* Lesson Quiz Module */}
                       {activeLesson.quizzes && activeLesson.quizzes.length > 0 && (
-                        <div className="border-3 border-brand-dark bg-card-bg rounded-2xl p-5 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 mt-2">
+                        <div className="border-3 border-brand-dark bg-card-bg rounded-2xl p-5 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 mt-2">
                           <h4 className="text-sm font-black text-brand-blue uppercase flex items-center gap-1.5">
                             <Star size={16} className="text-brand-yellow fill-brand-yellow stroke-brand-dark" />
                             Lesson Challenge Quiz
@@ -334,9 +334,9 @@ export default function CourseDetailsPage() {
                               const isCorrectAnswer = activeLesson.quizzes?.[0].correctOption === idx;
                               
                               let optionClass = "bg-card-bg hover:bg-brand-sky border-brand-dark/20";
-                              if (isSelected) optionClass = "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]";
-                              if (quizSubmitted && isCorrectAnswer) optionClass = "bg-brand-green border-brand-dark text-brand-dark font-black shadow-[1.5px_1.5px_0px_#1F2937]";
-                              if (quizSubmitted && isSelected && !isCorrectAnswer) optionClass = "bg-brand-pink text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]";
+                              if (isSelected) optionClass = "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]";
+                              if (quizSubmitted && isCorrectAnswer) optionClass = "bg-brand-green border-brand-dark text-brand-dark font-black shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]";
+                              if (quizSubmitted && isSelected && !isCorrectAnswer) optionClass = "bg-brand-pink text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]";
 
                               return (
                                 <button
@@ -389,7 +389,7 @@ export default function CourseDetailsPage() {
 
                   {/* Tab 2: Notes */}
                   {activeTab === "notes" && (
-                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
+                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 text-left">
                       <div className="flex items-center gap-2 text-brand-blue border-b-2 border-brand-dark pb-2">
                         <FileText size={20} />
                         <h3 className="text-lg font-black">Interactive Lecture Notes</h3>
@@ -421,7 +421,7 @@ export default function CourseDetailsPage() {
 
                   {/* Tab 3: Assignments */}
                   {activeTab === "assignment" && (
-                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
+                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_var(--card-shadow-color)] flex flex-col gap-4 text-left">
                       <div className="flex items-center gap-2 text-brand-pink border-b-2 border-brand-dark pb-2">
                         <UploadCloud size={20} />
                         <h3 className="text-lg font-black">Project Homework submission</h3>
@@ -493,7 +493,7 @@ export default function CourseDetailsPage() {
             <div className="lg:col-span-4 flex flex-col gap-6">
               
               {/* STAGES / LESSONS SELECT PANEL */}
-              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4 font-display">
                 <h3 className="text-base font-black text-brand-dark border-b-2 border-brand-dark pb-2 flex items-center gap-1.5">
                   <BookOpen size={16} /> Course Stages
                 </h3>
@@ -509,7 +509,7 @@ export default function CourseDetailsPage() {
                         onClick={() => handleSelectLesson(les)}
                         className={`flex items-center justify-between p-3 border-2 border-brand-dark rounded-2xl cursor-pointer transition-all ${
                           isLessonActive 
-                            ? "bg-brand-blue text-white shadow-[2px_2px_0px_#1F2937] translate-y-[-1px]" 
+                            ? "bg-brand-blue text-white shadow-[2px_2px_0px_var(--card-shadow-color)] translate-y-[-1px]" 
                             : "bg-brand-cream hover:bg-card-bg"
                         }`}
                       >
@@ -535,7 +535,7 @@ export default function CourseDetailsPage() {
               </div>
 
               {/* AI TUTOR PANEL - KIDDY BOT */}
-              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl overflow-hidden shadow-[4px_4px_0px_#1F2937] flex flex-col h-96">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl overflow-hidden shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col h-96">
                 
                 {/* AI Header */}
                 <div className="p-3 bg-brand-pink text-white font-display font-black border-b-4 border-brand-dark flex items-center justify-between">
@@ -581,7 +581,7 @@ export default function CourseDetailsPage() {
                   <button 
                     type="submit" 
                     disabled={aiLoading || !aiInput.trim()}
-                    className="p-2 bg-brand-blue border-2 border-brand-dark rounded-xl text-white shadow-[1.5px_1.5px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                    className="p-2 bg-brand-blue border-2 border-brand-dark rounded-xl text-white shadow-[1.5px_1.5px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] active:translate-y-[1px]"
                   >
                     <Send size={12} />
                   </button>

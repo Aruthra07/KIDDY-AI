@@ -76,12 +76,12 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen bg-brand-cream flex items-center justify-center p-4 py-12 text-brand-dark font-display">
-      <div className="max-w-md w-full bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] p-8">
+      <div className="max-w-md w-full bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_var(--card-shadow-color)] p-8">
         
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
-            <div className="w-10 h-10 bg-brand-blue border-2 border-brand-dark rounded-xl flex items-center justify-center text-white font-black text-lg shadow-[1.5px_1.5px_0px_#1F2937]">
+            <div className="w-10 h-10 bg-brand-blue border-2 border-brand-dark rounded-xl flex items-center justify-center text-white font-black text-lg shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]">
               K
             </div>
             <span className="font-sans text-xl font-black text-brand-dark">

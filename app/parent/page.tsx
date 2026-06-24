@@ -67,7 +67,7 @@ export default function ParentDashboardPage() {
         {/* Analytics stats row */}
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-6 font-display">
           
-          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_#1F2937]">
+          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_var(--card-shadow-color)]">
             <span className="p-2.5 bg-brand-sky text-brand-blue border border-brand-dark/20 rounded-xl">
               <Clock size={20} />
             </span>
@@ -77,7 +77,7 @@ export default function ParentDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_#1F2937]">
+          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_var(--card-shadow-color)]">
             <span className="p-2.5 bg-brand-green/20 text-brand-green border border-brand-dark/20 rounded-xl">
               <CheckCircle size={20} />
             </span>
@@ -87,7 +87,7 @@ export default function ParentDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_#1F2937]">
+          <div className="bg-card-bg border-2 border-brand-dark rounded-2xl p-5 flex items-center gap-4 shadow-[2px_2px_0px_var(--card-shadow-color)]">
             <span className="p-2.5 bg-brand-yellow/20 text-brand-yellow border border-brand-dark/20 rounded-xl">
               <Calendar size={20} />
             </span>
@@ -103,7 +103,7 @@ export default function ParentDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 font-display">
           
           {/* Skill development heatmap */}
-          <div className="lg:col-span-7 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col justify-between">
+          <div className="lg:col-span-7 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col justify-between">
             <div>
               <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <Brain size={14} className="text-brand-blue" /> Active Skill Development Heatmap
@@ -132,7 +132,7 @@ export default function ParentDashboardPage() {
           <div className="lg:col-span-5 flex flex-col gap-6">
             
             {/* Recommendation card */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-3">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-3">
               <h3 className="text-xs font-black text-brand-dark uppercase border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <Sparkles size={14} className="text-yellow-500 fill-yellow-500 stroke-brand-dark" /> AI Parent Advice
               </h3>
@@ -148,7 +148,7 @@ export default function ParentDashboardPage() {
             </div>
 
             {/* Certificates & grading summary */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-3">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-3">
               <h3 className="text-xs font-black text-brand-dark uppercase border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <Award size={14} className="text-brand-pink" /> Certifications & Homework
               </h3>

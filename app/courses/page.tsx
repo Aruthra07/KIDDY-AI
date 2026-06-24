@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { 
   Search, BookOpen, Clock, ArrowRight, Layers, FolderClosed, 
-  Heart, Download, FileText, Bookmark, Folder, Star, Sparkles, Award, Users
+  Heart, Download, FileText, Bookmark, Folder, Star, Sparkles, Award, Users, Play, CheckCircle2, Moon, Sun
 } from "lucide-react";
 import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
 import { getPremiumModules } from "@/app/actions/courses";
@@ -50,7 +50,7 @@ const INITIAL_RESOURCES: Resource[] = [
 function LearningHubContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, courses, enrolledCourseIds, addNotification } = useApp();
+  const { user, courses, enrolledCourseIds, completedLessonIds, certificates, addNotification } = useApp();
 
   // Tab State
   const [activeTab, setActiveTab] = useState<"quests" | "premium" | "resources">("quests");
@@ -99,6 +99,7 @@ function LearningHubContent() {
         if (res && res.length > 0) {
           setPremiumModules(res);
         } else {
+          // Fallback static modules if database empty
           setPremiumModules([
             {
               id: "pm-1",
@@ -109,10 +110,10 @@ function LearningHubContent() {
               difficulty: "Beginner",
               duration: "2 hours",
               teacherName: "Dr. Elena Vance",
-              price: 29.99,
+              price: 0, // Free Access
               enrolledCount: 420,
               certificateAvailable: true,
-              outcomes: ["Understand how machine learning works", "Learn to write effective prompts", "Identify AI systems in everyday devices"]
+              outcomes: ["Understand how machine learning works", "Learn to write effective prompts"]
             },
             {
               id: "pm-2",
@@ -126,7 +127,7 @@ function LearningHubContent() {
               price: 39.99,
               enrolledCount: 310,
               certificateAvailable: true,
-              outcomes: ["Understand circuits and logic flow", "Program simple microcontroller actions", "Utilize distance sensors for navigation"]
+              outcomes: ["Understand circuits and logic flow", "Program simple microcontroller actions"]
             },
             {
               id: "pm-3",
@@ -140,21 +141,7 @@ function LearningHubContent() {
               price: 19.99,
               enrolledCount: 150,
               certificateAvailable: false,
-              outcomes: ["Multiply 3-digit numbers mentally", "Estimate square roots quickly", "Solve speed coordinates calculations"]
-            },
-            {
-              id: "pm-4",
-              title: "Space Exploration Series: Rocket Launch Lab",
-              description: "Learn orbital physics, fuel mixtures, and stage separation equations to simulate rocket flight paths.",
-              thumbnail: "rocket",
-              category: "Science",
-              difficulty: "Intermediate",
-              duration: "4 hours",
-              teacherName: "Dr. Elena Vance",
-              price: 49.99,
-              enrolledCount: 220,
-              certificateAvailable: true,
-              outcomes: ["Calculate thrust-to-weight ratios", "Design double-stage virtual models", "Plot trajectory coordinate mappings"]
+              outcomes: ["Multiply 3-digit numbers mentally"]
             }
           ]);
         }
@@ -177,13 +164,13 @@ function LearningHubContent() {
     }
   }, []);
 
-  // --- PREMIUM ACTIONS ---
+  // --- PREMIUM / QUEST ACTIONS ---
   const handleToggleWishlist = async (itemId: string) => {
     let updated;
     const isSaved = wishlistIds.includes(itemId);
     if (isSaved) {
       updated = wishlistIds.filter(id => id !== itemId);
-      addNotification("Removed from saved wishlist.");
+      addNotification("Removed from bookmarked list.");
       if (user.id) {
         try {
           await removeFromWishlist(user.id, undefined, itemId);
@@ -193,7 +180,7 @@ function LearningHubContent() {
       }
     } else {
       updated = [...wishlistIds, itemId];
-      addNotification("Saved to wishlist!");
+      addNotification("Added to bookmarked list!");
       if (user.id) {
         try {
           await addToWishlist(user.id, undefined, itemId);
@@ -234,6 +221,17 @@ function LearningHubContent() {
     }));
     alert(`Downloading: "${res.title}.${res.type === "Slides" ? "pptx" : "pdf"}"... Check your local download folder!`);
     addNotification(`Downloaded reference file: ${res.title}`);
+  };
+
+  // Helper to resolve teacher / instructor name
+  const getInstructor = (category: string) => {
+    switch (category) {
+      case "AI": return "Dr. Elena Vance";
+      case "Coding": return "Emma (Mentor)";
+      case "Robotics": return "Prof. Stark";
+      case "Mathematics": return "Coach Dan";
+      default: return "STEM Mentor";
+    }
   };
 
   // --- FILTER & SEARCH LOGIC ---
@@ -279,33 +277,32 @@ function LearningHubContent() {
     return matchesSearch && matchesType && matchesBookmark;
   });
 
-  // URL Tab Update Handler
   const handleTabChange = (tabName: "quests" | "premium" | "resources") => {
     setActiveTab(tabName);
     router.push(`/courses?tab=${tabName}`);
   };
 
   return (
-    <div className="min-h-screen bg-brand-cream text-brand-dark flex flex-col font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-brand-cream dark:bg-background text-gray-900 dark:text-foreground flex flex-col font-sans transition-colors duration-200">
       <Navbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-12 w-full">
         
         {/* Banner Title */}
-        <div className="text-center max-w-xl mx-auto mb-8">
-          <span className="bg-brand-yellow text-brand-dark border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937]">
+        <div className="text-center max-w-xl mx-auto mb-8 flex flex-col gap-3">
+          <span className="bg-brand-yellow text-brand-dark border-2 border-brand-dark dark:border-[#4A3F35] font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)] w-fit mx-auto">
             Learning Command Center
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black text-brand-dark mt-4">
+          <h1 className="font-display text-4xl sm:text-5xl font-black text-gray-900 dark:text-white mt-2">
             Kiddy Learning Hub
           </h1>
-          <p className="font-display text-xs text-brand-dark/70 font-bold mt-1">
+          <p className="font-display text-xs text-gray-650 dark:text-gray-400 font-bold">
             Access space quests, buy premium STEM modules, and download educational worksheets!
           </p>
         </div>
 
         {/* HUB SUB-TABS SELECTOR */}
-        <section className="flex flex-wrap gap-2 justify-center border-b-4 border-brand-dark pb-4 mb-10 font-display text-xs sm:text-sm font-black">
+        <section className="flex flex-wrap gap-2 justify-center border-b-4 border-brand-dark dark:border-gray-700 pb-4 mb-10 font-display text-xs sm:text-sm font-black">
           <button
             onClick={() => handleTabChange("quests")}
             className={`btn-3d px-6 py-2.5 flex items-center gap-2 ${
@@ -341,7 +338,7 @@ function LearningHubContent() {
         {activeTab === "quests" && (
           <div className="space-y-10 animate-fade-in">
             {/* SEARCH & FILTERS PANEL */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6 font-display">
+            <section className="card-bubble p-6 flex flex-col gap-6 font-display">
               
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div className="relative w-full md:max-w-md">
@@ -351,22 +348,22 @@ function LearningHubContent() {
                     placeholder="Search quests (e.g. Python, Bots...)"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-brand-cream dark:bg-gray-900 border-2 border-brand-dark dark:border-gray-700 rounded-full text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:bg-card-bg placeholder-gray-400 dark:placeholder-gray-500"
+                    className="w-full pl-10 pr-4 py-2 bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-gray-750 rounded-full text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:bg-card-bg placeholder-gray-405 dark:placeholder-gray-500"
                   />
                 </div>
 
-                <div className="flex flex-wrap gap-3 items-center w-full md:w-auto justify-end text-xs font-bold text-brand-dark/70">
+                <div className="flex flex-wrap gap-3 items-center w-full md:w-auto justify-end text-xs font-bold text-gray-500 dark:text-gray-400">
                   <span className="flex items-center gap-1"><BookOpen size={14} /> {filteredQuests.length} Quests Found</span>
                 </div>
               </div>
 
-              <div className="h-[2px] bg-brand-dark/15 w-full" />
+              <div className="h-[2px] bg-brand-dark/10 dark:bg-gray-700 w-full" />
 
               {/* Filtering controls */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Category */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-black text-brand-dark uppercase">Subject category</label>
+                  <label className="text-xs font-black text-gray-800 dark:text-gray-200 uppercase">Subject category</label>
                   <div className="flex flex-wrap gap-1.5">
                     {questCategories.map((cat) => (
                       <button
@@ -374,8 +371,8 @@ function LearningHubContent() {
                         onClick={() => setSelectedCategory(cat)}
                         className={`px-3 py-1.5 rounded-full border-2 text-[10px] font-extrabold transition-all cursor-pointer ${
                           selectedCategory === cat
-                            ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
-                            : "bg-brand-cream text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
+                            ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
+                            : "bg-brand-cream dark:bg-[#25201D] text-gray-700 dark:text-gray-250 border-brand-dark/20 dark:border-gray-700 hover:border-brand-dark hover:bg-brand-sky dark:hover:bg-[#302923]"
                         }`}
                       >
                         {cat}
@@ -386,7 +383,7 @@ function LearningHubContent() {
 
                 {/* Difficulty */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-black text-brand-dark uppercase">Experience Level</label>
+                  <label className="text-xs font-black text-gray-800 dark:text-gray-200 uppercase">Experience Level</label>
                   <div className="flex flex-wrap gap-1.5">
                     {difficulties.map((diff) => (
                       <button
@@ -394,8 +391,8 @@ function LearningHubContent() {
                         onClick={() => setSelectedDifficulty(diff)}
                         className={`px-3 py-1.5 rounded-full border-2 text-[10px] font-extrabold transition-all cursor-pointer ${
                           selectedDifficulty === diff
-                            ? "bg-brand-pink text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
-                            : "bg-brand-cream text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
+                            ? "bg-brand-pink text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
+                            : "bg-brand-cream dark:bg-[#25201D] text-gray-700 dark:text-gray-250 border-brand-dark/20 dark:border-gray-700 hover:border-brand-dark hover:bg-brand-sky dark:hover:bg-[#302923]"
                         }`}
                       >
                         {diff}
@@ -406,7 +403,7 @@ function LearningHubContent() {
 
                 {/* Age */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-black text-brand-dark uppercase">Student Age group</label>
+                  <label className="text-xs font-black text-gray-800 dark:text-gray-200 uppercase">Student Age group</label>
                   <div className="flex flex-wrap gap-1.5">
                     {ages.map((age) => (
                       <button
@@ -414,8 +411,8 @@ function LearningHubContent() {
                         onClick={() => setSelectedAge(age)}
                         className={`px-3 py-1.5 rounded-full border-2 text-[10px] font-extrabold transition-all cursor-pointer ${
                           selectedAge === age
-                            ? "bg-brand-green text-brand-dark border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
-                            : "bg-brand-cream text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
+                            ? "bg-brand-green text-brand-dark border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
+                            : "bg-brand-cream dark:bg-[#25201D] text-gray-700 dark:text-gray-250 border-brand-dark/20 dark:border-gray-700 hover:border-brand-dark hover:bg-brand-sky dark:hover:bg-[#302923]"
                         }`}
                       >
                         {age}
@@ -429,12 +426,12 @@ function LearningHubContent() {
             {/* COURSES LIST DISPLAY */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredQuests.length === 0 ? (
-                <div className="col-span-full bg-card-bg border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_#1F2937] flex flex-col items-center gap-4">
-                  <div className="animate-bounce-slow text-accent">
+                <div className="col-span-full card-bubble p-16 text-center flex flex-col items-center gap-4">
+                  <div className="animate-bounce-slow text-brand-blue">
                     <EmojiOrSvg emoji="satellite" className="w-12 h-12" />
                   </div>
-                  <h3 className="font-display text-2xl font-black text-brand-dark">No Quests Detected</h3>
-                  <p className="font-display text-xs text-brand-dark/70 max-w-sm">
+                  <h3 className="font-display text-2xl font-black text-gray-900 dark:text-white">No Quests Detected</h3>
+                  <p className="font-display text-xs text-gray-500 dark:text-gray-400 max-w-sm">
                     Try loosening your filters, changing the search query, or checking back in later.
                   </p>
                   <button 
@@ -452,15 +449,25 @@ function LearningHubContent() {
               ) : (
                 filteredQuests.map((course) => {
                   const isEnrolled = enrolledCourseIds.includes(course.id);
+                  const isSaved = wishlistIds.includes(course.id);
                   
-                  const colors = {
-                    AI: "bg-[#FFF0F6] dark:bg-[#25121e] hover:bg-[#FFE3F0] dark:hover:bg-[#35192a]",
-                    Coding: "bg-[#EBFDF0] dark:bg-[#0c2214] hover:bg-[#D5FCE0] dark:hover:bg-[#12311d]",
-                    Robotics: "bg-[#E0F7FF] dark:bg-[#0b212f] hover:bg-[#C2EEFF] dark:hover:bg-[#102d40]",
-                    Mathematics: "bg-[#FFFDE8] dark:bg-[#29220c] hover:bg-[#FFFAB2] dark:hover:bg-[#3b3112]",
-                    Science: "bg-[#F3E8FF] dark:bg-[#1d102f] hover:bg-[#E9D5FF] dark:hover:bg-[#281741]",
-                    Creativity: "bg-[#FFECEC] dark:bg-[#2a1313] hover:bg-[#FFD3D3] dark:hover:bg-[#3b1b1b]"
-                  };
+                  // Calculate real progress
+                  const completedLessons = completedLessonIds[course.id] || [];
+                  const totalLessons = course.lessons.length;
+                  const progressPercent = totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0;
+                  
+                  // Enrollment status string mapping
+                  let enrollmentStatus = "Not Enrolled";
+                  if (isEnrolled) {
+                    if (progressPercent === 100) {
+                      const hasCert = certificates.some(c => c.courseTitle.toLowerCase() === course.title.toLowerCase());
+                      enrollmentStatus = hasCert ? "Certificate Earned" : "Completed";
+                    } else if (progressPercent > 0) {
+                      enrollmentStatus = "In Progress";
+                    } else {
+                      enrollmentStatus = "Enrolled";
+                    }
+                  }
 
                   const badgeColors = {
                     Rookie: "bg-brand-blue text-white",
@@ -471,52 +478,94 @@ function LearningHubContent() {
                   return (
                     <div 
                       key={course.id}
-                      className={`card-bubble overflow-hidden flex flex-col justify-between transition-colors duration-200 ${
-                        colors[course.category as keyof typeof colors] || "bg-card-bg"
-                      }`}
+                      className="card-bubble overflow-hidden flex flex-col justify-between transition-all duration-200 relative group"
                     >
-                      <div className="p-6 flex flex-col gap-4 relative">
-                        {/* Category Label */}
-                        <div className="absolute top-4 right-4 bg-card-bg border-2 border-brand-dark px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase">
-                          {course.category}
+                      {/* Bookmark Button */}
+                      <button
+                        onClick={() => handleToggleWishlist(course.id)}
+                        className={`absolute top-4 right-4 p-1.5 rounded-full border border-brand-dark/25 dark:border-[#4A3F35]/80 bg-card-bg shadow transition cursor-pointer hover:scale-110 active:scale-90 z-10 ${
+                          isSaved ? "text-brand-pink fill-brand-pink border-brand-pink" : "text-gray-400"
+                        }`}
+                      >
+                        <Heart size={14} />
+                      </button>
+
+                      <div className="p-6 flex flex-col gap-4">
+                        {/* Tags */}
+                        <div className="flex gap-1.5 mt-1.5">
+                          <span className="bg-brand-sky text-brand-blue border border-brand-dark dark:border-[#4A3F35] text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase">
+                            {course.category}
+                          </span>
+                          <span className="bg-brand-cream dark:bg-slate-900 border border-brand-dark dark:border-[#4A3F35] text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase text-brand-green">
+                            Free Access
+                          </span>
                         </div>
 
                         {/* Image icon container */}
-                        <div className="w-14 h-14 bg-card-bg border-3 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_#1F2937] shrink-0 mb-2 relative text-accent">
+                        <div className="w-14 h-14 bg-brand-sky dark:bg-[#25201D] border-3 border-brand-dark dark:border-[#4A3F35] rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_var(--card-shadow-color)] shrink-0 mb-1 relative text-brand-blue">
                           <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-8 h-8" />
                         </div>
 
                         <div>
-                          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase text-brand-dark/50">
-                            <span className="flex items-center gap-0.5"><Clock size={10} /> {course.duration}</span>
-                            <span>•</span>
-                            <span>{course.age}</span>
-                          </div>
-
-                          <h3 className="font-display text-base font-black text-brand-dark mt-1 leading-snug">
+                          <h3 className="font-display text-base font-black text-gray-900 dark:text-white leading-snug truncate">
                             {course.title}
                           </h3>
                           
-                          <p className="font-display text-xs text-brand-dark/70 font-semibold mt-2 leading-relaxed line-clamp-3">
+                          <p className="font-display text-xs text-gray-600 dark:text-gray-300 font-bold mt-1.5 leading-relaxed line-clamp-2">
                             {course.description}
                           </p>
+
+                          {/* Real Metadata details */}
+                          <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-4 text-[10px] font-bold text-gray-500 dark:text-gray-400 border-t border-brand-dark/5 pt-3">
+                            <span className="flex items-center gap-1 leading-none"><Clock size={11} /> {course.duration || "4 hours"}</span>
+                            <span className="flex items-center gap-1 leading-none text-right justify-end"><Users size={11} /> {getInstructor(course.category)}</span>
+                            <span className="text-brand-pink flex items-center gap-1 leading-none"><Award size={11} /> Cert Included</span>
+                            <span className={`w-fit ml-auto px-1.5 py-0.5 rounded text-[8px] border font-black leading-none ${
+                              isEnrolled ? "bg-brand-green/10 text-brand-green border-brand-green/20" : "bg-gray-100 text-gray-400 border-gray-200"
+                            }`}>
+                              {enrollmentStatus}
+                            </span>
+                          </div>
                         </div>
+
+                        {/* Progress Bar (if enrolled) */}
+                        {isEnrolled && (
+                          <div className="mt-2 pt-2 border-t border-brand-dark/5">
+                            <div className="flex justify-between items-center text-[9px] font-black text-gray-500 mb-1">
+                              <span>MISSION PROGRESS</span>
+                              <span>{progressPercent}%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 dark:bg-gray-800 border border-brand-dark dark:border-[#4A3F35] rounded-full h-2 overflow-hidden relative">
+                              <div className="h-full bg-brand-green" style={{ width: `${progressPercent}%` }} />
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Footer details */}
-                      <div className="px-6 pb-6 pt-3 border-t-2 border-brand-dark/10 flex items-center justify-between gap-4 font-display">
-                        <span className={`text-[9px] font-extrabold border-2 border-brand-dark px-2.5 py-1 rounded-full uppercase shadow-[1.5px_1.5px_0px_#1F2937] ${
+                      <div className="px-6 pb-6 pt-3 border-t-2 border-brand-dark/10 dark:border-gray-700/50 flex items-center justify-between gap-4 font-display">
+                        <span className={`text-[9px] font-extrabold border-2 border-brand-dark dark:border-[#4A3F35] px-2.5 py-1 rounded-full uppercase shadow-[1.5px_1.5px_0px_var(--card-shadow-color)] ${
                           badgeColors[course.level as keyof typeof badgeColors] || "bg-white"
                         }`}>
                           {course.level}
                         </span>
 
-                        <Link 
-                          href={`/courses/${course.id}`}
-                          className="btn-3d btn-3d-blue py-1.5 px-4 text-xs"
-                        >
-                          {isEnrolled ? "Open Quest" : "Details"}
-                        </Link>
+                        <div className="flex gap-2">
+                          {isEnrolled && progressPercent < 100 && (
+                            <Link
+                              href={`/courses/${course.id}`}
+                              className="btn-3d btn-3d-yellow py-1.5 px-3 text-[10px] flex items-center gap-1"
+                            >
+                              <Play size={10} fill="currentColor" /> Continue
+                            </Link>
+                          )}
+                          <Link 
+                            href={`/courses/${course.id}`}
+                            className="btn-3d btn-3d-blue py-1.5 px-4 text-xs"
+                          >
+                            {isEnrolled ? "Open Quest" : "Enroll"}
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   );
@@ -530,13 +579,13 @@ function LearningHubContent() {
         {activeTab === "premium" && (
           <div className="space-y-8 animate-fade-in">
             {/* Header / Search Block */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-display">
+            <section className="card-bubble p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-display">
               <div>
-                <h2 className="text-xl font-extrabold text-brand-dark flex items-center gap-2">
+                <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
                   <Layers className="text-brand-pink" size={22} />
                   Premium Module Store
                 </h2>
-                <p className="text-xs text-brand-dark/70 mt-1">
+                <p className="text-xs text-gray-655 dark:text-gray-400 mt-1">
                   Level up your skill catalog with specialized STEM micro-products
                 </p>
               </div>
@@ -548,14 +597,14 @@ function LearningHubContent() {
                   placeholder="Search store modules..."
                   value={premiumSearchTerm}
                   onChange={(e) => setPremiumSearchTerm(e.target.value)}
-                  className="w-full bg-brand-cream dark:bg-gray-900 border-2 border-brand-dark dark:border-gray-700 rounded-full py-2 pl-10 pr-4 text-xs focus:outline-none focus:bg-card-bg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm"
+                  className="w-full bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-gray-700 rounded-full py-2 pl-10 pr-4 text-xs focus:outline-none focus:bg-card-bg text-gray-900 dark:text-white placeholder-gray-404 dark:placeholder-gray-500 shadow-sm"
                 />
               </div>
             </section>
 
             {/* Bento Banner Offer */}
             <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-2 bg-gradient-to-r from-indigo-500 to-[#0EA5E9] rounded-3xl p-6 text-white border-4 border-brand-dark shadow-[4px_4px_0px_#1F2937] flex flex-col justify-between relative overflow-hidden">
+              <div className="md:col-span-2 bg-gradient-to-r from-[#1D7CCB] to-[#F04D9B] rounded-3xl p-6 text-white border-4 border-brand-dark dark:border-[#4A3F35] shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col justify-between relative overflow-hidden">
                 <div className="absolute right-0 bottom-0 top-0 opacity-15 pointer-events-none text-9xl font-black select-none">
                   STEM
                 </div>
@@ -576,28 +625,32 @@ function LearningHubContent() {
                 </div>
               </div>
 
-              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col justify-between">
+              <div className="card-bubble p-5 flex flex-col justify-between">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="p-1.5 bg-brand-yellow/25 text-brand-yellow rounded-xl border border-brand-dark/20">
+                  <span className="p-1.5 bg-brand-yellow/25 text-brand-dark border border-brand-dark dark:border-[#4A3F35] rounded-xl">
                     <Award size={16} fill="currentColor" />
                   </span>
-                  <h3 className="text-sm font-extrabold text-brand-dark">Store Analytics</h3>
+                  <h3 className="text-sm font-extrabold text-gray-900 dark:text-white">Store Analytics</h3>
                 </div>
                 <div className="space-y-3 font-display">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-brand-dark/70 font-semibold">Total Products</span>
-                    <span className="font-black">{premiumModules.length} modules</span>
+                  <div className="flex justify-between items-center text-xs text-gray-755 dark:text-gray-350 font-bold">
+                    <span>Total Products</span>
+                    <span className="text-gray-900 dark:text-white font-black">{premiumModules.length} modules</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-brand-dark/70 font-semibold">Global Enrolled</span>
-                    <span className="font-black text-brand-blue">1,100+ students</span>
+                  <div className="flex justify-between items-center text-xs text-gray-755 dark:text-gray-350 font-bold">
+                    <span>Global Enrolled</span>
+                    <span className="text-brand-blue font-black">
+                      {premiumModules.reduce((sum, m) => sum + m.enrolledCount, 0)} students
+                    </span>
                   </div>
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-brand-dark/70 font-semibold">Instructors Active</span>
-                    <span className="font-black">4 STEM Mentors</span>
+                  <div className="flex justify-between items-center text-xs text-gray-755 dark:text-gray-350 font-bold">
+                    <span>Instructors Active</span>
+                    <span className="text-gray-900 dark:text-white font-black">
+                      {new Set([...premiumModules.map(m => m.teacherName), ...courses.map(c => getInstructor(c.category))]).size} STEM Mentors
+                    </span>
                   </div>
                 </div>
-                <p className="text-[9px] text-brand-dark/60 text-center font-bold mt-2">
+                <p className="text-[9px] text-gray-400 dark:text-gray-500 text-center font-bold mt-2">
                   100% money-back parent guarantee
                 </p>
               </div>
@@ -611,8 +664,8 @@ function LearningHubContent() {
                   onClick={() => setPremiumCategory(cat)}
                   className={`px-3.5 py-1.5 rounded-full border-2 text-[10px] font-black transition-all cursor-pointer ${
                     premiumCategory === cat
-                      ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
-                      : "bg-card-bg text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
+                      ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
+                      : "bg-card-bg text-gray-700 dark:text-gray-250 border-brand-dark/20 dark:border-gray-700 hover:border-brand-dark hover:bg-brand-sky dark:hover:bg-[#302923]"
                   }`}
                 >
                   {cat}
@@ -620,12 +673,12 @@ function LearningHubContent() {
               ))}
             </section>
 
-            {/* Catalog list grid */}
+            {/* Catalog premium modules grid */}
             <section>
               {filteredPremium.length === 0 ? (
                 <div className="text-center py-12 flex flex-col items-center gap-3">
                   <Layers size={40} className="text-gray-400 animate-pulse" />
-                  <p className="text-xs font-bold text-brand-dark/60">No premium modules match your criteria.</p>
+                  <p className="text-xs font-bold text-gray-500">No premium modules match your criteria.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -639,7 +692,7 @@ function LearningHubContent() {
                         {/* Favorite Button */}
                         <button
                           onClick={() => handleToggleWishlist(mod.id)}
-                          className={`absolute top-4 right-4 p-1.5 rounded-full border border-brand-dark/20 bg-card-bg shadow transition cursor-pointer hover:scale-105 active:scale-95 z-10 ${
+                          className={`absolute top-4 right-4 p-1.5 rounded-full border border-brand-dark/20 bg-card-bg shadow transition cursor-pointer hover:scale-110 active:scale-90 z-10 ${
                             isSaved ? "text-brand-pink fill-brand-pink border-brand-pink" : "text-gray-400"
                           }`}
                         >
@@ -648,30 +701,30 @@ function LearningHubContent() {
 
                         <div>
                           {/* Emoji Icon Container */}
-                          <span className="bg-brand-cream border-2 border-brand-dark w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-brand-blue">
-                            <EmojiOrSvg emoji={mod.thumbnail || "sparkles"} className="w-6 h-6" />
+                          <span className="bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-[#4A3F35] w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-brand-blue shrink-0 inline-block">
+                            <EmojiOrSvg emoji={mod.thumbnail || "sparkles"} className="w-6 h-6 mt-2 ml-2" />
                           </span>
                           
                           {/* Tags */}
                           <div className="flex gap-1.5 mt-3.5">
-                            <span className="bg-brand-yellow/25 text-brand-dark border border-brand-dark text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                            <span className="bg-brand-yellow/25 text-brand-dark border border-brand-dark dark:border-[#4A3F35] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
                               {mod.category}
                             </span>
-                            <span className="bg-brand-sky text-brand-blue border border-brand-dark text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                            <span className="bg-brand-sky text-brand-blue border border-brand-dark dark:border-[#4A3F35] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
                               {mod.difficulty}
                             </span>
                           </div>
 
-                          <h3 className="text-sm font-black text-brand-dark mt-2.5 line-clamp-1">
+                          <h3 className="text-sm font-black text-gray-900 dark:text-white mt-2.5 line-clamp-1">
                             {mod.title}
                           </h3>
                           
-                          <p className="text-xs text-brand-dark/70 font-semibold mt-1 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-gray-600 dark:text-gray-300 font-bold mt-1 line-clamp-2 leading-relaxed font-sans">
                             {mod.description}
                           </p>
 
-                          {/* Small Meta Items */}
-                          <div className="flex flex-wrap gap-3 mt-4 text-[10px] text-brand-dark/60 font-bold">
+                          {/* Real Metadata details */}
+                          <div className="flex flex-wrap gap-3 mt-4 text-[10px] text-gray-500 dark:text-gray-400 font-bold border-t border-brand-dark/5 pt-3">
                             <span className="flex items-center gap-1"><Clock size={12} /> {mod.duration}</span>
                             <span className="flex items-center gap-1"><Users size={12} /> {mod.enrolledCount} enrolled</span>
                             {mod.certificateAvailable && (
@@ -683,8 +736,10 @@ function LearningHubContent() {
                         {/* Price and CTA */}
                         <div className="mt-5 pt-3 border-t border-brand-dark/10 flex items-center justify-between gap-3 font-display">
                           <div>
-                            <p className="text-[9px] text-brand-dark/50 font-bold">Price</p>
-                            <p className="text-base font-black text-brand-dark">${mod.price.toFixed(2)}</p>
+                            <p className="text-[9px] text-gray-400 dark:text-gray-500 font-bold">Price</p>
+                            <p className="text-base font-black text-gray-900 dark:text-white">
+                              {mod.price > 0 ? `$${mod.price.toFixed(2)}` : "Free Access"}
+                            </p>
                           </div>
 
                           <Link
@@ -707,7 +762,7 @@ function LearningHubContent() {
         {activeTab === "resources" && (
           <div className="space-y-8 animate-fade-in">
             {/* SEARCH & FILTER CONTROLLER */}
-            <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6 font-display">
+            <section className="card-bubble p-6 flex flex-col gap-6 font-display">
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 {/* Search Input */}
                 <div className="relative w-full md:max-w-md">
@@ -717,15 +772,15 @@ function LearningHubContent() {
                     placeholder="Search reference guides (e.g. coordinates, code loops...)"
                     value={resourceSearchTerm}
                     onChange={(e) => setResourceSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-brand-cream dark:bg-gray-900 border-2 border-brand-dark dark:border-gray-700 rounded-full text-xs font-bold focus:outline-none focus:bg-card-bg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                    className="w-full pl-10 pr-4 py-2 bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-gray-700 rounded-full text-xs font-bold focus:outline-none focus:bg-card-bg text-gray-900 dark:text-white placeholder-gray-405 dark:placeholder-gray-500"
                   />
                 </div>
 
                 {/* Bookmarks Toggle button */}
                 <button
                   onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
-                  className={`px-4 py-2 border-2 border-brand-dark rounded-full text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_#1F2937] active:translate-y-[1px] active:shadow-none ${
-                    showBookmarksOnly ? "bg-brand-yellow text-brand-dark" : "bg-card-bg hover:bg-brand-sky text-brand-dark"
+                  className={`px-4 py-2 border-2 border-brand-dark dark:border-[#4A3F35] rounded-full text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_var(--card-shadow-color)] active:translate-y-[1px] active:shadow-none ${
+                    showBookmarksOnly ? "bg-brand-yellow text-brand-dark" : "bg-card-bg hover:bg-brand-sky text-gray-800 dark:text-gray-250"
                   }`}
                 >
                   <Bookmark size={14} className={showBookmarksOnly ? "fill-brand-dark" : ""} />
@@ -733,7 +788,7 @@ function LearningHubContent() {
                 </button>
               </div>
 
-              <div className="h-[2px] bg-brand-dark/15 w-full" />
+              <div className="h-[2px] bg-brand-dark/10 dark:bg-gray-750 w-full" />
 
               {/* Category tabs */}
               <div className="flex flex-wrap gap-1.5">
@@ -743,8 +798,8 @@ function LearningHubContent() {
                     onClick={() => setSelectedResourceType(type)}
                     className={`px-3.5 py-1.5 rounded-full border-2 text-[10px] font-black transition-all cursor-pointer ${
                       selectedResourceType === type
-                        ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
-                        : "bg-brand-cream text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
+                        ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
+                        : "bg-brand-cream dark:bg-[#25201D] text-gray-700 dark:text-gray-250 border-brand-dark/20 dark:border-gray-700 hover:border-brand-dark hover:bg-brand-sky dark:hover:bg-[#302923]"
                     }`}
                   >
                     {type}
@@ -756,12 +811,12 @@ function LearningHubContent() {
             {/* GRID DISPLAY OF FILES */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredResources.length === 0 ? (
-                <div className="col-span-full bg-card-bg border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_#1F2937] flex flex-col items-center gap-3 font-display">
-                  <div className="p-3 bg-brand-yellow/15 border-3 border-brand-dark rounded-2xl text-brand-dark shadow-inner animate-bounce-slow mb-1">
-                    <Folder size={40} />
+                <div className="col-span-full card-bubble p-16 text-center flex flex-col items-center gap-3 font-display">
+                  <div className="p-3 bg-brand-yellow/15 border-3 border-brand-dark dark:border-[#4A3F35] rounded-2xl text-brand-dark shadow-inner animate-bounce-slow mb-1">
+                    <Folder size={40} className="text-brand-yellow" />
                   </div>
-                  <h3 className="text-xl font-black text-brand-dark">No Materials Found</h3>
-                  <p className="text-xs text-brand-dark/70 font-bold max-w-xs">
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white">No Materials Found</h3>
+                  <p className="text-xs text-gray-505 dark:text-gray-400 font-bold max-w-xs font-sans">
                     Try adjusting your search filters or checking your bookmarked stars list.
                   </p>
                 </div>
@@ -770,10 +825,10 @@ function LearningHubContent() {
                   const isBookmarked = resourceBookmarks.includes(res.id);
                   
                   const subjectColors = {
-                    Robotics: "bg-[#E0F7FF] dark:bg-[#0C4A6E] text-[#0284C7] dark:text-[#38BDF8] border-brand-dark",
-                    Coding: "bg-[#EBFDF0] dark:bg-[#064E3B] text-[#10B981] dark:text-[#34D399] border-brand-dark",
-                    Mathematics: "bg-[#FFFDE8] dark:bg-[#78350F] text-[#D97706] dark:text-[#FBBF24] border-brand-dark",
-                    AI: "bg-[#FFF0F6] dark:bg-[#5B21B6] text-[#EC4899] dark:text-[#F472B6] border-brand-dark"
+                    Robotics: "bg-[#E0F7FF] dark:bg-[#0C4A6E] text-[#0284C7] dark:text-[#38BDF8] border-brand-dark dark:border-[#4A3F35]",
+                    Coding: "bg-[#EBFDF0] dark:bg-[#064E3B] text-[#10B981] dark:text-[#34D399] border-brand-dark dark:border-[#4A3F35]",
+                    Mathematics: "bg-[#FFFDE8] dark:bg-[#78350F] text-[#D97706] dark:text-[#FBBF24] border-brand-dark dark:border-[#4A3F35]",
+                    AI: "bg-[#FFF0F6] dark:bg-[#5B21B6] text-[#EC4899] dark:text-[#F472B6] border-brand-dark dark:border-[#4A3F35]"
                   };
 
                   return (
@@ -785,10 +840,10 @@ function LearningHubContent() {
                         {/* Header: Title and subject */}
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-lg border-2 border-brand-dark bg-brand-cream flex items-center justify-center text-brand-dark shrink-0">
+                            <span className="w-8 h-8 rounded-lg border-2 border-brand-dark dark:border-[#4A3F35] bg-brand-cream dark:bg-slate-900 flex items-center justify-center text-gray-800 dark:text-white shrink-0">
                               <FileText size={16} />
                             </span>
-                            <span className={`text-[9px] border border-brand-dark px-2.5 py-0.5 rounded-full uppercase font-black ${
+                            <span className={`text-[9px] border border-brand-dark dark:border-[#4A3F35] px-2.5 py-0.5 rounded-full uppercase font-black ${
                               subjectColors[res.subject as keyof typeof subjectColors] || "bg-white text-brand-dark"
                             }`}>
                               {res.subject}
@@ -798,19 +853,19 @@ function LearningHubContent() {
                           {/* Bookmark button */}
                           <button 
                             onClick={() => toggleResourceBookmark(res.id)}
-                            className="p-1.5 border border-brand-dark/20 rounded-lg bg-card-bg hover:bg-brand-cream cursor-pointer"
+                            className="p-1.5 border border-brand-dark/20 dark:border-gray-700 rounded-lg bg-card-bg hover:bg-brand-cream cursor-pointer"
                           >
                             <Star size={14} className={isBookmarked ? "text-brand-yellow fill-brand-yellow stroke-brand-dark" : "text-gray-400"} />
                           </button>
                         </div>
 
-                        <h3 className="text-sm font-black text-brand-dark mt-3.5 leading-snug line-clamp-2">
+                        <h3 className="text-sm font-black text-gray-900 dark:text-white mt-3.5 leading-snug line-clamp-2">
                           {res.title}
                         </h3>
                       </div>
 
                       {/* Footer metadata */}
-                      <div className="border-t border-brand-dark/10 pt-3 flex items-center justify-between mt-3 text-[10px] font-bold text-brand-dark/60">
+                      <div className="border-t border-brand-dark/10 dark:border-gray-700 pt-3 flex items-center justify-between mt-3 text-[10px] font-bold text-gray-500 dark:text-gray-400 font-sans">
                         <span>{res.type} ({res.size})</span>
                         <button
                           onClick={() => handleDownloadResource(res)}
@@ -837,7 +892,7 @@ function LearningHubContent() {
 export default function CoursesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-brand-cream flex flex-col justify-center items-center font-display text-lg text-brand-dark gap-4">
+      <div className="min-h-screen bg-brand-cream dark:bg-background flex flex-col justify-center items-center font-display text-lg text-brand-dark dark:text-[#FFF7ED] gap-4">
         <EmojiOrSvg emoji="rocket" className="w-10 h-10 text-accent animate-bounce" />
         <span>Assembling Quest archives...</span>
       </div>

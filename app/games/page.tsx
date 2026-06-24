@@ -117,7 +117,7 @@ export default function GamesCenterPage() {
         
         {/* Header Section */}
         <div className="text-center max-w-xl mx-auto mb-4">
-          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_#1F2937]">
+          <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase shadow-[2px_2px_0px_var(--card-shadow-color)]">
             Arcade Room
           </span>
           <h1 className="text-3xl sm:text-4xl font-black text-brand-dark mt-4">
@@ -203,7 +203,7 @@ export default function GamesCenterPage() {
           </section>
         ) : (
           /* GAME ACTIVE BOARDS */
-          <section className="max-w-2xl mx-auto w-full bg-white border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] relative text-left">
+          <section className="max-w-2xl mx-auto w-full bg-white border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_var(--card-shadow-color)] relative text-left">
             
             <button
               onClick={() => setActiveGame("none")}

@@ -87,7 +87,7 @@ export default function StudyRoomsPage() {
           
           {/* Left panel: Channels sidebar */}
           <div className="lg:col-span-3 flex flex-col gap-4">
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_#1F2937]">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_var(--card-shadow-color)]">
               <h3 className="text-xs font-black text-brand-dark uppercase mb-3 border-b-2 border-brand-dark/10 pb-2">
                 Voice Channels
               </h3>
@@ -102,7 +102,7 @@ export default function StudyRoomsPage() {
                     }}
                     className={`text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between cursor-pointer ${
                       activeRoom === room.name
-                        ? "bg-brand-blue text-white border-2 border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                        ? "bg-brand-blue text-white border-2 border-brand-dark shadow-[1.5px_1.5px_0px_var(--card-shadow-color)]"
                         : "text-brand-dark hover:bg-brand-sky border-2 border-transparent"
                     }`}
                   >
@@ -119,7 +119,7 @@ export default function StudyRoomsPage() {
             </div>
 
             {/* Immersive Group Study Timer */}
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_var(--card-shadow-color)] flex flex-col gap-4">
               <h3 className="text-xs font-black text-brand-dark uppercase flex items-center gap-1.5">
                 <Timer size={14} className="text-brand-blue" /> Group Study Timer
               </h3>
@@ -149,7 +149,7 @@ export default function StudyRoomsPage() {
 
           {/* Right panel: Active Room Area */}
           <div className="lg:col-span-9 flex flex-col gap-6">
-            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col justify-between">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_var(--card-shadow-color)] flex flex-col justify-between">
               
               {/* Header metadata */}
               <div className="flex justify-between items-center border-b-4 border-brand-dark/10 pb-3.5 mb-5">
@@ -182,7 +182,7 @@ export default function StudyRoomsPage() {
                   {participants.map(p => (
                     <div 
                       key={p.name} 
-                      className="border-2 border-brand-dark bg-brand-cream rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-4 relative shadow-[2px_2px_0px_#1F2937]"
+                      className="border-2 border-brand-dark bg-brand-cream rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-4 relative shadow-[2px_2px_0px_var(--card-shadow-color)]"
                     >
                       {/* Avatar */}
                       <span className="w-12 h-12 flex items-center justify-center bg-card-bg border-2 border-brand-dark rounded-2xl shadow-inner text-brand-blue animate-bounce-slow">

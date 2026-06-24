@@ -101,7 +101,7 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  className="p-2.5 bg-brand-yellow border-2 border-brand-dark rounded-xl shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                  className="p-2.5 bg-brand-yellow border-2 border-brand-dark rounded-xl shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] active:translate-y-[1px]"
                 >
                   <Send size={14} className="text-brand-dark" />
                 </button>

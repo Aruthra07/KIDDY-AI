@@ -242,3 +242,25 @@ export async function enrollInPremiumModule(moduleId: string, userId: string) {
     throw new Error("Failed to enroll");
   }
 }
+
+// Fetch global statistics from database
+export async function getGlobalStats() {
+  try {
+    const totalUsers = await prisma.user.count();
+    const totalEnrollments = await prisma.courseEnrollment.count();
+    const totalCertificates = await prisma.certificate.count();
+    
+    return {
+      totalUsers: totalUsers || 0,
+      totalEnrollments: totalEnrollments || 0,
+      totalCertificates: totalCertificates || 0
+    };
+  } catch (error) {
+    console.error("Error fetching global stats:", error);
+    return {
+      totalUsers: 0,
+      totalEnrollments: 0,
+      totalCertificates: 0
+    };
+  }
+}
