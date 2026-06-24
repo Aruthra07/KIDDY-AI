@@ -1,0 +1,352 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/prisma-client"
+}
+
+model User {
+  id        String   @id // Maps to Supabase Auth User ID
+  name      String
+  email     String   @unique
+  phone     String?
+  avatar    String?
+  role      String   @default("student") // student, parent, teacher, admin, superadmin
+  school    String?
+  grade     String?
+  theme     String   @default("light") // light, dark
+  createdAt DateTime @default(now()) @map("created_at")
+
+  enrollments   CourseEnrollment[]
+  submissions   AssignmentSubmission[]
+  certificates  Certificate[]
+  attendance    Attendance[]
+  notifications Notification[]
+  xpPoints      XpPoint[]
+  badges        Badge[]
+  activityLogs  ActivityLog[]
+  messages      Message[]
+
+  wishlist       WishlistItem[]
+  recentlyViewed RecentlyViewed[]
+  threads        CommunityThread[]
+  posts          CommunityPost[]
+
+  @@map("users")
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  thumbnail   String?
+  category    String // AI, Coding, Robotics, Mathematics, Science, Creativity
+  level       String // Rookie, Explorer, Champion
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  modules      CourseModule[]
+  enrollments  CourseEnrollment[]
+  assignments  Assignment[]
+  resources    Resource[]
+  certificates Certificate[]
+
+  wishlist       WishlistItem[]
+  recentlyViewed RecentlyViewed[]
+
+  @@map("courses")
+}
+
+model CourseModule {
+  id        String @id @default(uuid())
+  courseId  String @map("course_id")
+  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  sortOrder Int    @map("sort_order")
+
+  lessons Lesson[]
+
+  @@map("course_modules")
+}
+
+model Lesson {
+  id        String       @id @default(uuid())
+  moduleId  String       @map("module_id")
+  module    CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title     String
+  videoUrl  String?      @map("video_url")
+  pdfUrl    String?      @map("pdf_url")
+  sortOrder Int          @map("sort_order")
+  quizzes   Quiz[]
+
+  @@map("lessons")
+}
+
+model Quiz {
+  id            String @id @default(uuid())
+  lessonId      String @map("lesson_id")
+  lesson        Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question      String
+  options       Json // Array of strings
+  correctOption Int    @map("correct_option")
+
+  @@map("quizzes")
+}
+
+model CourseEnrollment {
+  id               String   @id @default(uuid())
+  userId           String   @map("user_id")
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId         String   @map("course_id")
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress         Float    @default(0) // Recalculated dynamically
+  completedLessons Json     @default("[]") // Array of lesson IDs
+  enrolledAt       DateTime @default(now()) @map("enrolled_at")
+
+  @@unique([userId, courseId])
+  @@map("course_enrollments")
+}
+
+model Assignment {
+  id          String   @id @default(uuid())
+  courseId    String   @map("course_id")
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  dueDate     DateTime @map("due_date")
+
+  submissions AssignmentSubmission[]
+
+  @@map("assignments")
+}
+
+model AssignmentSubmission {
+  id           String     @id @default(uuid())
+  assignmentId String     @map("assignment_id")
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  userId       String     @map("user_id")
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileUrl      String     @map("file_url")
+  status       String     @default("Submitted") // Submitted, Reviewing, Approved, Resubmit
+  feedback     String?
+  grade        String?
+  version      Int        @default(1)
+  submittedAt  DateTime   @default(now()) @map("submitted_at")
+
+  @@map("assignment_submissions")
+}
+
+model LiveSession {
+  id           String   @id @default(uuid())
+  title        String
+  instructorId String   @map("instructor_id")
+  date         DateTime
+  duration     Int // in minutes
+  roomName     String   @map("room_name") // LiveKit room name
+  status       String   @default("upcoming") // upcoming, live, replay
+  replayUrl    String?  @map("replay_url")
+
+  attendance Attendance[]
+
+  @@map("live_sessions")
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  chatRoomId String   @map("chat_room_id") // courseId, bootcampId, or liveSessionId
+  senderId   String   @map("sender_id")
+  sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  text       String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("messages")
+}
+
+model Resource {
+  id             String  @id @default(uuid())
+  courseId       String? @map("course_id")
+  course         Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  title          String
+  category       String // PDF, PPT, Worksheet, Template, Guide, Research
+  fileUrl        String  @map("file_url")
+  downloadsCount Int     @default(0) @map("downloads_count")
+
+  @@map("resources")
+}
+
+model Certificate {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId          String   @map("course_id")
+  course            Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  certificateNumber String   @unique @map("certificate_number")
+  issueDate         DateTime @default(now()) @map("issue_date")
+  verificationUrl   String   @map("verification_url")
+
+  @@map("certificates")
+}
+
+model Bootcamp {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  bannerUrl   String? @map("banner_url")
+  schedule    Json?
+  formLink    String? @map("form_link")
+  resources   Json?
+
+  @@map("bootcamps")
+}
+
+model Attendance {
+  id            String      @id @default(uuid())
+  userId        String      @map("user_id")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  liveSessionId String      @map("live_session_id")
+  liveSession   LiveSession @relation(fields: [liveSessionId], references: [id], onDelete: Cascade)
+  attended      Boolean     @default(false)
+  date          DateTime    @default(now())
+
+  @@map("attendance")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("notifications")
+}
+
+model XpPoint {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points    Int
+  reason    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("xp_points")
+}
+
+model Badge {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeName String   @map("badge_name")
+  earnedAt  DateTime @default(now()) @map("earned_at")
+
+  @@map("badges")
+}
+
+model Leaderboard {
+  id        String   @id @default(uuid())
+  userId    String   @unique @map("user_id")
+  userName  String   @map("user_name")
+  totalXp   Int      @map("total_xp")
+  rank      Int
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("leaderboards")
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("activity_logs")
+}
+
+model PremiumModule {
+  id                   String   @id @default(uuid())
+  title                String
+  description          String
+  thumbnail            String?
+  category             String // AI, Coding, Robotics, Mathematics, Science, Creativity
+  difficulty           String // Beginner, Intermediate, Advanced
+  duration             String // e.g. "2 hours"
+  teacherName          String   @map("teacher_name")
+  price                Float    @default(0.0)
+  enrolledCount        Int      @default(0) @map("enrolled_count")
+  certificateAvailable Boolean  @default(true) @map("certificate_available")
+  outcomes             Json // Array of strings
+  previewVideoUrl      String?  @map("preview_video_url")
+  createdAt            DateTime @default(now()) @map("created_at")
+
+  wishlist       WishlistItem[]
+  recentlyViewed RecentlyViewed[]
+
+  @@map("premium_modules")
+}
+
+model WishlistItem {
+  id              String         @id @default(uuid())
+  userId          String         @map("user_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId        String?        @map("course_id")
+  course          Course?        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  premiumModuleId String?        @map("premium_module_id")
+  premiumModule   PremiumModule? @relation(fields: [premiumModuleId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now()) @map("created_at")
+
+  @@unique([userId, courseId, premiumModuleId])
+  @@map("wishlist_items")
+}
+
+model RecentlyViewed {
+  id              String         @id @default(uuid())
+  userId          String         @map("user_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId        String?        @map("course_id")
+  course          Course?        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  premiumModuleId String?        @map("premium_module_id")
+  premiumModule   PremiumModule? @relation(fields: [premiumModuleId], references: [id], onDelete: Cascade)
+  viewedAt        DateTime       @default(now()) @map("viewed_at")
+
+  @@map("recently_viewed")
+}
+
+model CommunityThread {
+  id        String          @id @default(uuid())
+  category  String // coding, robotics, ai, math, general, doubt-solver
+  title     String
+  content   String
+  authorId  String          @map("author_id")
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now()) @map("created_at")
+  posts     CommunityPost[]
+
+  @@map("community_threads")
+}
+
+model CommunityPost {
+  id        String          @id @default(uuid())
+  threadId  String          @map("thread_id")
+  thread    CommunityThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  content   String
+  authorId  String          @map("author_id")
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  @@map("community_posts")
+}
+
+model StudentClub {
+  id           String  @id @default(uuid())
+  name         String
+  description  String
+  bannerUrl    String? @map("banner_url")
+  membersCount Int     @default(0) @map("members_count")
+  category     String // general, space, gaming, robotics, coding
+
+  @@map("student_clubs")
+}

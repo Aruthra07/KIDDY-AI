@@ -1,103 +1,524 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { useApp } from "@/context/AppContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/LoadingScreen";
+import { 
+  Bot, Sparkles, BookOpen, Play, CheckCircle2, 
+  MapPin, Calendar, Users, Award, ShieldAlert, 
+  Lock, ArrowRight, Star, GraduationCap, Map, 
+  Trees, Zap, Mountain, Building2, Gamepad2, Heart, 
+  Mail, Rocket, Trophy
+} from "lucide-react";
+import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
+
+export default function HomePage() {
+  const { user, courses, enrolledCourseIds, enrollInCourse, liveClasses } = useApp();
+  const [loading, setLoading] = useState(true);
+  const [activeWorld, setActiveWorld] = useState<string>("Curiosity Island");
+  
+  // Simulated Live Countdown
+  const [countdownText, setCountdownText] = useState("02d 04h 15m 30s");
+
+  useEffect(() => {
+    // Generate simple countdown ticker
+    const timer = setInterval(() => {
+      const hours = Math.floor(Math.random() * 24);
+      const minutes = Math.floor(Math.random() * 60);
+      const seconds = Math.floor(Math.random() * 60);
+      setCountdownText(`01d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const worlds = [
+    { name: "Curiosity Island", level: 1, color: "bg-brand-blue border-brand-dark", desc: "Unlock basic bots and circuits logic.", icon: "island", bg: "bg-[#E0F7FF]" },
+    { name: "Coding Forest", level: 2, color: "bg-brand-green border-brand-dark", desc: "Craft code block spells and logic pathways.", icon: "forest", bg: "bg-[#EBFDF0]" },
+    { name: "AI Valley", level: 3, color: "bg-brand-pink border-brand-dark", desc: "Prompt magical chatbots and train computers.", icon: "lightning", bg: "bg-[#FFF0F6]" },
+    { name: "Innovation Mountain", level: 4, color: "bg-brand-yellow border-brand-dark", desc: "Solve engineering Coordinate riddles.", icon: "mountain", bg: "bg-[#FFFDE8]" },
+    { name: "Future City", level: 5, color: "bg-purple-400 border-brand-dark", desc: "Solve high-tech automation problems.", icon: "city", bg: "bg-[#F3E8FF]" }
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <AnimatePresence>
+        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+      </AnimatePresence>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {!loading && (
+        <div className="min-h-screen bg-brand-cream flex flex-col font-sans">
+          <Navbar />
+
+          {/* SECTION 1: HERO */}
+          <header className="relative bg-brand-sky border-b-6 border-brand-dark py-16 px-6 overflow-hidden">
+            
+            {/* Background elements */}
+            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="absolute -top-12 -left-12 opacity-10 text-brand-dark"><Star size={240} fill="currentColor" /></motion.div>
+            <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} className="absolute top-20 right-[10%] text-brand-pink opacity-25 hidden md:block"><Sparkles size={120} fill="currentColor" /></motion.div>
+            
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              
+              {/* Left Column: Mascot & Info */}
+              <div className="lg:col-span-7 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start relative z-10">
+                
+                {/* Waving Mascot speech bubble */}
+                <div className="relative bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_#1F2937] flex items-center gap-3 speech-bubble-inner speech-bubble-border max-w-sm">
+                  <div className="text-brand-blue shrink-0">
+                    <EmojiOrSvg emoji="robot" className="w-10 h-10" />
+                  </div>
+                  <p className="font-display text-sm font-bold text-brand-dark text-left">
+                    "Hey Explorer {user.name}! Ready for today's space learning adventure?"
+                  </p>
+                </div>
+
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black leading-tight text-brand-dark">
+                  Where Learning Becomes <span className="text-brand-blue underline decoration-brand-yellow decoration-8">Adventure!</span>
+                </h1>
+                
+                <p className="font-display text-base sm:text-lg font-bold text-gray-700 max-w-xl">
+                  Interactive coding quests, space robotics kits, live events and AI-powered classrooms built specifically for students aged 6–16.
+                </p>
+
+                <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-2 w-full sm:w-auto font-bold">
+                  <Link href="/dashboard" className="btn-3d btn-3d-blue px-8 py-3 text-base flex items-center gap-2">
+                    <Rocket size={18} /> Start Questing
+                  </Link>
+                  <Link href="/courses" className="btn-3d btn-3d-yellow px-8 py-3 text-base flex items-center gap-2">
+                    <Gamepad2 size={18} /> Play Challenges
+                  </Link>
+                  <Link href="/bootcamp" className="btn-3d btn-3d-pink px-8 py-3 text-base flex items-center gap-2">
+                    <Trophy size={18} /> Join Bootcamp
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column: Hero Mascot Graphics */}
+              <div className="lg:col-span-5 flex justify-center relative">
+                
+                {/* Float wrapper */}
+                <motion.div
+                  animate={{
+                    y: [0, -18, 0]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5,
+                    ease: "easeInOut"
+                  }}
+                  className="relative w-80 h-80 sm:w-96 sm:h-96"
+                >
+                  {/* Outer Orbit Ring */}
+                  <div className="absolute inset-0 border-4 border-dashed border-brand-dark/20 rounded-full animate-spin-slow" />
+                  
+                  <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }} className="absolute top-[10%] left-[5%] bg-brand-yellow text-brand-dark p-3 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-extrabold text-sm flex items-center gap-1.5">
+                    <Star size={14} fill="currentColor" /> +50 XP
+                  </motion.div>
+                  
+                  <motion.div animate={{ rotate: [0, -15, 15, 0] }} transition={{ repeat: Infinity, duration: 5 }} className="absolute bottom-[20%] right-[-5%] bg-brand-pink text-white p-3 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-extrabold text-sm flex items-center gap-1.5">
+                    <EmojiOrSvg emoji="trophy" className="w-4 h-4 text-white" /> Certificate
+                  </motion.div>
+ 
+                  <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="absolute top-[45%] right-[-10%] bg-brand-green text-brand-dark p-2.5 border-3 border-brand-dark rounded-2xl shadow-[3px_3px_0px_#1F2937] font-display font-bold text-xs flex items-center gap-1.5">
+                    <EmojiOrSvg emoji="python" className="w-4 h-4" /> python.py
+                  </motion.div>
+
+                  {/* Main Mascot Box */}
+                  <div className="w-full h-full bg-card-bg border-6 border-brand-dark rounded-full shadow-[8px_8px_0px_#1F2937] flex flex-col items-center justify-center p-8 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-brand-yellow/15" />
+                    
+                    <Bot size={130} className="text-brand-dark relative z-10 animate-bounce-slow" />
+                    <div className="mt-4 font-display text-2xl font-black text-brand-dark tracking-wide bg-card-bg px-5 py-1.5 rounded-full border-3 border-brand-dark shadow-[3px_3px_0px_#1F2937] relative z-10">
+                      KIDDY BOT
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+            </div>
+
+            {/* Cloud Waves SVG footer border */}
+            <div className="absolute bottom-0 left-0 right-0 h-4 bg-brand-cream border-t-4 border-brand-dark" />
+          </header>
+
+          {/* SECTION 2: WHY KIDDY AI */}
+          <section className="py-20 px-6 max-w-7xl mx-auto w-full">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+                Curiosity Engine
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark mt-4">
+                Redefining How School Kids Learn
+              </h2>
+              <p className="font-display text-sm font-bold text-gray-500 mt-2">
+                We replaced standard videos with an immersive sandbox and progress systems designed for engagement.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { title: "Learn by Doing", desc: "No long lectures. Complete interactive code checkpoints and get live visual results.", color: "bg-brand-blue", icon: "books" },
+                { title: "Play Challenges", desc: "Level up by playing mathematical coordinates puzzles, logic traps, and AI mystery escape mazes.", color: "bg-brand-yellow", icon: "game" },
+                { title: "Create Sandbox", desc: "Build robotics code dashboards, prompt custom storytelling AI books, and publish games.", color: "bg-brand-pink", icon: "palette" },
+                { title: "Explore Worlds", desc: "Walk along the map milestone tracks to claim XP, badges, Kiddy Coins, and avatar assets.", color: "bg-brand-green", icon: "rocket" }
+              ].map((card, idx) => (
+                <div key={idx} className="card-bubble p-6 flex flex-col gap-4 text-center items-center">
+                  <div className={`w-16 h-16 rounded-2xl border-3 border-brand-dark flex items-center justify-center shadow-[3px_3px_0px_#1F2937] ${card.color} text-brand-dark`}>
+                    <EmojiOrSvg emoji={card.icon} className="w-8 h-8" />
+                  </div>
+                  <h3 className="font-display text-xl font-extrabold text-brand-dark">{card.title}</h3>
+                  <p className="font-display text-xs text-gray-600 font-bold leading-relaxed">{card.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 4: LEARNING JOURNEY WORLD MAP */}
+          <section className="py-20 px-6 bg-brand-sky border-y-6 border-brand-dark relative">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                {/* Map Intro details */}
+                <div className="lg:col-span-5 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
+                  <span className="bg-brand-blue text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+                    Adventure Track
+                  </span>
+                  <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
+                    The Adventure Map
+                  </h2>
+                  <p className="font-display text-sm font-bold text-gray-700 leading-relaxed">
+                    Gain XP to level up and unlock new islands on the adventure path. Each island holds thematic courses, logic puzzles, and certificates!
+                  </p>
+
+                  <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-4 shadow-[4px_4px_0px_#1F2937] w-full max-w-sm">
+                    <p className="font-display text-xs font-bold text-gray-400 uppercase">Current Quest Location</p>
+                    <p className="font-display text-lg font-black text-brand-dark flex items-center gap-2 mt-1.5">
+                      <EmojiOrSvg emoji="island" className="w-5 h-5 text-brand-blue" /> Curiosity Island
+                    </p>
+                    <div className="w-full bg-gray-100 border-2 border-brand-dark rounded-full h-4 overflow-hidden mt-3 relative">
+                      <div className="h-full bg-brand-green" style={{ width: `${(user.level / 8) * 100}%` }} />
+                    </div>
+                    <p className="font-display text-[10px] font-bold text-gray-500 mt-1.5 text-right">
+                      Level {user.level} of 8 (Champion)
+                    </p>
+                  </div>
+                </div>
+
+                {/* The Map Interactive Board */}
+                <div className="lg:col-span-7 flex flex-col items-center">
+                  <div className="w-full max-w-xl bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_#1F2937] relative overflow-hidden">
+                    <div className="absolute inset-0 bg-brand-sky/20 pointer-events-none" />
+                    
+                    <h3 className="font-display text-lg font-black text-brand-dark border-b-2 border-brand-dark pb-2 mb-6 flex justify-between items-center">
+                      <span>Select learning World:</span>
+                      <span className="text-xs text-brand-pink uppercase tracking-wide">Click to inspect</span>
+                    </h3>
+
+                    {/* Path board list */}
+                    <div className="flex flex-col gap-4 relative z-10 font-display">
+                      {worlds.map((w, idx) => {
+                        const isUnlocked = user.level >= w.level;
+                        const isSelected = activeWorld === w.name;
+                        return (
+                          <div 
+                            key={w.name} 
+                            onClick={() => isUnlocked && setActiveWorld(w.name)}
+                            className={`flex items-center justify-between p-3.5 border-3 border-brand-dark rounded-2xl transition-all cursor-pointer ${
+                              isSelected 
+                                ? "bg-brand-yellow shadow-[3px_3px_0px_#1F2937] translate-y-[-2px]" 
+                                : isUnlocked 
+                                  ? "bg-brand-cream hover:bg-white hover:translate-y-[-1px]" 
+                                  : "bg-gray-100 opacity-60 cursor-not-allowed"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-brand-sky border-2 border-brand-dark rounded-xl flex items-center justify-center shrink-0 text-brand-dark">
+                                <EmojiOrSvg emoji={w.icon} className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-extrabold text-brand-dark flex items-center gap-1.5 font-sans">
+                                  {w.name}
+                                  {isSelected && <span className="text-[10px] bg-brand-blue text-white px-2 py-0.5 rounded-full border border-brand-dark uppercase">Inspecting</span>}
+                                </p>
+                                <p className="text-xs text-gray-500 font-bold">{w.desc}</p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 text-xs font-bold">
+                              {isUnlocked ? (
+                                <span className="bg-brand-green/30 border border-brand-dark/20 text-brand-dark px-2.5 py-1 rounded-full text-[10px]">
+                                  Unlocked
+                                </span>
+                              ) : (
+                                <span className="bg-red-100 border border-brand-dark/20 text-brand-pink px-2.5 py-1 rounded-full flex items-center gap-1 text-[10px]">
+                                  <Lock size={10} /> Level {w.level}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Inspected World Info Panel */}
+                    <div className="mt-6 border-t-3 border-brand-dark pt-4 flex flex-col gap-3">
+                      {worlds.map(w => {
+                        if (w.name !== activeWorld) return null;
+                        return (
+                          <div key={w.name} className="animate-fade-in font-display">
+                            <h4 className="text-base font-black text-brand-dark flex items-center gap-2">
+                              <EmojiOrSvg emoji={w.icon} className="w-5 h-5 text-brand-blue shrink-0" /> {w.name} Learning Island
+                            </h4>
+                            <p className="text-xs font-bold text-gray-600 mt-1">
+                              Discover magical coding lessons and level quests in this category. Gain badges by clearing quizzes.
+                            </p>
+                            <div className="mt-3 flex gap-2">
+                              <Link 
+                                href="/courses" 
+                                className="btn-3d btn-3d-blue py-1.5 px-4 text-xs flex items-center gap-1"
+                              >
+                                Enter World <ArrowRight size={14} />
+                              </Link>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 3: FEATURED COURSES */}
+          <section className="py-20 px-6 max-w-7xl mx-auto w-full">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-12 text-center md:text-left gap-4">
+              <div>
+                <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+                  Skill Catalog
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-3">
+                  Featured Space Quests
+                </h2>
+              </div>
+              <Link href="/courses" className="btn-3d btn-3d-white px-6 py-2 text-sm flex items-center gap-1">
+                All Courses <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            {/* Courses horizontal scroll */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {courses.slice(0, 4).map((course) => {
+                const isEnrolled = enrolledCourseIds.includes(course.id);
+                return (
+                  <div key={course.id} className="card-bubble flex flex-col justify-between overflow-hidden relative">
+                    {/* Course Category Badge top */}
+                    <div className="absolute top-3 right-3 bg-card-bg border-2 border-brand-dark px-2 py-0.5 rounded-full text-[10px] font-bold">
+                      {course.category}
+                    </div>
+
+                    <div className="p-5 flex flex-col gap-3">
+                      {/* Image Thumbnail placeholder using nice vector */}
+                      <div className="h-28 w-full bg-brand-sky border-3 border-brand-dark rounded-2xl flex items-center justify-center shadow-inner relative overflow-hidden mb-2 text-[#0284C7] dark:text-[#38BDF8]">
+                        <div className="absolute inset-0 bg-brand-yellow/10" />
+                        <div className="relative z-10 animate-bounce-slow">
+                          <EmojiOrSvg emoji={course.thumbnail || "book"} className="w-12 h-12" />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase text-gray-500">
+                        <span>{course.duration}</span>
+                        <span>•</span>
+                        <span className="text-brand-blue">{course.level}</span>
+                      </div>
+
+                      <h3 className="font-display text-base font-extrabold text-brand-dark line-clamp-1">
+                        {course.title}
+                      </h3>
+                      
+                      <p className="font-display text-xs text-gray-500 font-bold line-clamp-2 leading-relaxed">
+                        {course.description}
+                      </p>
+                    </div>
+
+                    <div className="p-5 pt-0 border-t-2 border-brand-dark/10 flex gap-2">
+                      <Link 
+                        href={`/courses/${course.id}`}
+                        className="flex-1 btn-3d btn-3d-blue py-2 text-xs text-center flex items-center justify-center gap-1.5"
+                      >
+                        {isEnrolled ? <Play size={12} fill="currentColor" /> : <BookOpen size={12} />}
+                        <span>{isEnrolled ? "Open Quest" : "Details"}</span>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* SECTION 5: UPCOMING LIVE CLASSES */}
+          <section className="py-20 px-6 bg-brand-cream border-t-6 border-brand-dark">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              
+              {/* Left Column: Live event timer info */}
+              <div className="lg:col-span-5 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
+                <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937] animate-pulse">
+                  Broadcast Room
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
+                  Upcoming Live Lectures
+                </h2>
+                <p className="font-display text-sm font-bold text-gray-600 leading-relaxed">
+                  Join expert teachers for interactive coding bootcamps, Rover demonstrations, and build reviews. Chat, take polls, and level up together!
+                </p>
+
+                {/* Countdown display */}
+                <div className="bg-brand-dark text-white rounded-3xl p-5 border-4 border-brand-dark shadow-[4px_4px_0px_#1F2937] w-full max-w-sm flex flex-col items-center gap-1.5">
+                  <span className="font-display text-[10px] font-black uppercase tracking-wider text-brand-yellow">Next Broadcast Starts In</span>
+                  <span className="font-display text-2xl sm:text-3xl font-black tracking-widest">{countdownText}</span>
+                </div>
+              </div>
+
+              {/* Right Column: Live Session Card */}
+              <div className="lg:col-span-7 flex justify-center">
+                {liveClasses.slice(0, 1).map((session) => (
+                  <div key={session.id} className="w-full max-w-lg bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[6px_6px_0px_#1F2937] flex flex-col gap-6">
+                    <div className="flex justify-between items-start gap-4">
+                      <span className="bg-red-500 text-white border-2 border-brand-dark font-display font-black text-xs px-3 py-1 rounded-full uppercase shadow-[2px_2px_0px_#1F2937] animate-pulse">
+                        Next Broadcast
+                      </span>
+                      <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
+                        <Calendar size={14} />
+                        <span>{session.date} @ {session.time}</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-display text-xl sm:text-2xl font-black text-brand-dark leading-snug">
+                        {session.title}
+                      </h3>
+                      <p className="font-display text-xs text-gray-500 font-bold mt-2">
+                        Interactive lab session. Students will build a chatbot assistant utilizing basic conditional triggers.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4 border-t-2 border-brand-dark/10 pt-4">
+                      <div className="flex items-center gap-2 font-display">
+                        <div className="w-10 h-10 border-2 border-brand-dark rounded-xl bg-brand-yellow flex items-center justify-center text-brand-dark shrink-0">
+                          <EmojiOrSvg emoji={session.instructorAvatar} className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-extrabold text-brand-dark">Teacher Space</p>
+                          <p className="text-[10px] font-bold text-gray-500">{session.instructorName}</p>
+                        </div>
+                      </div>
+
+                      <Link href="/live" className="btn-3d btn-3d-green px-5 py-2 text-xs">
+                        Reserve Seat
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* SECTION 6: STUDENT ACHIEVEMENTS */}
+          <section className="py-20 px-6 max-w-7xl mx-auto w-full text-center">
+            <span className="bg-brand-green text-brand-dark border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+              Community Dashboard
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark mt-4 mb-16">
+              Our Explorer Achievements
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              {[
+                { count: "12,450+", text: "Active Explorers", icon: <Users size={28} />, color: "bg-brand-blue" },
+                { count: "48,900+", text: "Quizzes Completed", icon: <BookOpen size={28} />, color: "bg-brand-yellow" },
+                { count: "9,800+", text: "Certificates Awarded", icon: <GraduationCap size={28} />, color: "bg-brand-pink" }
+              ].map((item, idx) => (
+                <div key={idx} className="card-bubble p-6 flex flex-col items-center gap-4">
+                  <div className={`w-14 h-14 border-2 border-brand-dark rounded-2xl flex items-center justify-center shadow-[3px_3px_0px_#1F2937] ${item.color}`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="font-display text-3xl sm:text-4xl font-black text-brand-dark">{item.count}</h3>
+                  <p className="font-display text-sm font-bold text-gray-500 uppercase">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 7: TESTIMONIALS */}
+          <section className="py-20 px-6 bg-brand-sky border-t-6 border-brand-dark">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <span className="bg-brand-pink text-white border-2 border-brand-dark font-display font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937]">
+                  Parent Logs
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-black text-brand-dark mt-4">
+                  Approved by Parents, Loved by Kids
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  { text: "My 10yo daughter used to hate math, but the space rocket math quests changed her perspective entirely. She completed the Mars coordinate flight plans path on the map with so much excitement!", author: "Sonia G., Parent", title: "Coordinates Pilot parent", icon: "coffee" },
+                  { text: "Building games in Python on Kiddy AI feels like playing Scratch, but they actually write real Python script. The XP points levels and streaks system keep them learning daily without prompting.", author: "Arjun R., School Educator", title: "Computer Teacher", icon: "teacher" },
+                  { text: "I completed Curiosity Island and earned my first Rookie Bot Certificate! I used my reward Kiddy Coins to purchase the Cyber Sunglasses avatar frame for my profile picture. The minigames are super fun!", author: "Rohan, Student (12yo)", title: "Level 4 Builder Explorer", icon: "backpack" }
+                ].map((item, idx) => (
+                  <div key={idx} className="card-bubble p-6 flex flex-col justify-between gap-6 relative font-sans">
+                    <span className="absolute -top-3 -left-3 w-8 h-8 rounded-full border border-brand-dark bg-card-bg flex items-center justify-center shadow">“</span>
+                    <p className="font-display text-xs text-gray-700 font-bold leading-relaxed">
+                      "{item.text}"
+                    </p>
+                    <div className="flex items-center gap-3 border-t-2 border-brand-dark/10 pt-4">
+                      <div className="w-10 h-10 border-2 border-brand-dark rounded-xl bg-brand-yellow flex items-center justify-center text-brand-dark shadow shrink-0">
+                        <EmojiOrSvg emoji={item.icon} className="w-5 h-5" />
+                      </div>
+                      <div className="font-display text-left">
+                        <p className="text-xs font-extrabold text-brand-dark">{item.author}</p>
+                        <p className="text-[10px] font-bold text-gray-500">{item.title}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 8: CALL TO ACTION */}
+          <section className="py-24 px-6 bg-brand-yellow text-center border-t-6 border-brand-dark relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-3 bg-brand-dark/10" />
+            
+            <div className="max-w-2xl mx-auto flex flex-col items-center gap-6 relative z-10">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark leading-tight">
+                Ready to Start Your Adventure?
+              </h2>
+              <p className="font-display text-sm sm:text-base font-bold text-brand-dark/80 max-w-md">
+                Claim your spaceship dashboard, unlock your first coding world, and earn your official Kiddy badges.
+              </p>
+
+              <div className="flex flex-wrap gap-4 justify-center pt-2 font-bold">
+                <Link href="/dashboard" className="btn-3d btn-3d-pink px-8 py-3 text-base flex items-center gap-2">
+                  <Rocket size={18} /> Launch Space Station
+                </Link>
+                <Link href="/contact" className="btn-3d btn-3d-white px-8 py-3 text-base flex items-center gap-2">
+                  <Mail size={18} /> Ask Questions
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <Footer />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+    </>
   );
 }

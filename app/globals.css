@@ -1,26 +1,236 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-sky: var(--brand-sky);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-green: var(--brand-green);
+
+  --color-primary: var(--accent);
+  --color-accent: var(--accent);
+  --color-warning: var(--brand-yellow);
+  --color-secondary: var(--brand-green);
+  --color-dark: var(--foreground);
+  --color-bg-light: var(--background);
+  --color-border-light: var(--card-border);
+  
+  --color-text-muted: var(--text-muted);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  
+  --font-sans: 'Inter', 'Plus Jakarta Sans', 'Manrope', sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --accent: #0284C7;
+  --text-muted: #475569;
+
+  /* Brand Colors - Light Mode */
+  --brand-cream: #FFFDF9;
+  --brand-dark: #1E293B;
+  --brand-blue: #0284C7;
+  --brand-sky: #E0F2FE;
+  --brand-pink: #EC4899;
+  --brand-yellow: #F59E0B;
+  --brand-green: #10B981;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.dark {
+  --background: #0B1120;
+  --foreground: #F3F4F6;
+  --card-bg: #111827;
+  --card-border: #1F2937;
+  --accent: #38BDF8;
+  --text-muted: #9CA3AF;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Brand Colors - Dark Mode */
+  --brand-cream: #0B1120;
+  --brand-dark: #F3F4F6;
+  --brand-blue: #38BDF8;
+  --brand-sky: #0C4A6E;
+  --brand-pink: #F472B6;
+  --brand-yellow: #FBBF24;
+  --brand-green: #34D399;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium clean card component styling */
+.card-premium {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-premium:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Clean UI buttons */
+.btn-modern {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem; /* 14px */
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.btn-modern-primary {
+  background-color: var(--accent);
+  color: #FFFFFF;
+}
+.btn-modern-primary:hover {
+  filter: brightness(0.9);
+}
+.btn-modern-primary:active {
+  filter: brightness(0.8);
+}
+
+.btn-modern-secondary {
+  background-color: #10B981;
+  color: #FFFFFF;
+}
+.btn-modern-secondary:hover {
+  background-color: #059669;
+}
+.btn-modern-secondary:active {
+  background-color: #047857;
+}
+
+.btn-modern-accent {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+}
+.btn-modern-accent:hover {
+  background-color: #D97706;
+}
+
+.btn-modern-outline {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--foreground);
+}
+.btn-modern-outline:hover {
+  background-color: var(--background);
+  border-color: var(--accent);
+}
+
+/* Custom Scrollbar for list feeds */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Hide scrollbars but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Simple modern animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.animate-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Premium Neo-brutalist 3D Buttons */
+.btn-3d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  border: 2px solid var(--brand-dark);
+  border-radius: 12px; /* rounded-xl */
+  box-shadow: 2px 2px 0px #1f2937;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.btn-3d:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #1f2937;
+}
+.btn-3d:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #1f2937;
+}
+
+/* Button Colors */
+.btn-3d-blue {
+  background-color: var(--brand-blue);
+  color: #ffffff;
+}
+.btn-3d-pink {
+  background-color: var(--brand-pink);
+  color: #ffffff;
+}
+.btn-3d-yellow {
+  background-color: var(--brand-yellow);
+  color: #0b1120; /* Dark text for high contrast on yellow */
+}
+.btn-3d-green {
+  background-color: var(--brand-green);
+  color: #ffffff;
+}
+.btn-3d-white {
+  background-color: var(--card-bg);
+  color: var(--foreground);
+}
+
+/* Premium Neo-brutalist Card */
+.card-bubble {
+  background-color: var(--card-bg);
+  border: 4px solid var(--brand-dark);
+  border-radius: 24px; /* rounded-3xl */
+  box-shadow: 4px 4px 0px #1f2937;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-bubble:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #1f2937;
 }
