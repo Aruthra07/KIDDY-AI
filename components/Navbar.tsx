@@ -30,21 +30,17 @@ export default function Navbar() {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Explore", href: "/explore" },
-    { name: "Courses", href: "/courses" },
-    { name: "Premium Modules", href: "/premium" },
+    { name: "Learning Hub", href: "/courses" },
     { name: "Live Learn", href: "/live" },
-    { name: "Bootcamps", href: "/bootcamp" },
-    { name: "Resources", href: "/resources" },
-    { name: "Community", href: "/community" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Community Hub", href: "/community" },
+    { name: "About & Contact", href: "/#about-contact" }
   ];
 
   const roles = [
     { name: "Student Explorer", id: "student", color: "bg-brand-blue text-white" },
     { name: "Parent Guide", id: "parent", color: "bg-brand-pink text-white" },
-    { name: "Teacher Studio", id: "teacher", color: "bg-brand-green text-brand-dark" },
-    { name: "Admin Space", id: "admin", color: "bg-brand-yellow text-brand-dark" },
+    { name: "Teacher Studio", id: "teacher", color: "bg-brand-green text-gray-900" },
+    { name: "Admin Space", id: "admin", color: "bg-brand-yellow text-gray-900" },
   ];
 
   const handleRoleChange = (roleId: any) => {
@@ -82,7 +78,7 @@ export default function Navbar() {
               }}
             />
           </div>
-          <span className="font-display text-2xl font-bold tracking-tight text-brand-dark">
+          <span className="font-display text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Kiddy <span className="text-brand-blue">AI</span>
           </span>
         </Link>
@@ -98,7 +94,7 @@ export default function Navbar() {
                 className={`px-3 py-1.5 rounded-full border-2 text-xs font-bold transition-all duration-150 ${
                   isActive 
                     ? "bg-brand-blue text-white border-brand-dark shadow-[2px_2px_0px_#1F2937]" 
-                    : "text-brand-dark border-transparent hover:bg-brand-sky hover:border-brand-dark hover:shadow-[2px_2px_0px_#1F2937]"
+                    : "text-gray-700 dark:text-gray-200 border-transparent hover:bg-brand-sky hover:border-brand-dark hover:shadow-[2px_2px_0px_#1F2937] hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 {item.name}
@@ -152,7 +148,7 @@ export default function Navbar() {
 
             {roleDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-card-bg border-3 border-brand-dark rounded-2xl shadow-[4px_4px_0px_#1F2937] overflow-hidden z-50">
-                <div className="px-3 py-2 bg-brand-sky border-b-2 border-brand-dark font-display text-xs font-bold text-brand-dark">
+                <div className="px-3 py-2 bg-brand-sky border-b-2 border-brand-dark font-display text-xs font-bold text-gray-900">
                   Toggle Prototype Role
                 </div>
                 <div className="p-1.5 flex flex-col gap-1">
@@ -161,7 +157,7 @@ export default function Navbar() {
                       key={r.id}
                       onClick={() => handleRoleChange(r.id)}
                       className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold font-display transition-all ${
-                        user.role === r.id ? r.color : "hover:bg-brand-cream text-brand-dark"
+                        user.role === r.id ? r.color : "hover:bg-brand-cream text-gray-700 dark:text-gray-200"
                       }`}
                     >
                       {r.name}
@@ -187,17 +183,17 @@ export default function Navbar() {
             </button>
 
             {notifDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white border-3 border-brand-dark rounded-2xl shadow-[4px_4px_0px_#1F2937] overflow-hidden z-50">
+              <div className="absolute right-0 mt-2 w-80 bg-card-bg border-3 border-brand-dark rounded-2xl shadow-[4px_4px_0px_#1F2937] overflow-hidden z-50">
                 <div className="p-3 bg-brand-blue text-white font-display font-bold flex items-center justify-between border-b-3 border-brand-dark">
                   <span>Adventure Logs</span>
                   <button onClick={clearNotifications} className="text-xs underline hover:text-brand-yellow font-sans">Clear</button>
                 </div>
                 <div className="max-h-60 overflow-y-auto divide-y-2 divide-brand-dark/10 p-2">
                   {notifications.length === 0 ? (
-                    <p className="text-center text-xs py-6 text-gray-500 font-display">No new alerts. Keep exploring!</p>
+                    <p className="text-center text-xs py-6 text-gray-500 dark:text-gray-400 font-display">No new alerts. Keep exploring!</p>
                   ) : (
                     notifications.map((msg, idx) => (
-                      <div key={idx} className="p-2.5 text-xs text-brand-dark font-display font-medium">
+                      <div key={idx} className="p-2.5 text-xs text-gray-800 dark:text-gray-200 font-display font-medium">
                         {msg}
                       </div>
                     ))
@@ -227,7 +223,7 @@ export default function Navbar() {
           )}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 border-2 border-brand-dark rounded-xl bg-white hover:bg-brand-sky"
+            className="p-2 border-2 border-brand-dark rounded-xl bg-card-bg hover:bg-brand-sky"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -237,7 +233,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU NAV */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t-3 border-brand-dark mt-2 pt-3 pb-4 flex flex-col gap-2 font-display bg-white z-40 relative">
+        <div className="lg:hidden border-t-3 border-brand-dark mt-2 pt-3 pb-4 flex flex-col gap-2 font-display bg-card-bg z-40 relative">
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -294,10 +290,10 @@ export default function Navbar() {
       {/* DEVELOPER AI SETTINGS MODAL */}
       {settingsOpen && (
         <div className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_#1F2937]">
+          <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 max-w-md w-full shadow-[6px_6px_0px_#1F2937]">
             <div className="flex items-center justify-between mb-4 border-b-3 border-brand-dark pb-3">
               <h3 className="font-display text-xl font-bold flex items-center gap-2 text-brand-blue">
-                <Sparkles size={20} className="text-brand-yellow fill-brand-yellow stroke-brand-dark" />
+                <Sparkles size={20} className="text-brand-yellow fill-brand-yellow stroke-brand-dark animate-pulse" />
                 AI Tutor Config Setup
               </h3>
               <button onClick={() => setSettingsOpen(false)} className="p-1.5 border-2 border-brand-dark rounded-full hover:bg-red-100">
@@ -305,30 +301,30 @@ export default function Navbar() {
               </button>
             </div>
             
-            <p className="text-xs text-gray-600 mb-4 leading-relaxed font-sans">
+            <p className="text-xs text-gray-600 dark:text-gray-300 mb-4 leading-relaxed font-sans">
               Enter your API keys below to unlock the <strong>Live AI Tutor Sidebar</strong>. By default, Kiddy AI uses interactive mock explanations. Setting keys enables real-time responses! Keys are stored solely in your local browser.
             </p>
 
             <form onSubmit={handleSaveSettings} className="space-y-4 font-display">
               <div>
-                <label className="block text-xs font-bold text-brand-dark uppercase mb-1">OpenAI API Key (Optional)</label>
+                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase mb-1">OpenAI API Key (Optional)</label>
                 <input
                   type="password"
                   placeholder="sk-..."
                   value={openaiKey}
                   onChange={(e) => setOpenaiKey(e.target.value)}
-                  className="w-full px-3 py-2 border-2 border-brand-dark rounded-xl text-sm font-sans"
+                  className="w-full px-3 py-2 bg-brand-cream dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-brand-dark dark:border-gray-700 rounded-xl text-sm font-sans placeholder-gray-400 dark:placeholder-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-brand-dark uppercase mb-1">Gemini API Key (Optional)</label>
+                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase mb-1">Gemini API Key (Optional)</label>
                 <input
                   type="password"
                   placeholder="AIzaSy..."
                   value={geminiKey}
                   onChange={(e) => setGeminiKey(e.target.value)}
-                  className="w-full px-3 py-2 border-2 border-brand-dark rounded-xl text-sm font-sans"
+                  className="w-full px-3 py-2 bg-brand-cream dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-brand-dark dark:border-gray-700 rounded-xl text-sm font-sans placeholder-gray-400 dark:placeholder-gray-500"
                 />
               </div>
 
@@ -336,13 +332,13 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setSettingsOpen(false)}
-                  className="flex-1 py-2 border-2 border-brand-dark rounded-xl font-bold text-sm bg-gray-100 hover:bg-gray-200"
+                  className="flex-1 py-2 border-2 border-brand-dark dark:border-gray-700 rounded-xl font-bold text-sm bg-brand-cream dark:bg-slate-900 text-gray-700 dark:text-gray-200 hover:bg-brand-sky"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 bg-brand-green border-2 border-brand-dark rounded-xl font-bold text-sm text-brand-dark shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
+                  className="flex-1 py-2 bg-brand-green border-2 border-brand-dark dark:border-gray-700 rounded-xl font-bold text-sm text-gray-900 shadow-[2px_2px_0px_#1F2937] hover:translate-y-[-1px] active:translate-y-[1px]"
                 >
                   Save Keys
                 </button>

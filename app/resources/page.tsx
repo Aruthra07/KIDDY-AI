@@ -106,7 +106,7 @@ export default function ResourceLibraryPage() {
         </div>
 
         {/* SEARCH & FILTER CONTROLLER */}
-        <section className="bg-white border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6 font-display">
+        <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col gap-6 font-display">
           
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search Input */}
@@ -117,7 +117,7 @@ export default function ResourceLibraryPage() {
                 placeholder="Search reference guides (e.g. coordinates, code loops...)"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-brand-cream border-2 border-brand-dark rounded-full text-sm font-bold focus:outline-none focus:bg-white"
+                className="w-full pl-10 pr-4 py-2 bg-brand-cream border-2 border-brand-dark rounded-full text-sm font-bold focus:outline-none focus:bg-card-bg"
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function ResourceLibraryPage() {
             <button
               onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
               className={`px-4 py-2 border-2 border-brand-dark rounded-full text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_#1F2937] active:translate-y-[1px] active:shadow-none ${
-                showBookmarksOnly ? "bg-brand-yellow" : "bg-white hover:bg-brand-sky"
+                showBookmarksOnly ? "bg-brand-yellow" : "bg-card-bg hover:bg-brand-sky"
               }`}
             >
               <Bookmark size={14} className={showBookmarksOnly ? "fill-brand-dark" : ""} />
@@ -157,7 +157,7 @@ export default function ResourceLibraryPage() {
         {/* GRID DISPLAY OF FILES */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredResources.length === 0 ? (
-            <div className="col-span-full bg-white border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_#1F2937] flex flex-col items-center gap-3 font-display">
+            <div className="col-span-full bg-card-bg border-4 border-brand-dark rounded-3xl p-16 text-center shadow-[4px_4px_0px_#1F2937] flex flex-col items-center gap-3 font-display">
               <div className="p-3 bg-brand-yellow/15 border-3 border-brand-dark rounded-2xl text-brand-dark shadow-inner animate-bounce-slow mb-1">
                 <Folder size={40} />
               </div>
@@ -171,10 +171,10 @@ export default function ResourceLibraryPage() {
               const isBookmarked = bookmarks.includes(res.id);
               
               const subjectColors = {
-                Robotics: "bg-[#E0F7FF] border-brand-dark",
-                Coding: "bg-[#EBFDF0] border-brand-dark",
-                Mathematics: "bg-[#FFFDE8] border-brand-dark",
-                AI: "bg-[#FFF0F6] border-brand-dark"
+                Robotics: "bg-[#E0F7FF] dark:bg-[#0C4A6E] text-[#0284C7] dark:text-[#38BDF8] border-brand-dark",
+                Coding: "bg-[#EBFDF0] dark:bg-[#064E3B] text-[#10B981] dark:text-[#34D399] border-brand-dark",
+                Mathematics: "bg-[#FFFDE8] dark:bg-[#78350F] text-[#D97706] dark:text-[#FBBF24] border-brand-dark",
+                AI: "bg-[#FFF0F6] dark:bg-[#5B21B6] text-[#EC4899] dark:text-[#F472B6] border-brand-dark"
               };
 
               return (
@@ -199,7 +199,7 @@ export default function ResourceLibraryPage() {
                       {/* Bookmark button */}
                       <button 
                         onClick={() => toggleBookmark(res.id)}
-                        className="p-1.5 border border-brand-dark/20 rounded-lg bg-white hover:bg-brand-cream"
+                        className="p-1.5 border border-brand-dark/20 rounded-lg bg-card-bg hover:bg-brand-cream"
                       >
                         <Star size={14} className={isBookmarked ? "text-brand-yellow fill-brand-yellow stroke-brand-dark" : "text-gray-400"} />
                       </button>

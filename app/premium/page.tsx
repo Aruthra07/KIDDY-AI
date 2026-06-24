@@ -150,15 +150,15 @@ export default function PremiumStorePage() {
   const categories = ["All", "AI", "Robotics", "Coding", "Mathematics", "Science"];
 
   return (
-    <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-brand-cream text-brand-dark transition-colors duration-200">
       <SideNav />
 
       <main className="flex-1 flex flex-col min-w-0 font-sans p-6 overflow-y-auto max-h-screen custom-scrollbar">
         
         {/* Header Block */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-card-border dark:border-gray-800">
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b-2 border-brand-dark/15">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight text-brand-dark flex items-center gap-2">
               <Layers className="text-yellow-500" size={24} />
               Premium Module Store
             </h1>
@@ -174,7 +174,7 @@ export default function PremiumStorePage() {
               placeholder="Search store modules..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-xl py-2 pl-10 pr-4 text-xs focus:outline-none focus:border-accent shadow-sm"
+              className="w-full bg-brand-cream border-2 border-brand-dark rounded-full py-2 pl-10 pr-4 text-xs focus:outline-none focus:bg-card-bg shadow-sm"
             />
           </div>
         </header>
@@ -202,12 +202,12 @@ export default function PremiumStorePage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col justify-between">
             <div className="flex items-center gap-2 mb-2">
               <span className="p-1.5 bg-yellow-100 dark:bg-yellow-950/40 text-yellow-500 rounded-lg">
                 <Award size={16} fill="currentColor" />
               </span>
-              <h3 className="text-sm font-extrabold text-gray-900 dark:text-white">Store Analytics</h3>
+              <h3 className="text-sm font-extrabold text-brand-dark">Store Analytics</h3>
             </div>
             <div className="space-y-3 font-display">
               <div className="flex justify-between items-center text-xs">
@@ -230,15 +230,15 @@ export default function PremiumStorePage() {
         </section>
 
         {/* Filter categories tabs */}
-        <section className="flex flex-wrap gap-1.5 pb-6">
+        <section className="flex flex-wrap gap-2 pb-6">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setFilterCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full border-2 text-xs font-black transition-all cursor-pointer ${
                 filterCategory === cat
-                  ? "bg-accent text-white"
-                  : "bg-white dark:bg-[#111827] text-gray-700 dark:text-gray-300 border border-card-border dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                  : "bg-card-bg text-brand-dark border-brand-dark/20 hover:border-brand-dark hover:bg-brand-sky"
               }`}
             >
               {cat}
@@ -260,13 +260,13 @@ export default function PremiumStorePage() {
                 return (
                   <div
                     key={mod.id}
-                    className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:border-yellow-500 transition-all flex flex-col justify-between relative group"
+                    className="card-bubble p-5 flex flex-col justify-between relative group"
                   >
                     {/* Favorite Button */}
                     <button
                       onClick={() => handleToggleWishlist(mod.id)}
-                      className={`absolute top-4 right-4 p-1.5 rounded-full border border-card-border dark:border-gray-800 bg-white dark:bg-[#111827] shadow transition cursor-pointer hover:scale-105 active:scale-95 ${
-                        isSaved ? "text-red-500 fill-red-500 border-red-200" : "text-gray-400"
+                      className={`absolute top-4 right-4 p-1.5 rounded-full border border-brand-dark/20 bg-card-bg shadow transition cursor-pointer hover:scale-105 active:scale-95 z-10 ${
+                        isSaved ? "text-brand-pink fill-brand-pink border-brand-pink" : "text-gray-400"
                       }`}
                     >
                       <Heart size={14} />
@@ -274,21 +274,21 @@ export default function PremiumStorePage() {
 
                     <div>
                       {/* Emoji Icon Container */}
-                      <span className="bg-bg-light dark:bg-[#0B1120] border border-card-border dark:border-gray-800 w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-accent">
+                      <span className="bg-brand-cream border-2 border-brand-dark w-12 h-12 rounded-xl flex items-center justify-center shadow-inner text-brand-blue">
                         <EmojiOrSvg emoji={mod.thumbnail || "sparkles"} className="w-6 h-6" />
                       </span>
                       
                       {/* Tags */}
                       <div className="flex gap-1.5 mt-3.5">
-                        <span className="bg-yellow-50 dark:bg-yellow-950/20 text-yellow-600 dark:text-yellow-400 text-[9px] font-black px-2 py-0.5 rounded-full border border-yellow-100 dark:border-yellow-950/50 uppercase">
+                        <span className="bg-brand-yellow/20 text-brand-dark border border-brand-dark text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
                           {mod.category}
                         </span>
-                        <span className="bg-[#0EA5E9]/10 text-accent text-[9px] font-black px-2 py-0.5 rounded-full border border-[#0EA5E9]/20 uppercase">
+                        <span className="bg-brand-sky text-brand-blue border border-brand-dark text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
                           {mod.difficulty}
                         </span>
                       </div>
 
-                      <h3 className="text-sm font-extrabold text-gray-900 dark:text-white mt-2 line-clamp-1">
+                      <h3 className="text-sm font-extrabold text-brand-dark mt-2 line-clamp-1">
                         {mod.title}
                       </h3>
                       
@@ -307,15 +307,15 @@ export default function PremiumStorePage() {
                     </div>
 
                     {/* Price and CTA */}
-                    <div className="mt-5 pt-3 border-t border-card-border dark:border-gray-800 flex items-center justify-between gap-3 font-display">
+                    <div className="mt-5 pt-3 border-t border-brand-dark/10 flex items-center justify-between gap-3 font-display">
                       <div>
                         <p className="text-[10px] text-text-muted">Price</p>
-                        <p className="text-base font-extrabold text-gray-900 dark:text-white">${mod.price.toFixed(2)}</p>
+                        <p className="text-base font-extrabold text-brand-dark">${mod.price.toFixed(2)}</p>
                       </div>
 
                       <Link
                         href={`/premium/${mod.id}`}
-                        className="btn-modern btn-modern-accent py-1.5 px-4 text-xs font-black"
+                        className="btn-3d btn-3d-yellow py-1.5 px-4 text-xs"
                       >
                         Inspect Module
                       </Link>

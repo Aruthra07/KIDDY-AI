@@ -49,14 +49,14 @@ export default function PortfolioPage({ params }: { params: any }) {
   }, [id, user]);
 
   return (
-    <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-brand-cream text-brand-dark transition-colors duration-200">
       <SideNav />
 
       <main className="flex-grow p-6 overflow-y-auto max-h-screen custom-scrollbar font-sans font-display">
         
         {/* Back navigation */}
         <div className="pb-4">
-          <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline">
+          <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs font-bold text-brand-blue hover:underline">
             <ArrowLeft size={12} /> Back to Dashboard
           </Link>
         </div>
@@ -65,37 +65,37 @@ export default function PortfolioPage({ params }: { params: any }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Main User Card (Col Span 4) */}
-          <div className="lg:col-span-4 bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col items-center justify-between text-center gap-4">
+          <div className="lg:col-span-4 bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col items-center justify-between text-center gap-4">
             
-            <div className="relative w-28 h-28 bg-brand-cream border border-card-border dark:border-gray-800 rounded-full flex items-center justify-center shadow-inner text-accent">
+            <div className="relative w-28 h-28 bg-brand-cream border-2 border-brand-dark rounded-full flex items-center justify-center shadow-inner text-brand-blue">
               <EmojiOrSvg emoji={student.avatar} className="w-16 h-16" />
-              <span className="absolute -bottom-2 bg-accent text-white border-2 border-white dark:border-gray-900 px-3.5 py-0.5 rounded-full text-[10px] font-black shadow-sm">
+              <span className="absolute -bottom-2 bg-brand-blue text-white border-2 border-brand-dark px-3.5 py-0.5 rounded-full text-[10px] font-black shadow-sm">
                 Lv. {student.level}
               </span>
             </div>
 
             <div>
-              <h2 className="text-lg font-black text-gray-900 dark:text-white mt-2">{student.name}</h2>
-              <p className="text-xs text-text-muted dark:text-gray-400 mt-1">{student.school} • {student.grade}</p>
+              <h2 className="text-lg font-black text-brand-dark mt-2">{student.name}</h2>
+              <p className="text-xs text-text-muted mt-1">{student.school} • {student.grade}</p>
             </div>
 
-            <div className="w-full h-[1px] bg-card-border dark:bg-gray-800/80 my-2" />
+            <div className="w-full h-[2px] bg-brand-dark/15 my-2" />
 
             {/* Micro stats widgets */}
             <div className="flex gap-4 text-center justify-center font-bold text-xs">
               <div>
-                <p className="text-[9px] text-text-muted uppercase">Streak</p>
-                <p className="text-gray-800 dark:text-gray-200">{student.streak} Days</p>
+                <p className="text-[9px] text-text-muted uppercase font-black">Streak</p>
+                <p className="text-brand-dark font-black">{student.streak} Days</p>
               </div>
-              <div className="w-[1px] h-6 bg-card-border dark:bg-gray-800" />
+              <div className="w-[2px] h-6 bg-brand-dark/15" />
               <div>
-                <p className="text-[9px] text-text-muted uppercase">Unlocked Badges</p>
-                <p className="text-gray-800 dark:text-gray-200">{student.badges.length}</p>
+                <p className="text-[9px] text-text-muted uppercase font-black">Unlocked Badges</p>
+                <p className="text-brand-dark font-black">{student.badges.length}</p>
               </div>
             </div>
 
             {/* Email contact block */}
-            <button className="btn-modern btn-modern-outline py-2.5 px-6 text-xs w-full flex items-center justify-center gap-2">
+            <button className="btn-3d btn-3d-white py-2.5 px-6 text-xs w-full flex items-center justify-center gap-2">
               <Mail size={14} /> Send message
             </button>
           </div>
@@ -104,36 +104,36 @@ export default function PortfolioPage({ params }: { params: any }) {
           <div className="lg:col-span-8 flex flex-col gap-6">
             
             {/* Bento Block: Badge Case */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-              <h3 className="text-xs font-black text-gray-900 dark:text-white uppercase mb-4 border-b border-card-border dark:border-gray-800 pb-2 flex items-center gap-1.5">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+              <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
                 <Trophy size={14} className="text-yellow-500 fill-yellow-500 stroke-brand-dark" /> Unlocked STEM Achievements
               </h3>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {student.badges.map((badge: string, idx: number) => (
-                  <div key={idx} className="border border-card-border dark:border-gray-800 rounded-2xl p-2.5 bg-bg-light dark:bg-[#0B1120]/40 flex flex-col items-center gap-2 text-center shadow-sm">
-                    <EmojiOrSvg emoji="award" className="w-6 h-6 text-accent" />
-                    <span className="text-[9px] font-black text-gray-800 dark:text-gray-300 line-clamp-1 w-full">{badge}</span>
+                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-2.5 bg-brand-cream flex flex-col items-center gap-2 text-center shadow-[1.5px_1.5px_0px_#1F2937]">
+                    <EmojiOrSvg emoji="award" className="w-6 h-6 text-brand-blue" />
+                    <span className="text-[9px] font-black text-brand-dark line-clamp-1 w-full">{badge}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Bento Block: Completed Projects */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-              <h3 className="text-xs font-black text-gray-900 dark:text-white uppercase mb-4 border-b border-card-border dark:border-gray-800 pb-2 flex items-center gap-1.5">
-                <BookOpen size={14} className="text-accent" /> Showcase Projects Portfolio
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+              <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
+                <BookOpen size={14} className="text-brand-blue" /> Showcase Projects Portfolio
               </h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {student.projects.map((proj: any, idx: number) => (
-                  <div key={idx} className="border border-card-border dark:border-gray-800 rounded-2xl p-4 bg-bg-light dark:bg-[#0B1120]/40 flex flex-col justify-between h-32">
+                  <div key={idx} className="border-2 border-brand-dark rounded-2xl p-4 bg-brand-cream flex flex-col justify-between h-32 shadow-[2px_2px_0px_#1F2937]">
                     <div>
-                      <span className="bg-[#0EA5E9]/10 text-accent text-[9px] font-black uppercase px-2 py-0.5 rounded border border-[#0EA5E9]/20 self-start inline-block">
+                      <span className="bg-brand-sky text-brand-blue text-[9px] font-black uppercase px-2 py-0.5 rounded border border-brand-dark self-start inline-block">
                         {proj.category}
                       </span>
-                      <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-2 truncate">{proj.name}</h4>
-                      <p className="text-[10px] text-text-muted dark:text-gray-400 mt-1 line-clamp-2 font-sans">{proj.description}</p>
+                      <h4 className="text-xs font-bold text-brand-dark mt-2 truncate">{proj.name}</h4>
+                      <p className="text-[10px] text-text-muted mt-1 line-clamp-2 font-sans font-bold">{proj.description}</p>
                     </div>
                   </div>
                 ))}
@@ -141,24 +141,24 @@ export default function PortfolioPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block: Verified Certificates */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-              <h3 className="text-xs font-black text-gray-900 dark:text-white uppercase mb-4 border-b border-card-border dark:border-gray-800 pb-2 flex items-center gap-1.5">
-                <ShieldCheck size={14} className="text-emerald-500" /> Verified Course Certificates
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+              <h3 className="text-xs font-black text-brand-dark uppercase mb-4 border-b-2 border-brand-dark/10 pb-2 flex items-center gap-1.5">
+                <ShieldCheck size={14} className="text-brand-green" /> Verified Course Certificates
               </h3>
               
               <div className="space-y-2.5">
                 {certificates.length === 0 ? (
-                  <div className="text-xs text-text-muted dark:text-gray-400 py-2 italic text-center">
+                  <div className="text-xs text-text-muted py-2 italic text-center font-bold">
                     No verified certifications in public records yet.
                   </div>
                 ) : (
                   certificates.map(cert => (
-                    <div key={cert.id} className="border border-card-border dark:border-gray-800 rounded-xl p-3 bg-emerald-50/20 dark:bg-emerald-950/10 flex items-center justify-between text-xs font-bold">
+                    <div key={cert.id} className="border-2 border-brand-dark rounded-xl p-3 bg-brand-green/10 flex items-center justify-between text-xs font-bold shadow-[2px_2px_0px_#1F2937]">
                       <div className="min-w-0">
-                        <p className="text-gray-950 dark:text-white truncate">{cert.courseTitle}</p>
+                        <p className="text-brand-dark truncate">{cert.courseTitle}</p>
                         <p className="text-[9px] text-text-muted font-bold">Certificate Verification: {cert.certificateNumber}</p>
                       </div>
-                      <span className="bg-emerald-100 text-emerald-700 border border-emerald-200 px-3 py-0.5 rounded-full text-[9px] font-black uppercase shrink-0 shadow-sm">Verified</span>
+                      <span className="bg-brand-green text-brand-dark border-2 border-brand-dark px-3 py-0.5 rounded-full text-[9px] font-black uppercase shrink-0 shadow-sm">Verified</span>
                     </div>
                   ))
                 )}

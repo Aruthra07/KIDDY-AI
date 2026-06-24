@@ -75,21 +75,21 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-4 py-12">
-      <div className="max-w-md w-full bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+    <main className="min-h-screen bg-brand-cream flex items-center justify-center p-4 py-12 text-brand-dark font-display">
+      <div className="max-w-md w-full bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] p-8">
         
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
-            <div className="w-10 h-10 bg-[#0EA5E9] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            <div className="w-10 h-10 bg-brand-blue border-2 border-brand-dark rounded-xl flex items-center justify-center text-white font-black text-lg shadow-[1.5px_1.5px_0px_#1F2937]">
               K
             </div>
-            <span className="font-sans text-xl font-bold text-[#111827]">
-              Kiddy <span className="text-[#0EA5E9]">AI</span>
+            <span className="font-sans text-xl font-black text-brand-dark">
+              Kiddy <span className="text-brand-blue">AI</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#111827] tracking-tight">Create Your Account</h1>
-          <p className="text-sm text-gray-500 mt-1">Begin your guided learning quest today</p>
+          <h1 className="text-2xl font-black text-brand-dark tracking-tight">Create Your Account</h1>
+          <p className="text-sm text-text-muted mt-1 font-bold">Begin your guided learning quest today</p>
         </div>
 
         {/* Error/Info Alerts */}
@@ -108,7 +108,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Full Name</label>
+            <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Full Name</label>
             <div className="relative">
               <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
@@ -117,13 +117,13 @@ export default function SignupPage() {
                 placeholder="Alex Smith"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                className="w-full pl-11 pr-4 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Email Address</label>
+            <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
@@ -132,13 +132,13 @@ export default function SignupPage() {
                 placeholder="you@school.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                className="w-full pl-11 pr-4 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Password</label>
+            <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Password</label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
@@ -147,17 +147,17 @@ export default function SignupPage() {
                 placeholder="•••••••• (Min 6 characters)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                className="w-full pl-11 pr-4 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Select Role</label>
+            <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Select Role</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+              className="w-full px-3 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
             >
               <option value="student">Student Explorer</option>
               <option value="parent">Parent Monitor</option>
@@ -167,7 +167,7 @@ export default function SignupPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">School (Optional)</label>
+              <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">School (Optional)</label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <input
@@ -175,13 +175,13 @@ export default function SignupPage() {
                   placeholder="Greenwood"
                   value={school}
                   onChange={(e) => setSchool(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                  className="w-full pl-9 pr-3 py-2 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Grade / Level (Optional)</label>
+              <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Grade / Level (Optional)</label>
               <div className="relative">
                 <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <input
@@ -189,7 +189,7 @@ export default function SignupPage() {
                   placeholder="Grade 5"
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                  className="w-full pl-9 pr-3 py-2 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
                 />
               </div>
             </div>
@@ -198,7 +198,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-[#0EA5E9] hover:bg-[#0284c7] text-white rounded-xl font-semibold text-sm transition shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full btn-3d btn-3d-blue py-2.5 font-black text-sm flex items-center justify-center gap-2"
           >
             <UserPlus size={18} />
             {loading ? "Creating..." : "Sign Up"}
@@ -207,17 +207,17 @@ export default function SignupPage() {
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
+            <div className="w-full border-t-2 border-brand-dark/15"></div>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-3 text-gray-500 font-medium">Or Sign Up with</span>
+            <span className="bg-card-bg px-3 text-text-muted font-bold">Or Sign Up with</span>
           </div>
         </div>
 
         <button
           onClick={handleGoogleSignup}
           type="button"
-          className="w-full py-2.5 border border-gray-300 rounded-xl bg-white hover:bg-gray-50 text-[#111827] text-sm font-semibold transition flex items-center justify-center gap-2.5 cursor-pointer"
+          className="w-full btn-3d btn-3d-white py-2.5 font-black text-sm flex items-center justify-center gap-2.5"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -240,9 +240,9 @@ export default function SignupPage() {
           Google
         </button>
 
-        <p className="text-center text-sm text-gray-500 mt-8">
+        <p className="text-center text-sm text-text-muted mt-8 font-bold">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#0EA5E9] hover:underline font-semibold">Log In</Link>
+          <Link href="/login" className="text-brand-blue hover:underline font-black">Log In</Link>
         </p>
       </div>
     </main>

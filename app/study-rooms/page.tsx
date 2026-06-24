@@ -64,13 +64,13 @@ export default function StudyRoomsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-brand-cream text-brand-dark transition-colors duration-200">
       <SideNav />
 
       <main className="flex-1 flex flex-col min-w-0 font-sans p-6 overflow-y-auto max-h-screen custom-scrollbar">
         
         {/* Header Title */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-card-border dark:border-gray-800">
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b-2 border-brand-dark/15">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
               <Users className="text-[#0EA5E9]" size={24} />
@@ -87,8 +87,8 @@ export default function StudyRoomsPage() {
           
           {/* Left panel: Channels sidebar */}
           <div className="lg:col-span-3 flex flex-col gap-4">
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-4 shadow-sm">
-              <h3 className="text-xs font-black text-gray-900 dark:text-white uppercase mb-3 border-b border-card-border dark:border-gray-850 pb-2">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-4 shadow-[4px_4px_0px_#1F2937]">
+              <h3 className="text-xs font-black text-brand-dark uppercase mb-3 border-b-2 border-brand-dark/10 pb-2">
                 Voice Channels
               </h3>
 
@@ -102,15 +102,15 @@ export default function StudyRoomsPage() {
                     }}
                     className={`text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between cursor-pointer ${
                       activeRoom === room.name
-                        ? "bg-accent/15 text-accent border border-accent/25"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 border border-transparent"
+                        ? "bg-brand-blue text-white border-2 border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]"
+                        : "text-brand-dark hover:bg-brand-sky border-2 border-transparent"
                     }`}
                   >
                     <span className="flex items-center gap-2">
                       <Terminal size={12} />
                       <span>{room.name}</span>
                     </span>
-                    <span className="text-[10px] text-text-muted bg-bg-light dark:bg-[#0b1120] px-2 py-0.5 rounded-full font-black">
+                    <span className="text-[10px] border border-brand-dark bg-brand-cream text-brand-dark px-2 py-0.5 rounded-full font-black">
                       {room.count} online
                     </span>
                   </button>
@@ -119,17 +119,17 @@ export default function StudyRoomsPage() {
             </div>
 
             {/* Immersive Group Study Timer */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
-              <h3 className="text-xs font-black text-gray-900 dark:text-white uppercase flex items-center gap-1.5">
-                <Timer size={14} className="text-accent" /> Group Study Timer
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4">
+              <h3 className="text-xs font-black text-brand-dark uppercase flex items-center gap-1.5">
+                <Timer size={14} className="text-brand-blue" /> Group Study Timer
               </h3>
               
-              <div className="flex flex-col items-center justify-center bg-bg-light dark:bg-[#0B1120]/60 border border-card-border dark:border-gray-800/80 p-3.5 rounded-2xl gap-3">
-                <span className="font-mono text-2xl font-black text-accent">{formatTime(timerSeconds)}</span>
+              <div className="flex flex-col items-center justify-center bg-brand-cream border-2 border-brand-dark p-3.5 rounded-2xl gap-3">
+                <span className="font-mono text-2xl font-black text-brand-blue">{formatTime(timerSeconds)}</span>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setIsTimerRunning(!isTimerRunning)}
-                    className="px-3.5 py-1 bg-accent text-white text-[10px] font-black rounded-lg cursor-pointer flex items-center gap-1 hover:bg-accent/80"
+                    className="btn-3d btn-3d-blue py-1 px-3 text-[10px]"
                   >
                     <Play size={10} fill="currentColor" /> {isTimerRunning ? "Pause" : "Start"}
                   </button>
@@ -138,7 +138,7 @@ export default function StudyRoomsPage() {
                       setIsTimerRunning(false);
                       setTimerSeconds(1500);
                     }}
-                    className="px-3.5 py-1 border border-card-border dark:border-gray-850 text-text-muted text-[10px] font-black rounded-lg cursor-pointer hover:bg-bg-light dark:hover:bg-gray-800"
+                    className="btn-3d btn-3d-white py-1 px-3 text-[10px]"
                   >
                     Reset
                   </button>
@@ -149,28 +149,28 @@ export default function StudyRoomsPage() {
 
           {/* Right panel: Active Room Area */}
           <div className="lg:col-span-9 flex flex-col gap-6">
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937] flex flex-col justify-between">
               
               {/* Header metadata */}
-              <div className="flex justify-between items-center border-b border-card-border dark:border-gray-800 pb-3.5 mb-5">
+              <div className="flex justify-between items-center border-b-4 border-brand-dark/10 pb-3.5 mb-5">
                 <div>
-                  <h3 className="text-sm font-black text-gray-900 dark:text-white">Active Channel: {activeRoom}</h3>
-                  <p className="text-[10px] text-text-muted mt-0.5">Topic: {rooms.find(r => r.name === activeRoom)?.topic}</p>
+                  <h3 className="text-sm font-black text-brand-dark">Active Channel: {activeRoom}</h3>
+                  <p className="text-[10px] text-gray-500 mt-0.5 uppercase font-bold">Topic: {rooms.find(r => r.name === activeRoom)?.topic}</p>
                 </div>
 
                 <button
                   onClick={handleToggleConnection}
-                  className={`btn-modern text-xs py-1.5 px-4 font-black flex items-center gap-1.5 shadow ${
-                    isConnected ? "bg-red-500 text-white hover:bg-red-600" : "btn-modern-primary"
+                  className={`btn-3d py-1.5 px-4 text-xs ${
+                    isConnected ? "bg-red-500 hover:bg-red-600 text-white" : "btn-3d-blue"
                   }`}
                 >
                   {isConnected ? (
                     <>
-                      <PhoneOff size={14} /> Disconnect
+                      <PhoneOff size={14} className="mr-1" /> Disconnect
                     </>
                   ) : (
                     <>
-                      <Mic size={14} /> Join Voice Channel
+                      <Mic size={14} className="mr-1" /> Join Voice Channel
                     </>
                   )}
                 </button>
@@ -182,23 +182,23 @@ export default function StudyRoomsPage() {
                   {participants.map(p => (
                     <div 
                       key={p.name} 
-                      className="border border-card-border dark:border-gray-800 bg-bg-light dark:bg-[#0B1120]/40 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-4 relative shadow-sm"
+                      className="border-2 border-brand-dark bg-brand-cream rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-4 relative shadow-[2px_2px_0px_#1F2937]"
                     >
                       {/* Avatar */}
-                      <span className="w-12 h-12 flex items-center justify-center bg-brand-cream border-2 border-brand-dark rounded-2xl shadow-inner text-accent animate-bounce-slow">
+                      <span className="w-12 h-12 flex items-center justify-center bg-card-bg border-2 border-brand-dark rounded-2xl shadow-inner text-brand-blue animate-bounce-slow">
                         <EmojiOrSvg emoji={p.avatar} className="w-8 h-8" />
                       </span>
                       <div>
-                        <p className="text-xs font-black text-gray-900 dark:text-white">{p.name}</p>
+                        <p className="text-xs font-black text-brand-dark">{p.name}</p>
                         <div className="flex items-center justify-center gap-1.5 mt-2">
-                          <span className={`w-2 h-2 rounded-full ${p.isMic ? "bg-green-500" : "bg-red-500 animate-pulse"}`} />
-                          <span className="text-[8px] text-text-muted font-bold uppercase">{p.isMic ? "Mic On" : "Muted"}</span>
+                          <span className={`w-2 h-2 rounded-full ${p.isMic ? "bg-brand-green border border-brand-dark" : "bg-brand-pink border border-brand-dark animate-pulse"}`} />
+                          <span className="text-[8px] text-gray-500 font-black uppercase">{p.isMic ? "Mic On" : "Muted"}</span>
                         </div>
                       </div>
 
                       {/* Video Camera box status placeholder */}
                       {p.isCam && (
-                        <div className="absolute inset-0 bg-[#0ea5e9]/10 rounded-2xl pointer-events-none border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">
+                        <div className="absolute inset-0 bg-brand-blue/10 rounded-2xl pointer-events-none border border-brand-dark flex items-center justify-center text-brand-blue text-xs font-black">
                           Camera active
                         </div>
                       )}
@@ -206,8 +206,8 @@ export default function StudyRoomsPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-20 text-xs text-text-muted dark:text-gray-400 flex flex-col items-center gap-3">
-                  <div className="flex justify-center text-accent mb-2 animate-pulse">
+                <div className="text-center py-20 text-xs text-gray-500 font-bold flex flex-col items-center gap-3">
+                  <div className="flex justify-center text-brand-blue mb-2 animate-pulse">
                     <EmojiOrSvg emoji="satellite" className="w-12 h-12" />
                   </div>
                   <p>Join the channel to connect LiveKit micro-sessions, mic nodes, and group screen-shares!</p>
@@ -216,40 +216,40 @@ export default function StudyRoomsPage() {
 
               {/* Discord controls bar */}
               {isConnected && (
-                <div className="border-t border-card-border dark:border-gray-800 pt-5 flex flex-wrap gap-3 items-center justify-center font-display">
+                <div className="border-t-4 border-brand-dark/10 pt-5 flex flex-wrap gap-3 items-center justify-center font-display">
                   <button
                     onClick={() => setIsMuted(!isMuted)}
-                    className={`p-2.5 rounded-xl border transition cursor-pointer flex items-center gap-1.5 text-xs font-bold ${
+                    className={`btn-3d py-2 px-4 text-xs ${
                       isMuted 
-                        ? "bg-red-100 border-red-200 text-red-500" 
-                        : "bg-bg-light dark:bg-[#0b1120] border-card-border dark:border-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "bg-red-500 text-white" 
+                        : "btn-3d-white"
                     }`}
                   >
-                    <Mic size={14} />
+                    <Mic size={14} className="mr-1" />
                     <span>{isMuted ? "Unmute Mic" : "Mute Mic"}</span>
                   </button>
 
                   <button
                     onClick={() => setIsCamOn(!isCamOn)}
-                    className={`p-2.5 rounded-xl border transition cursor-pointer flex items-center gap-1.5 text-xs font-bold ${
+                    className={`btn-3d py-2 px-4 text-xs ${
                       isCamOn 
-                        ? "bg-accent text-white border-accent" 
-                        : "bg-bg-light dark:bg-[#0b1120] border-card-border dark:border-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "btn-3d-blue text-white" 
+                        : "btn-3d-white"
                     }`}
                   >
-                    <Video size={14} />
+                    <Video size={14} className="mr-1" />
                     <span>{isCamOn ? "Stop Cam" : "Share Cam"}</span>
                   </button>
 
                   <button
                     onClick={() => setIsSharing(!isSharing)}
-                    className={`p-2.5 rounded-xl border transition cursor-pointer flex items-center gap-1.5 text-xs font-bold ${
+                    className={`btn-3d py-2 px-4 text-xs ${
                       isSharing 
-                        ? "bg-emerald-500 text-white border-emerald-500" 
-                        : "bg-bg-light dark:bg-[#0b1120] border-card-border dark:border-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "btn-3d-green text-white" 
+                        : "btn-3d-white"
                     }`}
                   >
-                    <Share2 size={14} />
+                    <Share2 size={14} className="mr-1" />
                     <span>{isSharing ? "Stop Sharing" : "Share Screen"}</span>
                   </button>
                 </div>

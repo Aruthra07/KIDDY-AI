@@ -205,7 +205,7 @@ export default function CourseDetailsPage() {
 
         {/* NOT ENROLLED VIEW */}
         {!isEnrolled ? (
-          <section className="bg-white border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center font-display">
+          <section className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-10 shadow-[6px_6px_0px_#1F2937] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center font-display">
             <div className="lg:col-span-8 flex flex-col gap-4">
               <span className="bg-brand-pink text-white border-2 border-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[2px_2px_0px_#1F2937] w-fit">
                 New Adventure Detected
@@ -255,7 +255,7 @@ export default function CourseDetailsPage() {
             <div className="lg:col-span-8 flex flex-col gap-6">
               
               {/* Workspace Header */}
-              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white border-4 border-brand-dark rounded-2xl p-4 shadow-[3px_3px_0px_#1F2937]">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-card-bg border-4 border-brand-dark rounded-2xl p-4 shadow-[3px_3px_0px_#1F2937]">
                 <div>
                   <span className="text-[10px] bg-brand-green/30 border border-brand-dark/20 text-brand-dark px-2.5 py-0.5 rounded-full font-black uppercase">Active Mission</span>
                   <h2 className="text-base sm:text-lg font-black text-brand-dark mt-1 leading-snug">{course.title}</h2>
@@ -271,7 +271,7 @@ export default function CourseDetailsPage() {
               </div>
 
               {/* VIDEO FRAME & TABS CONTAINER */}
-              <div className="bg-white border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] overflow-hidden">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] overflow-hidden">
                 
                 {/* Tab selectors */}
                 <div className="flex border-b-4 border-brand-dark text-xs font-black">
@@ -318,7 +318,7 @@ export default function CourseDetailsPage() {
 
                       {/* Lesson Quiz Module */}
                       {activeLesson.quizzes && activeLesson.quizzes.length > 0 && (
-                        <div className="border-3 border-brand-dark bg-white rounded-2xl p-5 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 mt-2">
+                        <div className="border-3 border-brand-dark bg-card-bg rounded-2xl p-5 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 mt-2">
                           <h4 className="text-sm font-black text-brand-blue uppercase flex items-center gap-1.5">
                             <Star size={16} className="text-brand-yellow fill-brand-yellow stroke-brand-dark" />
                             Lesson Challenge Quiz
@@ -333,7 +333,7 @@ export default function CourseDetailsPage() {
                               const isSelected = selectedOption === idx;
                               const isCorrectAnswer = activeLesson.quizzes?.[0].correctOption === idx;
                               
-                              let optionClass = "bg-white hover:bg-brand-sky border-brand-dark/20";
+                              let optionClass = "bg-card-bg hover:bg-brand-sky border-brand-dark/20";
                               if (isSelected) optionClass = "bg-brand-blue text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]";
                               if (quizSubmitted && isCorrectAnswer) optionClass = "bg-brand-green border-brand-dark text-brand-dark font-black shadow-[1.5px_1.5px_0px_#1F2937]";
                               if (quizSubmitted && isSelected && !isCorrectAnswer) optionClass = "bg-brand-pink text-white border-brand-dark shadow-[1.5px_1.5px_0px_#1F2937]";
@@ -389,7 +389,7 @@ export default function CourseDetailsPage() {
 
                   {/* Tab 2: Notes */}
                   {activeTab === "notes" && (
-                    <div className="bg-white border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
+                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
                       <div className="flex items-center gap-2 text-brand-blue border-b-2 border-brand-dark pb-2">
                         <FileText size={20} />
                         <h3 className="text-lg font-black">Interactive Lecture Notes</h3>
@@ -421,7 +421,7 @@ export default function CourseDetailsPage() {
 
                   {/* Tab 3: Assignments */}
                   {activeTab === "assignment" && (
-                    <div className="bg-white border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
+                    <div className="bg-card-bg border-3 border-brand-dark rounded-2xl p-6 shadow-[3px_3px_0px_#1F2937] flex flex-col gap-4 text-left">
                       <div className="flex items-center gap-2 text-brand-pink border-b-2 border-brand-dark pb-2">
                         <UploadCloud size={20} />
                         <h3 className="text-lg font-black">Project Homework submission</h3>
@@ -493,7 +493,7 @@ export default function CourseDetailsPage() {
             <div className="lg:col-span-4 flex flex-col gap-6">
               
               {/* STAGES / LESSONS SELECT PANEL */}
-              <div className="bg-white border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
                 <h3 className="text-base font-black text-brand-dark border-b-2 border-brand-dark pb-2 flex items-center gap-1.5">
                   <BookOpen size={16} /> Course Stages
                 </h3>
@@ -510,7 +510,7 @@ export default function CourseDetailsPage() {
                         className={`flex items-center justify-between p-3 border-2 border-brand-dark rounded-2xl cursor-pointer transition-all ${
                           isLessonActive 
                             ? "bg-brand-blue text-white shadow-[2px_2px_0px_#1F2937] translate-y-[-1px]" 
-                            : "bg-brand-cream hover:bg-white"
+                            : "bg-brand-cream hover:bg-card-bg"
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -535,7 +535,7 @@ export default function CourseDetailsPage() {
               </div>
 
               {/* AI TUTOR PANEL - KIDDY BOT */}
-              <div className="bg-white border-4 border-brand-dark rounded-3xl overflow-hidden shadow-[4px_4px_0px_#1F2937] flex flex-col h-96">
+              <div className="bg-card-bg border-4 border-brand-dark rounded-3xl overflow-hidden shadow-[4px_4px_0px_#1F2937] flex flex-col h-96">
                 
                 {/* AI Header */}
                 <div className="p-3 bg-brand-pink text-white font-display font-black border-b-4 border-brand-dark flex items-center justify-between">
@@ -543,7 +543,7 @@ export default function CourseDetailsPage() {
                     <Bot size={18} className="animate-bounce-slow" />
                     <span>Kiddy AI Tutor</span>
                   </div>
-                  <span className="bg-white text-brand-pink border border-brand-dark text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-card-bg text-brand-pink border border-brand-dark text-[9px] font-bold px-2 py-0.5 rounded-full">
                     Active
                   </span>
                 </div>
@@ -556,21 +556,21 @@ export default function CourseDetailsPage() {
                       className={`flex flex-col max-w-[85%] rounded-2xl border-2 border-brand-dark p-2.5 font-display text-xs ${
                         chat.sender === "user" 
                           ? "self-end bg-brand-cream text-brand-dark rounded-tr-none" 
-                          : "self-start bg-white text-brand-dark rounded-tl-none shadow-sm"
+                          : "self-start bg-card-bg text-brand-dark rounded-tl-none shadow-sm"
                       }`}
                     >
                       <p className="font-semibold leading-relaxed">{chat.text}</p>
                     </div>
                   ))}
                   {aiLoading && (
-                    <div className="self-start bg-white border-2 border-brand-dark rounded-2xl rounded-tl-none p-2 font-display text-xs text-gray-500 animate-pulse">
+                    <div className="self-start bg-card-bg border-2 border-brand-dark rounded-2xl rounded-tl-none p-2 font-display text-xs text-gray-500 animate-pulse">
                       Thinking helper thought...
                     </div>
                   )}
                 </div>
 
                 {/* Input form */}
-                <form onSubmit={handleSendAi} className="p-2 border-t-4 border-brand-dark bg-white flex gap-2">
+                <form onSubmit={handleSendAi} className="p-2 border-t-4 border-brand-dark bg-card-bg flex gap-2">
                   <input
                     type="text"
                     placeholder="Ask a question..."

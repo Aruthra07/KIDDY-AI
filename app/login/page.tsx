@@ -57,21 +57,21 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+    <main className="min-h-screen bg-brand-cream flex items-center justify-center p-4 text-brand-dark font-display">
+      <div className="max-w-md w-full bg-card-bg border-4 border-brand-dark rounded-3xl shadow-[5px_5px_0px_#1F2937] p-8">
         
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
-            <div className="w-10 h-10 bg-[#0EA5E9] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            <div className="w-10 h-10 bg-brand-blue border-2 border-brand-dark rounded-xl flex items-center justify-center text-white font-black text-lg shadow-[1.5px_1.5px_0px_#1F2937]">
               K
             </div>
-            <span className="font-sans text-xl font-bold text-[#111827]">
-              Kiddy <span className="text-[#0EA5E9]">AI</span>
+            <span className="font-sans text-xl font-black text-brand-dark">
+              Kiddy <span className="text-brand-blue">AI</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#111827] tracking-tight">Welcome Back Explorer</h1>
-          <p className="text-sm text-gray-500 mt-1">Ready to resume your learning adventure?</p>
+          <h1 className="text-2xl font-black text-brand-dark tracking-tight">Welcome Back Explorer</h1>
+          <p className="text-sm text-text-muted mt-1 font-bold">Ready to resume your learning adventure?</p>
         </div>
 
         {/* Error/Info Alerts */}
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Email Address</label>
+            <label className="block text-xs font-black text-brand-dark uppercase tracking-wider mb-1">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
@@ -99,15 +99,15 @@ export default function LoginPage() {
                 placeholder="you@school.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                className="w-full pl-11 pr-4 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Password</label>
-              <Link href="/forgot-password" className="text-xs text-[#0EA5E9] hover:underline font-medium">Forgot password?</Link>
+              <label className="text-xs font-black text-brand-dark uppercase tracking-wider">Password</label>
+              <Link href="/forgot-password" className="text-xs text-brand-blue hover:underline font-black">Forgot password?</Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -117,7 +117,7 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
+                className="w-full pl-11 pr-4 py-2.5 bg-brand-cream border-2 border-brand-dark rounded-xl text-sm text-brand-dark focus:outline-none focus:bg-card-bg"
               />
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-[#0EA5E9] hover:bg-[#0284c7] text-white rounded-xl font-semibold text-sm transition shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full btn-3d btn-3d-blue py-2.5 font-black text-sm flex items-center justify-center gap-2"
           >
             <LogIn size={18} />
             {loading ? "Signing in..." : "Log In"}
@@ -134,17 +134,17 @@ export default function LoginPage() {
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
+            <div className="w-full border-t-2 border-brand-dark/15"></div>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-3 text-gray-500 font-medium">Or continue with</span>
+            <span className="bg-card-bg px-3 text-text-muted font-bold">Or continue with</span>
           </div>
         </div>
 
         <button
           onClick={handleGoogleLogin}
           type="button"
-          className="w-full py-2.5 border border-gray-300 rounded-xl bg-white hover:bg-gray-50 text-[#111827] text-sm font-semibold transition flex items-center justify-center gap-2.5 cursor-pointer"
+          className="w-full btn-3d btn-3d-white py-2.5 font-black text-sm flex items-center justify-center gap-2.5"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -167,9 +167,9 @@ export default function LoginPage() {
           Google
         </button>
 
-        <p className="text-center text-sm text-gray-500 mt-8">
+        <p className="text-center text-sm text-text-muted mt-8 font-bold">
           Don't have an account?{" "}
-          <Link href="/signup" className="text-[#0EA5E9] hover:underline font-semibold">Sign Up</Link>
+          <Link href="/signup" className="text-brand-blue hover:underline font-black">Sign Up</Link>
         </p>
       </div>
     </main>

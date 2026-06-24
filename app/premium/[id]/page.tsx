@@ -174,14 +174,14 @@ export default function PremiumDetailPage({ params }: { params: any }) {
 
   if (!module) {
     return (
-      <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 items-center justify-center p-6">
-        <div className="text-center max-w-sm font-sans bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-8 shadow">
-          <div className="flex justify-center text-accent mb-2">
+      <div className="flex min-h-screen bg-brand-cream text-brand-dark items-center justify-center p-6">
+        <div className="text-center max-w-sm font-sans bg-card-bg border-4 border-brand-dark rounded-3xl p-8 shadow-[4px_4px_0px_#1F2937]">
+          <div className="flex justify-center text-brand-blue mb-2">
             <EmojiOrSvg emoji="satellite" className="w-12 h-12" />
           </div>
-          <h2 className="text-lg font-black text-gray-900 dark:text-white mt-4">Module Not Found</h2>
-          <p className="text-xs text-text-muted dark:text-gray-400 mt-1.5">This learning pack could not be located in our coordinates system.</p>
-          <button onClick={() => router.push("/premium")} className="btn-modern btn-modern-primary mt-6 text-xs px-6">
+          <h2 className="text-lg font-black text-brand-dark mt-4">Module Not Found</h2>
+          <p className="text-xs text-text-muted mt-1.5 font-bold">This learning pack could not be located in our coordinates system.</p>
+          <button onClick={() => router.push("/premium")} className="btn-3d btn-3d-blue mt-6 text-xs px-6 py-2">
             Back to Store
           </button>
         </div>
@@ -190,7 +190,7 @@ export default function PremiumDetailPage({ params }: { params: any }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-bg-light dark:bg-[#0B1120] text-dark dark:text-gray-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-brand-cream text-brand-dark transition-colors duration-200">
       <SideNav />
 
       <main className="flex-1 flex flex-col min-w-0 font-sans p-6 overflow-y-auto max-h-screen custom-scrollbar relative">
@@ -209,53 +209,53 @@ export default function PremiumDetailPage({ params }: { params: any }) {
           <div className="lg:col-span-8 flex flex-col gap-6">
             
             {/* Bento Block 1: Intro Deck */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 sm:p-8 shadow-[5px_5px_0px_#1F2937]">
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-yellow-100 dark:bg-yellow-950/20 text-yellow-600 dark:text-yellow-400 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-yellow-200 dark:border-yellow-950/50 uppercase">
+                <span className="bg-brand-yellow/20 text-brand-dark text-[10px] font-black px-2.5 py-0.5 rounded-full border border-brand-dark uppercase">
                   {module.category} Module
                 </span>
-                <span className="bg-brand-blue/15 text-accent text-[10px] font-black px-2.5 py-0.5 rounded-full border border-accent/20 uppercase">
+                <span className="bg-brand-sky text-brand-blue text-[10px] font-black px-2.5 py-0.5 rounded-full border border-brand-dark uppercase">
                   {module.difficulty}
                 </span>
               </div>
 
-              <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight">
+              <h1 className="text-xl sm:text-3xl font-extrabold text-brand-dark leading-tight">
                 {module.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-text-muted dark:text-gray-300 mt-4 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-text-muted mt-4 leading-relaxed font-sans font-bold">
                 {module.description}
               </p>
 
               {/* Grid indicators */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-card-border dark:border-gray-800 mt-6 pt-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t-2 border-brand-dark/10 mt-6 pt-6">
                 <div className="flex items-center gap-2">
-                  <span className="p-2 bg-sky-50 dark:bg-sky-950/20 rounded-xl text-accent">
+                  <span className="p-2 bg-sky-50 dark:bg-brand-sky rounded-xl text-brand-blue border border-brand-dark/20">
                     <Clock size={16} />
                   </span>
                   <div>
                     <p className="text-[10px] text-text-muted">Duration</p>
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">{module.duration}</p>
+                    <p className="text-xs font-bold text-brand-dark">{module.duration}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="p-2 bg-yellow-50 dark:bg-yellow-950/20 rounded-xl text-yellow-500">
+                  <span className="p-2 bg-yellow-50 dark:bg-brand-yellow/20 rounded-xl text-brand-yellow border border-brand-dark/20">
                     <Users size={16} />
                   </span>
                   <div>
                     <p className="text-[10px] text-text-muted">Students Enrolled</p>
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">{module.enrolledCount}</p>
+                    <p className="text-xs font-bold text-brand-dark">{module.enrolledCount}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 col-span-2 sm:col-span-1">
-                  <span className="p-2 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl text-emerald-500">
+                  <span className="p-2 bg-emerald-50 dark:bg-brand-green/20 rounded-xl text-brand-green border border-brand-dark/20">
                     <Award size={16} />
                   </span>
                   <div>
                     <p className="text-[10px] text-text-muted">Certificate</p>
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">
+                    <p className="text-xs font-bold text-brand-dark">
                       {module.certificateAvailable ? "Available" : "Badge Only"}
                     </p>
                   </div>
@@ -264,15 +264,15 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 2: Learning Outcomes */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-              <h2 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-card-border dark:border-gray-800 pb-2">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 shadow-[5px_5px_0px_#1F2937]">
+              <h2 className="text-sm font-extrabold text-brand-dark uppercase tracking-wider mb-4 border-b-2 border-brand-dark/10 pb-2">
                 What You'll Learn
               </h2>
               
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {module.outcomes && module.outcomes.map((out: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-gray-700 dark:text-gray-300 font-sans">
-                    <CheckCircle className="text-accent shrink-0 mt-0.5" size={14} />
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-brand-dark font-sans font-bold">
+                    <CheckCircle className="text-brand-blue shrink-0 mt-0.5" size={14} />
                     <span>{out}</span>
                   </li>
                 ))}
@@ -285,9 +285,9 @@ export default function PremiumDetailPage({ params }: { params: any }) {
           <div className="lg:col-span-4 flex flex-col gap-6">
             
             {/* Bento Block 3: Video Preview */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-5 shadow-sm">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937]">
               <div 
-                className="h-44 bg-slate-900 border-2 border-card-border dark:border-gray-800 rounded-2xl flex items-center justify-center text-white relative overflow-hidden group cursor-pointer"
+                className="h-44 bg-slate-900 border-2 border-brand-dark rounded-2xl flex items-center justify-center text-white relative overflow-hidden group cursor-pointer"
                 onClick={() => setIsPlayingVideo(true)}
               >
                 <div className="absolute inset-0 bg-slate-800 opacity-60 group-hover:opacity-40 transition-opacity" />
@@ -302,32 +302,32 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 4: Enroll Purchase Card */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-5 shadow-sm flex flex-col gap-4 font-display">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-4 font-display">
               <div className="flex justify-between items-center">
                 <span className="text-xs text-text-muted">Module Price</span>
-                <span className="text-2xl font-black text-gray-900 dark:text-white">
+                <span className="text-2xl font-black text-brand-dark">
                   ${module.price.toFixed(2)}
                 </span>
               </div>
               
-              <div className="h-[1px] bg-card-border dark:bg-gray-800" />
+              <div className="h-[2px] bg-brand-dark/15" />
               
-              <div className="space-y-2 text-[10px] text-text-muted dark:text-gray-400 font-bold">
-                <p className="flex items-center gap-1.5"><Shield size={12} className="text-accent" /> 1-Click Secure checkout</p>
-                <p className="flex items-center gap-1.5"><BookOpen size={12} className="text-accent" /> Videos, PDF notes & worksheet packs</p>
+              <div className="space-y-2 text-[10px] text-text-muted font-bold">
+                <p className="flex items-center gap-1.5"><Shield size={12} className="text-brand-blue" /> 1-Click Secure checkout</p>
+                <p className="flex items-center gap-1.5"><BookOpen size={12} className="text-brand-blue" /> Videos, PDF notes & worksheet packs</p>
               </div>
 
               {isPurchased ? (
-                <div className="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-950/50 rounded-xl p-3 text-center text-xs font-bold flex flex-col gap-2">
+                <div className="bg-emerald-50 dark:bg-brand-green/20 text-emerald-650 border border-brand-dark rounded-xl p-3 text-center text-xs font-bold flex flex-col gap-2">
                   <p className="flex items-center justify-center gap-1"><CheckCircle size={14} /> You Own This Module!</p>
-                  <Link href="/dashboard" className="btn-modern btn-modern-outline py-1.5 text-[10px]">
+                  <Link href="/dashboard" className="btn-3d btn-3d-white py-1.5 text-[10px]">
                     Go to Space Station
                   </Link>
                 </div>
               ) : (
                 <button
                   onClick={() => setIsCheckoutOpen(true)}
-                  className="btn-modern btn-modern-accent w-full py-2.5 text-xs font-black shadow-sm"
+                  className="btn-3d btn-3d-yellow w-full py-2.5 text-xs font-black shadow-sm"
                 >
                   Buy Now & Enroll
                 </button>
@@ -335,15 +335,15 @@ export default function PremiumDetailPage({ params }: { params: any }) {
             </div>
 
             {/* Bento Block 5: Teacher Profile */}
-            <div className="bg-white dark:bg-[#111827] border border-card-border dark:border-gray-800 rounded-3xl p-5 shadow-sm flex flex-col gap-3">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-5 shadow-[4px_4px_0px_#1F2937] flex flex-col gap-3">
               <p className="text-[10px] font-bold text-text-muted uppercase">Your STEM Instructor</p>
               <div className="flex items-center gap-3">
-                <span className="bg-brand-cream border border-card-border dark:border-gray-800 w-11 h-11 rounded-xl flex items-center justify-center shadow-inner text-accent">
+                <span className="bg-brand-cream border-2 border-brand-dark w-11 h-11 rounded-xl flex items-center justify-center shadow-inner text-brand-blue">
                   <EmojiOrSvg emoji="teacher" className="w-6 h-6" />
                 </span>
                 <div>
-                  <h4 className="text-xs font-black text-gray-900 dark:text-white">{module.teacherName}</h4>
-                  <p className="text-[9px] text-text-muted">NASA JPL STEM Mentor</p>
+                  <h4 className="text-xs font-black text-brand-dark">{module.teacherName}</h4>
+                  <p className="text-[9px] text-text-muted font-bold">NASA JPL STEM Mentor</p>
                 </div>
               </div>
             </div>
@@ -355,12 +355,12 @@ export default function PremiumDetailPage({ params }: { params: any }) {
         {/* Video Player Modal overlay */}
         {isPlayingVideo && (
           <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#111827] border-4 border-gray-800 rounded-3xl overflow-hidden max-w-2xl w-full shadow-2xl relative">
-              <div className="p-4 bg-slate-900 flex justify-between items-center text-white border-b border-gray-850">
-                <span className="text-xs font-bold">{module.title} (Lesson Preview)</span>
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl overflow-hidden max-w-2xl w-full shadow-2xl relative">
+              <div className="p-4 bg-brand-cream flex justify-between items-center text-brand-dark border-b-4 border-brand-dark">
+                <span className="text-xs font-black">{module.title} (Lesson Preview)</span>
                 <button 
                   onClick={() => setIsPlayingVideo(false)}
-                  className="text-xs text-gray-400 hover:text-white font-bold bg-white/10 px-2.5 py-1 rounded-lg"
+                  className="btn-3d btn-3d-white text-xs px-2.5 py-1"
                 >
                   Close
                 </button>
@@ -378,32 +378,32 @@ export default function PremiumDetailPage({ params }: { params: any }) {
         {/* Checkout Modal overlay */}
         {isCheckoutOpen && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-[#111827] border-4 border-card-border dark:border-gray-800 rounded-3xl p-6 max-w-sm w-full shadow-xl font-display text-gray-900 dark:text-white">
-              <h3 className="text-base font-extrabold flex items-center gap-1.5 text-accent border-b border-card-border dark:border-gray-800 pb-3 mb-4">
+            <div className="bg-card-bg border-4 border-brand-dark rounded-3xl p-6 max-w-sm w-full shadow-xl font-display text-brand-dark">
+              <h3 className="text-base font-extrabold flex items-center gap-1.5 text-brand-blue border-b-2 border-brand-dark/10 pb-3 mb-4">
                 <Shield size={16} /> Secure Checkout
               </h3>
               
-              <div className="bg-bg-light dark:bg-[#0B1120]/60 p-3 rounded-xl mb-4 border border-card-border dark:border-gray-850">
+              <div className="bg-brand-cream p-3 rounded-xl mb-4 border-2 border-brand-dark">
                 <p className="text-[10px] text-text-muted">Item Summary</p>
-                <p className="text-xs font-bold mt-0.5 truncate">{module.title}</p>
-                <p className="text-xs font-bold text-accent mt-2">${module.price.toFixed(2)}</p>
+                <p className="text-xs font-black mt-0.5 truncate">{module.title}</p>
+                <p className="text-xs font-black text-brand-blue mt-2">${module.price.toFixed(2)}</p>
               </div>
 
               <div className="space-y-3">
-                <p className="text-[10px] text-text-muted dark:text-gray-400 font-sans">
+                <p className="text-[10px] text-text-muted font-bold">
                   Kiddy AI utilizes prototype sandbox payments. By clicking "Purchase", this module will be immediately added to your space profile. No real credit card charge occurs.
                 </p>
                 
                 <div className="flex gap-2 pt-2">
                   <button
                     onClick={() => setIsCheckoutOpen(false)}
-                    className="flex-1 btn-modern btn-modern-outline py-2 text-xs"
+                    className="flex-1 btn-3d btn-3d-white py-2 text-xs"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleEnrollModule}
-                    className="flex-1 btn-modern btn-modern-accent py-2 text-xs font-black"
+                    className="flex-1 btn-3d btn-3d-yellow py-2 text-xs"
                   >
                     Confirm Purchase
                   </button>

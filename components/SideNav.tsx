@@ -49,16 +49,10 @@ export default function SideNav() {
   const menuItems = [
     { name: "Home Dashboard", href: "/dashboard", icon: Home },
     { name: "Explore Content", href: "/explore", icon: Compass },
-    { name: "Structured Courses", href: "/courses", icon: BookOpen },
-    { name: "Premium Modules", href: "/premium", icon: Layers },
-    { name: "Live Broadcasts", href: "/live", icon: Play },
+    { name: "Learning Hub", href: "/courses", icon: BookOpen },
+    { name: "Live Classrooms", href: "/live", icon: Play },
     { name: "AI Tools Lab", href: "/ai-tools", icon: Sparkles },
-    { name: "Live Study Rooms", href: "/study-rooms", icon: Video },
-    { name: "Academy Leaderboard", href: "/leaderboard", icon: Trophy },
-    { name: "Resource Library", href: "/resources", icon: FolderClosed },
-    { name: "Student Bootcamps", href: "/bootcamp", icon: Award },
-    { name: "Community Forums", href: "/community", icon: Users },
-    { name: "Community Feed", href: "/community-feed", icon: Rss }
+    { name: "Community Hub", href: "/community", icon: Users }
   ];
 
   const roles = [
