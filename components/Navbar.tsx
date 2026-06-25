@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/context/AppContext";
 import EmojiOrSvg from "@/components/visuals/EmojiOrSvg";
 import { 
   Menu, X, Bell, Flame, Coins, Award, Shield, 
-  ChevronDown, Settings, Sparkles, LogOut, CheckCircle2, Check 
+  ChevronDown, Settings, Sparkles, LogOut, CheckCircle2, Check,
+  Sun, Moon
 } from "lucide-react";
 import Image from "next/image";
+import { updateUserTheme } from "@/app/actions/theme";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -23,9 +25,26 @@ export default function Navbar() {
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   
-  // Navigation Learn Dropdown State
-  const [learnDropdownOpen, setLearnDropdownOpen] = useState(false);
-  const [mobileLearnOpen, setMobileLearnOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("kiddy_theme") || "light";
+    setTheme(saved as "light" | "dark");
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem("kiddy_theme", next);
+    if (next === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    if (user && user.id) {
+      updateUserTheme(user.id, next).catch(console.error);
+    }
+  };
 
   // AI API settings local state
   const [openaiKey, setOpenaiKey] = useState(aiSettings.openaiKey);
@@ -60,12 +79,12 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-40 bg-card-bg border-b-4 border-brand-dark dark:border-[#4A3F35] shadow-md px-4 py-2 transition-colors duration-200">
+    <nav className="sticky top-3 mx-auto max-w-7xl w-[95%] rounded-3xl z-40 navbar-glass shadow-lg px-6 py-2 transition-all duration-200">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-11 h-11 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl overflow-hidden shadow-[2px_2px_0px_var(--card-shadow-color)] group-hover:scale-105 transition-transform duration-200 bg-brand-yellow">
+          <div className="relative w-11 h-11 border-2 border-brand-dark dark:border-white/10 rounded-xl overflow-hidden shadow-[2px_2px_0px_var(--card-shadow-color)] group-hover:scale-105 transition-transform duration-200 bg-brand-yellow">
             <Image 
               src="/logo.jpg" 
               alt="Kiddy AI Logo" 
@@ -102,56 +121,23 @@ export default function Navbar() {
             );
           })}
 
-          {/* Learn (Dropdown Trigger) */}
-          <div 
-            className="relative"
-            onMouseEnter={() => setLearnDropdownOpen(true)}
-            onMouseLeave={() => setLearnDropdownOpen(false)}
+          {/* Learn Link (Consolidated) */}
+          <Link
+            href="/learn"
+            className={`px-3 py-1.5 rounded-full border-2 text-xs font-bold transition-all duration-150 ${
+              pathname.startsWith("/learn") || pathname === "/courses" || pathname === "/live" || pathname === "/resources" || pathname === "/certificates"
+                ? "bg-brand-blue text-white border-brand-dark shadow-[2px_2px_0px_var(--card-shadow-color)]"
+                : "text-gray-700 dark:text-[#D6D3D1] border-transparent hover:bg-brand-sky dark:hover:bg-slate-800 hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)] hover:text-gray-900 dark:hover:text-white"
+            }`}
           >
-            <button
-              type="button"
-              className={`px-3 py-1.5 rounded-full border-2 text-xs font-bold transition-all duration-150 flex items-center gap-1 cursor-pointer ${
-                pathname === "/courses" || pathname === "/live"
-                  ? "bg-brand-blue text-white border-brand-dark shadow-[2px_2px_0px_var(--card-shadow-color)]"
-                  : "text-gray-700 dark:text-[#D6D3D1] border-transparent hover:bg-brand-sky dark:hover:bg-slate-800 hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)] hover:text-gray-900 dark:hover:text-white"
-              }`}
-            >
-              <span>Learn</span>
-              <ChevronDown size={12} className={`transition-transform duration-200 ${learnDropdownOpen ? "rotate-180" : ""}`} />
-            </button>
-
-            {/* Dropdown Menu */}
-            {learnDropdownOpen && (
-              <div className="absolute left-0 mt-1 w-44 bg-card-bg border-3 border-brand-dark dark:border-[#4A3F35] rounded-2xl shadow-[4px_4px_0px_var(--card-shadow-color)] overflow-hidden z-50 animate-fade-in">
-                <Link 
-                  href="/courses" 
-                  className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
-                    pathname === "/courses"
-                      ? "bg-brand-blue text-white"
-                      : "text-gray-700 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  Learning Hub
-                </Link>
-                <Link 
-                  href="/live" 
-                  className={`block px-4 py-2.5 text-xs font-bold transition-colors border-t-2 border-brand-dark/10 dark:border-[#4A3F35]/30 ${
-                    pathname === "/live"
-                      ? "bg-brand-blue text-white"
-                      : "text-gray-700 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  Live Learn
-                </Link>
-              </div>
-            )}
-          </div>
+            Learn
+          </Link>
 
           {/* Community */}
           <Link
             href="/community"
             className={`px-3 py-1.5 rounded-full border-2 text-xs font-bold transition-all duration-150 ${
-              pathname === "/community"
+              pathname.startsWith("/community")
                 ? "bg-brand-blue text-white border-brand-dark shadow-[2px_2px_0px_var(--card-shadow-color)]"
                 : "text-gray-700 dark:text-[#D6D3D1] border-transparent hover:bg-brand-sky dark:hover:bg-slate-800 hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)] hover:text-gray-900 dark:hover:text-white"
             }`}
@@ -177,14 +163,14 @@ export default function Navbar() {
           
           {/* Student Stats (shown for student role) */}
           {user.role === "student" && (
-            <div className="flex items-center gap-2 bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-[#4A3F35] rounded-full px-3 py-1 text-sm font-bold">
+            <div className="flex items-center gap-2 bg-brand-cream dark:bg-slate-900 border-2 border-brand-dark dark:border-white/10 rounded-full px-3 py-1 text-sm font-bold">
               <div className="flex items-center gap-1 text-orange-500" title="Daily Streak">
                 <Flame size={18} fill="currentColor" />
                 <span>{user.streak}</span>
               </div>
               <div className="w-[2px] h-4 bg-brand-dark/20 dark:bg-white/10" />
               <div className="flex items-center gap-1 text-brand-pink" title="Kiddy Coins">
-                <Coins size={18} fill="currentColor" className="text-brand-yellow stroke-brand-dark dark:stroke-[#4A3F35]" />
+                <Coins size={18} fill="currentColor" className="text-brand-yellow stroke-brand-dark dark:stroke-white/25" />
                 <span>{user.coins}</span>
               </div>
               <div className="w-[2px] h-4 bg-brand-dark/20 dark:bg-white/10" />
@@ -198,17 +184,17 @@ export default function Navbar() {
           {/* Quick Dashboard Links based on Role */}
           <Link
             href={user.role === "parent" ? "/parent" : user.role === "teacher" || user.role === "admin" ? "/admin" : "/dashboard"}
-            className="px-4 py-1.5 bg-brand-pink text-white font-display text-sm font-bold border-2 border-brand-dark rounded-full shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_var(--card-shadow-color)] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--card-shadow-color)] transition-all flex items-center gap-1.5"
+            className="px-4 py-1.5 bg-brand-pink text-white font-display text-sm font-bold border-2 border-brand-dark rounded-full shadow-[2px_2px_0px_var(--card-shadow-color)] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_var(--card-shadow-color)] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--card-shadow-color)] transition-all flex items-center gap-1.5 text-xs"
           >
             <span>My Workspace</span>
-            <EmojiOrSvg emoji={user.avatar} className="w-4 h-4 text-white" />
+            <EmojiOrSvg emoji={user.avatar || "backpack"} className="w-4 h-4 text-white" />
           </Link>
 
           {/* Role Dropdown */}
           <div className="relative">
             <button
               onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-card-bg border-2 border-brand-dark dark:border-[#4A3F35] rounded-full text-xs font-bold font-display shadow-[2px_2px_0px_var(--card-shadow-color)] hover:bg-brand-sky dark:hover:bg-slate-850 transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-3 py-1.5 bg-card-bg dark:bg-slate-900 border-2 border-brand-dark dark:border-white/10 rounded-full text-xs font-bold font-display shadow-[2px_2px_0px_var(--card-shadow-color)] hover:bg-brand-sky dark:hover:bg-slate-850 transition-colors cursor-pointer text-gray-700 dark:text-[#D6D3D1]"
             >
               <Shield size={14} className="text-brand-blue" />
               <span>Role: {user.role.toUpperCase()}</span>
@@ -216,8 +202,8 @@ export default function Navbar() {
             </button>
 
             {roleDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-card-bg border-3 border-brand-dark dark:border-[#4A3F35] rounded-2xl shadow-[4px_4px_0px_var(--card-shadow-color)] overflow-hidden z-50">
-                <div className="px-3 py-2 bg-brand-sky dark:bg-[#25201D] border-b-2 border-brand-dark dark:border-[#4A3F35] font-display text-xs font-bold text-gray-900 dark:text-[#FFF7ED]">
+              <div className="absolute right-0 mt-2 w-48 bg-card-bg border-3 border-brand-dark dark:border-white/10 rounded-2xl shadow-[4px_4px_0px_var(--card-shadow-color)] overflow-hidden z-50">
+                <div className="px-3 py-2 bg-brand-sky dark:bg-slate-900 border-b-2 border-brand-dark dark:border-white/10 font-display text-xs font-bold text-gray-900 dark:text-[#FFF7ED]">
                   Toggle Prototype Role
                 </div>
                 <div className="p-1.5 flex flex-col gap-1">
@@ -237,23 +223,34 @@ export default function Navbar() {
             )}
           </div>
 
+          {/* AI Assistant Button (Always Visible, Prominent) */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("open-kiddy-mentor"))}
+            className="p-2 border-2 border-brand-dark dark:border-white/10 rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors cursor-pointer text-brand-pink"
+            title="Open AI Learning Assistant"
+            aria-label="Open AI Assistant"
+          >
+            <Sparkles size={18} className="fill-brand-pink" />
+          </button>
+
           {/* Notifications Panel */}
           <div className="relative">
             <button 
               onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
-              className="p-2 border-2 border-brand-dark dark:border-[#4A3F35] rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors relative"
+              className="p-2 border-2 border-brand-dark dark:border-white/10 rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors relative text-gray-700 dark:text-[#D6D3D1]"
+              aria-label="Adventure Logs"
             >
               <Bell size={18} />
               {notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-pink border-2 border-brand-dark dark:border-[#4A3F35] rounded-full flex items-center justify-center text-[10px] font-bold text-white">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-pink border-2 border-brand-dark dark:border-white/10 rounded-full flex items-center justify-center text-[10px] font-bold text-white">
                   {notifications.length}
                 </span>
               )}
             </button>
 
             {notifDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-card-bg border-3 border-brand-dark dark:border-[#4A3F35] rounded-2xl shadow-[4px_4px_0px_var(--card-shadow-color)] overflow-hidden z-50">
-                <div className="p-3 bg-brand-blue text-white font-display font-bold flex items-center justify-between border-b-3 border-brand-dark dark:border-[#4A3F35]">
+              <div className="absolute right-0 mt-2 w-80 bg-card-bg border-3 border-brand-dark dark:border-white/10 rounded-2xl shadow-[4px_4px_0px_var(--card-shadow-color)] overflow-hidden z-50">
+                <div className="p-3 bg-brand-blue text-white font-display font-bold flex items-center justify-between border-b-3 border-brand-dark dark:border-white/10">
                   <span>Adventure Logs</span>
                   <button onClick={clearNotifications} className="text-xs underline hover:text-brand-yellow font-sans cursor-pointer">Clear</button>
                 </div>
@@ -272,11 +269,22 @@ export default function Navbar() {
             )}
           </div>
 
+          {/* Theme Toggle (☀️ Light / 🌙 Dark) */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 border-2 border-brand-dark dark:border-white/10 rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors cursor-pointer text-gray-700 dark:text-[#D6D3D1] flex items-center justify-center"
+            aria-label="Toggle theme"
+            title={`Switch to ${theme === "light" ? "Dark" : "Light"} Mode`}
+          >
+            {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+
           {/* Developer API Key Panel Button */}
           <button
             onClick={() => setSettingsOpen(true)}
-            className="p-2 border-2 border-brand-dark dark:border-[#4A3F35] rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-2 border-2 border-brand-dark dark:border-white/10 rounded-full hover:bg-brand-sky dark:hover:bg-slate-800 transition-colors cursor-pointer text-gray-700 dark:text-[#D6D3D1]"
             title="AI Config Settings"
+            aria-label="AI Settings"
           >
             <Settings size={18} />
           </button>
@@ -285,14 +293,25 @@ export default function Navbar() {
         {/* MOBILE MENU BUTTON */}
         <div className="flex lg:hidden items-center gap-2">
           {user.role === "student" && (
-            <div className="flex items-center gap-1.5 bg-brand-cream dark:bg-[#25201D] border-2 border-brand-dark dark:border-[#4A3F35] rounded-full px-2 py-0.5 text-xs font-bold">
-              <Coins size={14} className="text-brand-yellow stroke-brand-dark dark:stroke-[#4A3F35] fill-brand-yellow" />
+            <div className="flex items-center gap-1.5 bg-brand-cream dark:bg-slate-900 border-2 border-brand-dark dark:border-white/10 rounded-full px-2 py-0.5 text-xs font-bold">
+              <Coins size={14} className="text-brand-yellow stroke-brand-dark dark:stroke-white/25 fill-brand-yellow" />
               <span>{user.coins}</span>
             </div>
           )}
+          
+          {/* Theme Toggle for Mobile */}
+          <button
+            onClick={toggleTheme}
+            className="p-1.5 border-2 border-brand-dark dark:border-white/10 rounded-lg bg-card-bg hover:bg-brand-sky dark:hover:bg-slate-800 text-gray-700 dark:text-[#D6D3D1]"
+            aria-label="Toggle theme"
+          >
+            {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
+          </button>
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl bg-card-bg hover:bg-brand-sky dark:hover:bg-slate-800"
+            className="p-2 border-2 border-brand-dark dark:border-white/10 rounded-xl bg-card-bg hover:bg-brand-sky dark:hover:bg-slate-800 text-gray-700 dark:text-[#D6D3D1]"
+            aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -302,7 +321,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU NAV */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t-3 border-brand-dark dark:border-[#4A3F35] mt-2 pt-3 pb-4 flex flex-col gap-2 font-display bg-card-bg z-40 relative">
+        <div className="lg:hidden border-t-3 border-brand-dark dark:border-white/10 mt-2 pt-3 pb-4 flex flex-col gap-2 font-display bg-card-bg z-40 relative">
           
           <Link
             href="/"
@@ -320,35 +339,13 @@ export default function Navbar() {
             Explore
           </Link>
 
-          {/* Mobile Learn Accordion */}
-          <div className="flex flex-col">
-            <button
-              onClick={() => setMobileLearnOpen(!mobileLearnOpen)}
-              className="w-full text-left px-3 py-2 rounded-xl text-base font-bold text-brand-dark dark:text-white hover:bg-brand-sky dark:hover:bg-slate-800 border-2 border-transparent hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)] flex items-center justify-between"
-            >
-              <span>Learn</span>
-              <ChevronDown size={16} className={`transition-transform duration-200 ${mobileLearnOpen ? "rotate-180" : ""}`} />
-            </button>
-            
-            {mobileLearnOpen && (
-              <div className="pl-6 flex flex-col gap-1 mt-1 border-l-2 border-brand-dark/20 ml-5 py-1">
-                <Link
-                  href="/courses"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg text-sm font-bold text-gray-700 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-800"
-                >
-                  Learning Hub
-                </Link>
-                <Link
-                  href="/live"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg text-sm font-bold text-gray-700 dark:text-[#D6D3D1] hover:bg-brand-sky dark:hover:bg-slate-800"
-                >
-                  Live Learn
-                </Link>
-              </div>
-            )}
-          </div>
+          <Link
+            href="/learn"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl text-base font-bold text-brand-dark dark:text-white hover:bg-brand-sky dark:hover:bg-slate-800 border-2 border-transparent hover:border-brand-dark hover:shadow-[2px_2px_0px_var(--card-shadow-color)]"
+          >
+            Learn
+          </Link>
 
           <Link
             href="/community"
@@ -369,7 +366,7 @@ export default function Navbar() {
           <div className="h-[2px] bg-brand-dark/10 dark:bg-white/10 my-1" />
           
           {/* Mobile role select */}
-          <div className="px-3 py-1 text-xs font-bold text-gray-500">SWITCH PROFILE ROLE:</div>
+          <div className="px-3 py-1 text-xs font-bold text-gray-550">SWITCH PROFILE ROLE:</div>
           <div className="grid grid-cols-2 gap-2 px-3">
             {roles.map(r => (
               <button
@@ -378,7 +375,7 @@ export default function Navbar() {
                   handleRoleChange(r.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`py-2 px-3 text-center border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl text-xs font-bold ${
+                className={`py-2 px-3 text-center border-2 border-brand-dark dark:border-white/10 rounded-xl text-xs font-bold ${
                   user.role === r.id ? r.color : "bg-card-bg text-brand-dark dark:text-white"
                 }`}
               >
@@ -391,17 +388,31 @@ export default function Navbar() {
             <Link
               href={user.role === "parent" ? "/parent" : user.role === "teacher" || user.role === "admin" ? "/admin" : "/dashboard"}
               onClick={() => setMobileMenuOpen(false)}
-              className="flex-1 text-center py-2.5 bg-brand-pink text-white font-bold border-2 border-brand-dark rounded-xl shadow-[3px_3px_0px_var(--card-shadow-color)] flex items-center justify-center gap-1.5"
+              className="flex-1 text-center py-2.5 bg-brand-pink text-white font-bold border-2 border-brand-dark rounded-xl shadow-[3px_3px_0px_var(--card-shadow-color)] flex items-center justify-center gap-1.5 text-xs"
             >
               <span>My Dashboard</span>
-              <EmojiOrSvg emoji={user.avatar} className="w-4 h-4 text-white" />
+              <EmojiOrSvg emoji={user.avatar || "backpack"} className="w-4 h-4 text-white" />
             </Link>
+            
+            {/* Mobile AI Assistant button */}
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("open-kiddy-mentor"));
+                setMobileMenuOpen(false);
+              }}
+              className="flex-1 py-2.5 bg-brand-blue text-white font-bold border-2 border-brand-dark rounded-xl shadow-[3px_3px_0px_var(--card-shadow-color)] flex items-center justify-center gap-1.5 text-xs"
+            >
+              <span>AI Assistant</span>
+              <Sparkles size={14} className="fill-white" />
+            </button>
+
             <button
               onClick={() => {
                 setSettingsOpen(true);
                 setMobileMenuOpen(false);
               }}
-              className="p-2.5 border-2 border-brand-dark rounded-xl bg-brand-yellow cursor-pointer"
+              className="p-2.5 border-2 border-brand-dark rounded-xl bg-brand-yellow cursor-pointer text-brand-dark"
+              aria-label="Settings"
             >
               <Settings size={20} />
             </button>

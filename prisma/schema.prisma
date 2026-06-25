@@ -350,3 +350,16 @@ model StudentClub {
 
   @@map("student_clubs")
 }
+
+model SiteSetting {
+  id           String   @id @default("default")
+  instagramUrl String   @default("https://instagram.com/kiddyai") @map("instagram_url")
+  linkedinUrl  String   @default("https://linkedin.com/company/kiddyai") @map("linkedin_url")
+  twitterUrl   String   @default("https://twitter.com/kiddyai") @map("twitter_url")
+  youtubeUrl   String   @default("https://youtube.com/kiddyai") @map("youtube_url")
+  facebookUrl  String   @default("https://facebook.com/kiddyai") @map("facebook_url")
+  githubUrl    String   @default("https://github.com/kiddyai") @map("github_url")
+  websiteUrl   String   @default("https://kiddyai.com") @map("website_url")
+
+  @@map("site_settings")
+}

@@ -23,8 +23,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `
           try {
             const saved = localStorage.getItem("kiddy_theme");
-            const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            if (saved === "dark" || (!saved && system)) {
+            if (saved === "dark") {
               document.documentElement.classList.add("dark");
             } else {
               document.documentElement.classList.remove("dark");

@@ -420,14 +420,14 @@ export default function ExplorePage() {
 
               <div className="space-y-2.5">
                 {communityHighlight.map((p, idx) => (
-                  <div key={idx} className="border border-brand-dark/10 dark:border-gray-700/80 rounded-xl p-3 bg-white dark:bg-[#25201D] flex items-center justify-between shadow-sm">
+                  <div key={idx} className="border border-brand-dark/10 dark:border-white/10 rounded-xl p-3 bg-white dark:bg-[#20252A] flex items-center justify-between shadow-sm">
                     <div className="min-w-0">
                       <p className="text-[10px] font-black text-gray-900 dark:text-white leading-tight truncate">{p.project}</p>
                       <p className="text-[8px] text-gray-400 dark:text-gray-500 font-bold mt-0.5">By {p.author}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0 text-[8px] font-extrabold text-gray-500 dark:text-gray-405">
-                      <span className="flex items-center gap-0.5 text-brand-pink">❤️ {p.likes}</span>
-                      <span className="flex items-center gap-0.5 text-brand-blue">💬 {p.comments}</span>
+                      <span className="flex items-center gap-0.5 text-brand-pink"><Heart size={10} className="fill-brand-pink" /> {p.likes}</span>
+                      <span className="flex items-center gap-0.5 text-brand-blue"><MessageSquare size={10} className="fill-brand-blue text-brand-blue" /> {p.comments}</span>
                     </div>
                   </div>
                 ))}

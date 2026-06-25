@@ -112,7 +112,7 @@ export default function ContactUsPage() {
               </p>
               <div className="w-full bg-white dark:bg-gray-800 border-2 border-brand-dark dark:border-[#4A3F35] rounded-xl p-3 flex items-center justify-between text-left mt-2 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <span className="text-brand-pink">❤️</span>
+                  <Heart size={14} className="text-brand-pink fill-brand-pink" />
                   <span className="text-[10px] font-black text-gray-500 dark:text-gray-450 uppercase">Loved by 12k+ kids</span>
                 </div>
                 <span className="text-[10px] font-bold text-accent">Join the Club</span>
